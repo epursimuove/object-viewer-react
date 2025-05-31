@@ -1,0 +1,253 @@
+html {
+    --indentation: 3rem;
+}
+
+time {
+    font-family: Menlo, "Courier New", monospace;
+}
+
+.object-viewer {
+    
+    font-family: Menlo, "Courier New", monospace;
+
+    .root-object {
+        /*background-color: lavenderblush;*/
+        counter-reset: row-counter;
+
+        .togglable {
+            cursor: pointer;
+            
+            &.object-header .object-property-name {
+                color: blue;
+            }
+            
+            &.array-header .object-property-name {
+                color: mediumseagreen;
+            }
+            
+            &.empty {
+                cursor: not-allowed;
+            }
+        }
+        
+        .toggle-expanded-icon {
+            font-weight: bold;
+            width: 0.5rem;
+            color: rgb(180, 180, 180);
+        }
+
+        .object-header-when-expanded, .object-header-when-collapsed {
+            /*padding-block: 0.5rem;*/
+
+            &:hover {
+                /*cursor: pointer;*/
+                /*background-color: deepskyblue;*/
+            }
+        }
+        
+        .object-header-when-collapsed {
+            /*background-color: mediumspringgreen;*/
+        }
+        
+        .object-header-when-expanded {
+            /*background-color: lightpink;*/
+        }
+
+        /*.object-heading {*/
+        /*    display: flex;*/
+        /*    flex-direction: row;*/
+        /*    align-items: baseline;*/
+        /*    gap: 1rem;*/
+        /*}*/
+
+        ol.object-properties, ol.array-items {
+            /*background-color: lavender;*/
+            
+            margin: 0;
+            padding: 0;
+            /*padding-inline-start: 4rem;*/
+
+            /*&:hover {*/
+            /*    background-color: rgb(55, 55, 230);*/
+            /*}*/
+            
+            li::marker {
+                line-height: 0;
+            }
+
+            li:not(.recursive-structure) {
+                padding-block: 0.3rem;
+
+                counter-increment: row-counter;
+
+                display: flex;
+                flex-direction: row;
+                align-items: baseline;
+                gap: 0.5rem;
+
+                &:before {
+                    content: counter(row-counter);
+                    font-size: 0.85rem;
+                    color: rgb(200, 200, 200);
+                    min-width: 2rem;
+                    text-align: end;
+                }
+
+                /*&:before {*/
+                /*    content: counter(row-counter);*/
+                /*    font-size: 0.85rem;*/
+                /*    color: rgb(200, 200, 200);*/
+                /*    min-width: 2rem;*/
+                /*    text-align: end;*/
+                /*}*/
+
+                &:hover {
+                    background-color: rgb(255, 255, 200);
+                }
+                
+                &.togglable:hover {
+                    &.object-header {
+                        background-color: rgb(200, 200, 255);
+                    }
+                    &.array-header {
+                        background-color: rgb(200, 255, 200);
+                    }
+                }
+                
+                &:not(.is-expanded) {
+                    display: none;
+                }
+                
+                /*&:not(.recursive-sub-object) {*/
+                /*    counter-increment: row-counter;*/
+                /*    */
+                /*    display: flex;*/
+                /*    flex-direction: row;*/
+                /*    align-items: baseline;*/
+                /*    gap: 1rem;*/
+                
+                /*    &:before {*/
+                /*        content: counter(row-counter);*/
+                /*        font-size: 0.85rem;*/
+                /*        color: rgb(200, 200, 200);*/
+                /*        min-width: 2rem;*/
+                /*        text-align: end;*/
+                /*    }*/
+                
+                /*}*/
+                
+            }
+        }
+    }
+    
+    .object-property-type {
+        min-width: 6rem;
+        font-size: 0.85rem;
+        color: rgb(180, 180, 180);
+    }
+    
+    .object-property-name {
+        min-width: 10rem;
+        font-weight: bold;
+        color: purple;
+        /*color: darkcyan;*/
+        
+        & .derived-array-index {
+            font-size: 0.85rem;
+            color: rgb(180, 180, 180);
+        }
+        
+        /*&:has(:hover) {*/
+        /*    color: red;*/
+        /*}*/
+        
+        /*&:has(.togglable) {*/
+        /*    color: blue;*/
+        /*}*/
+    }
+
+    .primitive-leaf:has(> .object-property-name) > .object-property-name {
+        /*font-weight: bold;*/
+        /*text-decoration: overline;*/
+        /*font-style: italic;*/
+    }
+
+
+    .object-property-value {
+        min-width: 20rem;
+        color: black;
+        
+        &:before {
+            content: "=XXXX ";
+            color: rgb(180, 180, 180);
+        }
+        
+        &.string {
+            white-space: pre;
+            
+            &.extra-spaces {
+                color: red;
+            }
+        }
+        
+        & .timestamp {
+            color: sandybrown;
+        }
+    }
+    
+    .object-property-meta-data {
+        color: forestgreen;
+        font-style: italic;
+        font-size: 0.9rem;
+        
+        &.suspicious {
+            color: red;
+            font-weight: bold;
+            
+            &:after {
+                content: " ! Suspicious content";
+            }
+        }
+        
+        &.extra-spaces {
+            color: red;
+            font-weight: bold;
+            
+            &:after {
+                content: " ! Extra spaces";
+            }
+        }
+    }
+    
+    .row-item-padding-0 {
+        margin-inline-start: calc(0 * var(--indentation));
+    }
+    
+    .row-item-padding-1 {
+        margin-inline-start: calc(1 * var(--indentation));
+    }
+
+    .row-item-padding-2 {
+        margin-inline-start: calc(2 * var(--indentation));
+    }
+
+    .row-item-padding-3 {
+        margin-inline-start: calc(3 * var(--indentation));
+    }
+    
+    .row-item-padding-4 {
+        margin-inline-start: calc(4 * var(--indentation));
+    }
+    
+    .row-item-padding-5 {
+        margin-inline-start: calc(5 * var(--indentation));
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+
+}
+
+
