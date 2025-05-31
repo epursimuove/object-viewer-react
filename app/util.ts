@@ -25,7 +25,7 @@ const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
 const regExpLocale: RegExp = /^[a-z]{2}-[A-Z]{2}$/;
 
-const regExpEmailAddress: RegExp = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+\.[a-zA-Z0-9]{3,}$/;
+const regExpEmailAddress: RegExp = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,}$/;
 
 const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
@@ -575,7 +575,7 @@ const buildMetaData = (
     propertyValue: PropertyValue,
 ): string | undefined => {
 
-    if (propertyTypeEnhanced === "string") {
+    if (propertyTypeEnhanced === "string" || propertyTypeEnhanced === "EmailAddress") {
         return `${(propertyValue as string).length} characters`;
     }
 

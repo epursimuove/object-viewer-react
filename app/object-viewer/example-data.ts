@@ -131,7 +131,8 @@ export const exampleObject: {} = {
     ],
     longerText: "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
     preferredLocale: "en-SE",
-    privateEmail: "john.doe@example.com",
+    primaryEmail: "john.doe@example.com",
+    secondaryEmail: "john@doe.se",
     currentLocalTime: "21:05:20",
 };
 
