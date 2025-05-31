@@ -23,6 +23,10 @@ const regExpLocalTime: RegExp = /^\d\d:\d\d:\d\d$/;
 
 const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
+const regExpLocale: RegExp = /^[a-z]{2}-[A-Z]{2}$/;
+
+const regExpEmailAddress: RegExp = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+\.[a-zA-Z0-9]{3,}$/;
+
 const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
 const isTimestamp = (s: string): boolean => {
@@ -47,6 +51,18 @@ const potentialCountryCode = (s: string): boolean => {
     const isPotentialCountryCode: boolean = regExpCountryCode.test(s);
     // console.log('isPotentialCountryCode', isPotentialCountryCode, s);
     return isPotentialCountryCode;
+};
+
+const potentialLocale = (s: string): boolean => {
+    const isPotentialLocale: boolean = regExpLocale.test(s);
+    // console.log('isPotentialLocale', isPotentialLocale, s);
+    return isPotentialLocale;
+};
+
+const potentialEmailAddress = (s: string): boolean => {
+    const isPotentialEmailAddress: boolean = regExpEmailAddress.test(s);
+    // console.log('isPotentialEmailAddress', isPotentialEmailAddress, s);
+    return isPotentialEmailAddress;
 };
 
 const isArrayIndex = (s: string): boolean => {
@@ -303,7 +319,7 @@ function getPossibleIdentifyingProperties(
     objectNode: ObjectNode,
 ): Record<string, PropertyValue> {
 
-    const goodPropertyNames: string[] = ["uuid", "id", "name", "fullName", "firstName", "lastName", "postCode", "city", "country", "x", "y", "z"];
+    const goodPropertyNames: string[] = ["uuid", "id", "name", "fullName", "firstName", "lastName", "postCode", "city", "country", "x", "y", "z", "propertyName", "propertyValue"];
 
     const result: Record<string, PropertyValue> = {};
 
@@ -324,7 +340,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
 
         warning('#### currentObjectNode.propertyName', currentObjectNode.propertyName, Object.getOwnPropertyNames(currentObjectNode.containedProperties).length, currentObjectNode.containedProperties);
 
-        const {id, uuid, name, fullName, firstName, lastName, postCode, city, country, x, y, z}: Record<string, PropertyValue> =
+        const {id, uuid, name, fullName, firstName, lastName, postCode, city, country, x, y, z, propertyName, propertyValue}: Record<string, PropertyValue> =
             getPossibleIdentifyingProperties(currentObjectNode);
 
         let identifyingValue: string = "";
@@ -356,6 +372,14 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
         }
         else if (valueIsDefined(x) && valueIsDefined(y)) {
             identifyingValue += ` x: ${x}, y: ${y}`;
+        }        
+        if (propertyName || propertyValue) {
+            if (propertyName) {
+                identifyingValue += ` ${propertyName}`;
+                if (propertyValue) {
+                    identifyingValue += `=${propertyValue}`;
+                }
+            }
         }
 
         if (identifyingValue.length > 0 || 1 === 1) {
@@ -520,9 +544,13 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
                                     "LocalTime" :
                                     propertyTypeOriginal === "string" && potentialCountryCode(propertyValue as string) ?
                                         "CountryCode" :
-                                        propertyTypeOriginal === "string" && propertyValue === "" ?
-                                            "EmptyString" :
-                                            propertyTypeOriginal;
+                                        propertyTypeOriginal === "string" && potentialLocale(propertyValue as string) ?
+                                            "Locale" :
+                                            propertyTypeOriginal === "string" && potentialEmailAddress(propertyValue as string) ?
+                                                "EmailAddress" :
+                                                propertyTypeOriginal === "string" && propertyValue === "" ?
+                                                    "EmptyString" :
+                                                    propertyTypeOriginal;
     // TODO More options
 
     return propertyTypEnhanced;
@@ -577,8 +605,6 @@ const buildMetaData = (
 
             return `${prettifiedDuration(roundedDuration)}`;
         }
-
-        return `X hours ago`; // TODO
     }
 }
 
@@ -612,7 +638,7 @@ const prettifiedDuration = (duration: Temporal.Duration): string => {
 
     }
 
-    return inThePast ? `(More than) ${durationPart} ago` : `In about ${durationPart}`;
+    return inThePast ? `More than ${durationPart} ago` : `In about ${durationPart}`;
 }
 
 const convertArrayToObject = <T>(array: T[]): Record<string, T> => {

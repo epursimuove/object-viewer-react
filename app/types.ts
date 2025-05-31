@@ -26,6 +26,8 @@ export type PropertyTypeEnhanced =
     | "LocalDate"
     | "LocalTime"
     | "CountryCode"
+    | "Locale"
+    | "EmailAddress"
     | "NullValue"
     | "UndefinedValue"
     | "EmptyString"

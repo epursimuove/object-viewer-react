@@ -12,6 +12,16 @@ import { ToolBar } from "./tool-bar";
 
 const {debug, error, info, trace, warning} = useLog("object-viewer.tsx", "getFoo()");
 
+// const jsonReplacer = (key: string, value: PropertyValue) =>
+//     value instanceof Map ?
+//         `<Map contains ${value.size} entries>` /*Array.from(value.entries())*/ :
+//         value instanceof Set ?
+//             `<Set contains ${value.size} entries>` /*Array.from(value.entries())*/ :
+//             value;
+
+// const jsonReviver = (key: string, value: PropertyValue) =>
+//   Array.isArray(value) && value.every(Array.isArray) ? new Map(value) : value;
+
 export function ObjectViewer() {
 
     logInfoPretty("STARTING", true);
