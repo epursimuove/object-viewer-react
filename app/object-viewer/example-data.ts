@@ -25,16 +25,46 @@ export const exampleObject: {} = {
             uuid: 9238,
             fullName: "Adam Gray",
             age: 23,
+            characteristics: [
+                {
+                    propertyName: "heightInCentimeter",
+                    propertyValue: 173,
+                },
+                {
+                    propertyName: "eyeColor",
+                    propertyValue: "brown",
+                },
+            ],
         },
         bridget: {
             uuid: 5543,
             fullName: "Bridget Gray",
             age: 14,
+            characteristics: [
+                {
+                    propertyName: "heightInCentimeter",
+                    propertyValue: 182,
+                },
+                {
+                    propertyName: "eyeColor",
+                    propertyValue: "green",
+                },
+            ],
         },
         christine: {
             uuid: 1128,
             fullName: "Christine Gray",
             age: 5,
+            characteristics: [
+                {
+                    propertyName: "heightInCentimeter",
+                    propertyValue: 127,
+                },
+                {
+                    propertyName: "eyeColor",
+                    propertyValue: "blue",
+                },
+            ],
         },
     },
     children2: [{

@@ -343,47 +343,55 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
         const {id, uuid, name, fullName, firstName, lastName, postCode, city, country, x, y, z, propertyName, propertyValue}: Record<string, PropertyValue> =
             getPossibleIdentifyingProperties(currentObjectNode);
 
-        let identifyingValue: string = "";
+        const identifyingValueParts: string[] = [];
 
         if (id || uuid) {
-            identifyingValue += uuid ? ` Uuid: ${uuid}` : ` Id: ${id}`;
+            identifyingValueParts.push(uuid ? `Uuid: ${uuid}` : `Id: ${id}`);
         }
         if (name || fullName) {
-            identifyingValue += fullName ? ` Name: ${fullName}` : ` Name: ${name}`;
+            identifyingValueParts.push(fullName ? `Name: ${fullName}` : `Name: ${name}`);
         } else {
             if (firstName) {
-                identifyingValue += ` Name: ${firstName}`;
+                if (lastName) {
+                    identifyingValueParts.push(`Name: ${firstName} ${lastName}`);
+                } else {
+                    identifyingValueParts.push(`Name: ${firstName}`);
+                }
             }
-            if (lastName) {
-                identifyingValue += ` ${lastName}`;
+            else if (lastName) {
+                identifyingValueParts.push(`Name: ${lastName}`);
             }
         }
         if (postCode) {
-            identifyingValue += ` ${postCode}`;
+            identifyingValueParts.push(`${postCode}`);
         }
         if (city) {
-            identifyingValue += ` ${city}`;
+            identifyingValueParts.push(`${city}`);
         }
         if (country) {
-            identifyingValue += ` ${country}`;
+            identifyingValueParts.push(`${country}`);
         }
-        if (valueIsDefined(x) && valueIsDefined(y) && valueIsDefined(z)) {
-            identifyingValue += ` x: ${x}, y: ${y}, z: ${z}`;
+        if (valueIsDefined(x)) {
+            identifyingValueParts.push(`x: ${x}`);
         }
-        else if (valueIsDefined(x) && valueIsDefined(y)) {
-            identifyingValue += ` x: ${x}, y: ${y}`;
-        }        
+        if (valueIsDefined(y)) {
+            identifyingValueParts.push(`y: ${y}`);
+        }
+        if (valueIsDefined(z)) {
+            identifyingValueParts.push(`z: ${z}`);
+        }
         if (propertyName || propertyValue) {
             if (propertyName) {
-                identifyingValue += ` ${propertyName}`;
                 if (propertyValue) {
-                    identifyingValue += `=${propertyValue}`;
+                    identifyingValueParts.push(`${propertyName} = ${propertyValue}`);
+                } else {
+                    identifyingValueParts.push(`${propertyName}`);
                 }
             }
         }
 
-        if (identifyingValue.length > 0 || 1 === 1) {
-            currentObjectNode.convenientIdentifierWhenCollapsed = identifyingValue.trim();
+        if (identifyingValueParts.length > 0) {
+            currentObjectNode.convenientIdentifierWhenCollapsed = identifyingValueParts.join(", ");
         }
     }
 }

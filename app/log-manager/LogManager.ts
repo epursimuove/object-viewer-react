@@ -36,9 +36,9 @@ type LoggerName = typeof loggerNames[number];
 class LogManager {
     static configuration: Record<LoggerName, LogConfiguration> = {
         "LogManager": {level: LogLevel.INFO},
-        "object-viewer.tsx": {level: LogLevel.TRACE},
-        "tool-bar.tsx": {level: LogLevel.TRACE},
-        "util.ts": {level: LogLevel.ERROR},
+        "object-viewer.tsx": {level: LogLevel.OFF},
+        "tool-bar.tsx": {level: LogLevel.OFF},
+        "util.ts": {level: LogLevel.OFF},
     };
     
     // static buildConfiguration = (): Map<LoggerName, LogConfiguration> => {

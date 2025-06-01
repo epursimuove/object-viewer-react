@@ -147,10 +147,11 @@ html {
                 display: inline-flex;
                 flex-direction: row;
                 gap: 0.2rem;
+                align-items: baseline;
 
                 & span:nth-child(2n) {
                     color: var(--color-divider);
-                    font-size: 0.8rem;
+                    font-size: 0.75rem;
                 }
             }
 
@@ -264,8 +265,8 @@ aside#toolbar {
     position: fixed;
     top: 10px;
     right: 10px;
-    background-color: rgb(240, 255, 240);
-    padding: 0.5rem;
+    background-color: rgb(240, 240, 255);
+    padding: 0.1rem;
     border: 1px solid green;
     border-radius: 0.5rem;
     
@@ -282,7 +283,7 @@ aside#toolbar {
         border-radius: 0.5rem;
 
         &[open]:not(.menu-wrapper) {
-            border: 1px solid rgb(200, 200, 200);
+            border: 1px solid rgb(150, 150, 150);
         }
         
         summary {
@@ -302,12 +303,15 @@ aside#toolbar {
                 margin-inline-start: 5px;
             }
             
-            [open] &::after {
+            [open] > &::after {
                 content: "−";
             }
 
         }
         
+        & details[open] {
+            background-color: rgb(255, 255, 240);
+        }
         
 
     }

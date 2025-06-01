@@ -76,10 +76,11 @@ time {
   display: inline-flex;
   flex-direction: row;
   gap: 0.2rem;
+  align-items: baseline;
   font-family: Menlo, "Courier New", monospace;
 
   & span:nth-child(2n) {
-    color: var(--color-meta-info);
-    font-size: 0.8rem;
+    color: var(--color-divider);
+    font-size: 0.75rem;
   }
 }
