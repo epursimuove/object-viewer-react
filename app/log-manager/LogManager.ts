@@ -1,6 +1,4 @@
 
-//type LogLevel = "OFF" | "ERROR" | "WARNING" | "INFO" | "DEBUG" | "TRACE";
-
 enum LogLevel {
     OFF,
     ERROR,
@@ -12,7 +10,6 @@ enum LogLevel {
 
 type LogSignature = (message?: any, ...optionalParams: any[]) => void;
 
-// const NO_OP: LogSignature = () => {console.warn("NOT ACTIVATED!!!!")};
 const NO_OP: LogSignature = () => {};
 
 interface Logger {
@@ -41,17 +38,6 @@ class LogManager {
         "util.ts": {level: LogLevel.OFF},
     };
     
-    // static buildConfiguration = (): Map<LoggerName, LogConfiguration> => {
-    //     const configuration: Map<LoggerName, LogConfiguration> = new Map<LoggerName, LogConfiguration>();
-    //     configuration.set("LogManager", {level: LogLevel.INFO});
-    //     configuration.set("object-viewer.tsx", {level: LogLevel.TRACE});
-    //     configuration.set("util.ts", {level: LogLevel.TRACE});
-
-    //     return configuration;
-    // };
-
-    // static configuration: Map<LoggerName, LogConfiguration> = LogManager.buildConfiguration();
-
     static numberOfActiveLoggers: number = loggerNames
         .filter((loggerName: LoggerName) => LogManager.configuration[loggerName].level !== LogLevel.OFF && loggerName !== "LogManager")
         .length;
@@ -138,7 +124,6 @@ export const logInfoPretty = (message: string, start?: boolean) => {
     }
     console.info(
         `%c===== ${message} ======`,
-        // `%c${message}`,
         'background-color: black; color: white; padding: 2px; border-radius: 10%;'
     );
     if (start !== undefined && !start) {

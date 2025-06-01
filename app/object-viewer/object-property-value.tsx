@@ -10,7 +10,6 @@ export function ObjectPropertyValue(
     }
 ) {
 
-
     return (
         <>
             {
@@ -23,8 +22,6 @@ export function ObjectPropertyValue(
             {
                 displayRow.propertyTypeEnhanced === "boolean" &&
                 <span className={`boolean ${displayRow.propertyValue ? "true" : "false"}`}>
-                    {/*{displayRow.propertyValue ? "✅ \u2713" : "❌ \u2717"}*/}
-                    {/* {displayRow.propertyValue ? "\u2713" : "\u2717"} */}
                     {displayRow.propertyValue ? "\u2713" : "\u00A0"}
                 </span>
             }
@@ -60,9 +57,6 @@ export function ObjectPropertyValue(
     );
 }
 
-
-const containsExtraSpaces = (text: string): boolean => {
-
-    return text.startsWith(" ") || text.endsWith(" ") || text.includes("  ");
-};
+const containsExtraSpaces = (text: string): boolean =>
+    text.startsWith(" ") || text.endsWith(" ") || text.includes("  ");
 

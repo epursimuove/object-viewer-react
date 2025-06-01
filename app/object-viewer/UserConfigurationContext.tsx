@@ -18,13 +18,6 @@ const defaultUserConfigurationContext: UserConfigurationContextType = {
     setShowLeafs: (value: boolean) => {},
     setShowIdentifyingValues: (value: boolean) => {},
     setFilterOnProperty: (value: string) => {},
-
-    toggleShowPropertyType: () => {},
-    toggleIndentObjectTree: () => {},
-    toggleShowNadaValues: () => {},
-    toggleShowMetaData: () => {},
-    toggleShowLeafs: () => {},
-    toggleShowIdentifyingValues: () => {},
 };
 
 const UserConfigurationContext: Context<UserConfigurationContextType> =
@@ -64,13 +57,6 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
         setShowLeafs: (value: boolean) => setShowLeafs(value),
         setShowIdentifyingValues: (value: boolean) => setShowIdentifyingValues(value),
         setFilterOnProperty: (value: string) => setFilterOnProperty(value),
-
-        toggleIndentObjectTree: () => setIndentObjectTree((previous: boolean) => !previous),
-        toggleShowPropertyType: () => setShowPropertyType((previous: boolean) => !previous),
-        toggleShowMetaData: () => setShowMetaData((previous: boolean) => !previous),
-        toggleShowNadaValues: () => setShowNadaValues((previous: boolean) => !previous),
-        toggleShowLeafs: () => setShowLeafs((previous: boolean) => !previous),
-        toggleShowIdentifyingValues: () => setShowIdentifyingValues((previous: boolean) => !previous),
     };
 
     return (

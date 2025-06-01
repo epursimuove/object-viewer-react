@@ -9,7 +9,6 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-// import "./object-viewer/object-viewer.css";
 import {version as appVersion} from "../package-lock.json";
 import {UserConfigurationProvider} from "~/object-viewer/UserConfigurationContext";
 import {BASE_NAME_URL_PREFIX} from "~/util";

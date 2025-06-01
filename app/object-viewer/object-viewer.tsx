@@ -8,7 +8,6 @@ import {ObjectViewerRow} from "~/object-viewer/object-viewer-row";
 import {UserConfigurationProvider, useUserConfigurationContext} from "~/object-viewer/UserConfigurationContext";
 import {logInfoPretty, useLog} from "~/log-manager/LogManager";
 import {Timestamp} from "~/object-viewer/timestamp";
-import { ToolBar } from "./tool-bar";
 
 const {debug, error, info, trace, warning} = useLog("object-viewer.tsx", "getFoo()");
 
@@ -28,42 +27,21 @@ export function ObjectViewer() {
     
     const [originalObjectAsText, setOriginalObjectAsText] =
         useState<string>(JSON.stringify(exampleObject, null, 4));
-
-    //const foobar = JSON.parse(originalObjectAsText);
     
     const [originalObject, setOriginalObject] =
-        // useState<Record<string, PropertyValue44>>(JSON.parse(originalObjectAsText));
         useState<Record<string, PropertyValue>>({});
     
     const { indentObjectTree, showPropertyType, showNadaValues, showMetaData, showLeafs, showIdentifyingValues, filterOnProperty, setIndentObjectTree, setShowPropertyType, setShowMetaData, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty } =
         useUserConfigurationContext();
 
-    // const [indentObjectTree, setIndentObjectTree] = useState(true);
-    // const [showPropertyType, setShowPropertyType] = useState(true);
-    // const [showMetaData, setShowMetaData] = useState(true);
-    // const [showNadaValues, setShowNadaValues] = useState(true);
-    // const [showLeafs, setShowLeafs] = useState(true);
-
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
-
-    // const [objectTree, setObjectTree] = useState<ObjectNode44>();
-    
-    // const originalObject: {} = exampleObject;
-    // const originalObject: {} = JSON.parse(originalObjectAsText);
 
     const objectTree: ObjectNode = convertObjectToTree(originalObject);
 
     info('originalObject', originalObject);
     
-    // setObjectTree(objectTree2);
-
-    // const displayRows: DisplayRow[] = objectTree ? convertTreeToDisplayRows(objectTree) : [];
-    // let displayRows2: DisplayRow[] = convertTreeToDisplayRows(objectTree);
-    // setDisplayRows(displayRows2);
     const [displayRows, setDisplayRows] = useState<DisplayRow[]>([]);
     
-    //console.warn("YYYYYYYY displayRows2", displayRows2);
-
     useEffect(() => {
         info(`originalObject changed`, originalObject);
         
@@ -85,17 +63,6 @@ export function ObjectViewer() {
         
         setDisplayRows(displayRowsXXX);
     }, []); // Runs once on mounted.
-
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
 
     const totalNumberOfRows: number = displayRows.length;
     
@@ -124,7 +91,6 @@ export function ObjectViewer() {
 
         setParsingError(null);
         
-        // const foo = document.getElementById("originalObject")?.textContent;
         try {
             const nextOriginalObject: Record<string, PropertyValue> = JSON.parse(originalObjectAsText);
             debug('nextOriginalObject', nextOriginalObject);
@@ -136,8 +102,6 @@ export function ObjectViewer() {
             error('error', err);
             setParsingError(err as SyntaxError);
         }
-        
-        
     }
 
     function expandAll(event: SyntheticEvent) {
@@ -189,24 +153,18 @@ export function ObjectViewer() {
             isExpanded: !currentRowItem.isExpanded,
             isVisible: true,
             recursiveToggleIcon: currentRowItem.recursiveToggleIcon === "+" ? "-" : "+",
-            // propertyName: `x${currentRowItem.propertyName}x`,
         };
-
-        // const parentIndentationLevel: number = nextRowItem.indentationLevel;
 
         const nextDisplayRows: DisplayRow[] =
             displayRows.map((displayRow: DisplayRow, index: number) => {
 
-                // console.error('isDescendant(nextRowItem.id, displayRow.id)', isDescendant(nextRowItem.id, displayRow.id));
-                
                 if (index + 1 === rowNumber) {
                     trace('displayRow, nextRowItem', displayRow, nextRowItem);
                     return nextRowItem;
                 } else if (isDescendant(nextRowItem.id, displayRow.id)) {
-                    // console.error('nextRowItem.id, displayRow.id', nextRowItem.id, displayRow.id);
                     return {
                         ...displayRow,
-                        isExpanded: false, //nextRowItem.isExpanded,
+                        isExpanded: false,
                         isVisible: nextRowItem.isExpanded && nextRowItem.id === displayRow.parentId,
                         recursiveToggleIcon: displayRow.rowType === "leaf" ? "" : !displayRow.hasChildren ? "∅" : currentRowItem.recursiveToggleIcon === "+" ? "+" : "-",
                     }
@@ -234,27 +192,6 @@ export function ObjectViewer() {
         })
     .map((displayRow: DisplayRow) => {
 
-        // const visibleIfNada: boolean = showNadaValues || !displayRow.isNada;
-        // const visibleIfLeaf: boolean = showLeafs || displayRow.rowType !== "leaf";
-        // const visibleNode: boolean = displayRow.isVisible;
-        //
-        //
-        // const isVisible: boolean = // TODO
-        //     visibleNode && visibleIfLeaf && visibleIfNada;
-        //
-        // // const isVisible: boolean = // TODO
-        // //     (displayRow.isVisible && displayRow.rowType !== "leaf") ||
-        // //     (displayRow.isVisible && showLeafs && displayRow.rowType === "leaf");
-        //
-        // const rowItemCssClasses: string = `
-        // row-item-wrapper
-        //  ${displayRow.propertyTypeEnhanced === "object" && displayRow.propertyValue !== null ? 'recursive-structure object-header' : ''}
-        //  ${displayRow.propertyTypeEnhanced === "array" ? 'recursive-structure array-header' : ''}
-        //  ${displayRow.hasChildren ? 'contains-children' : ''}
-        //   ${displayRow.recursiveToggleIcon === "∅" ? 'empty' : ''}
-        //   ${isVisible ? '' : 'hidden'}
-        //   `;
-
         return (
             <ObjectViewerRow key={displayRow.rowNumber} displayRow={displayRow} toggleRow={toggleRow} />
         );
@@ -264,141 +201,139 @@ export function ObjectViewer() {
     
 
     return (
-        // <UserConfigurationProvider>
 
-            <main>
-                <h1>NNM Object Viewer <small><var>{appVersion}</var></small></h1>
-                
-                {/* <ToolBar displayRows={displayRows} /> */}
-                <aside id="toolbar">
-                    
-                    <details className="menu-wrapper" open>
-                        <summary>
-                            <strong>MENU</strong>
-                        </summary>
+        <main>
+            <h1>NNM Object Viewer <small><var>{appVersion}</var></small></h1>
 
-                        <form>
-                            <section>
-                                <details>
-                                    <summary>
-                                        JSON object
-                                    </summary>
+            <aside id="toolbar">
 
-                                    <div className={"json-object"}>
-                                        <label htmlFor="originalObject">JSON object/array</label>
-                                        <textarea
-                                            name="originalObject"
-                                            id="originalObject"
-                                            rows={30}
-                                            cols={60}
-                                            value={originalObjectAsText}
-                                            placeholder="Your JSON object/array"
-                                            onChange={event => {
-                                                setOriginalObjectAsText(event.target.value);
-                                            }}
-                                        />
-                                        {originalObjectAsText.length} characters
-                                        <button type="button" onClick={updateOriginalObject}>Recalculate</button>
+                <details className="menu-wrapper" open>
+                    <summary>
+                        <strong>MENU</strong>
+                    </summary>
 
-                                        <div className="parsing-error">
-                                            {JSON.stringify(parsingError)}
-                                        </div>
+                    <form>
+                        <section>
+                            <details>
+                                <summary>
+                                    JSON object
+                                </summary>
+
+                                <div className={"json-object"}>
+                                    <label htmlFor="originalObject">JSON object/array</label>
+                                    <textarea
+                                        name="originalObject"
+                                        id="originalObject"
+                                        rows={30}
+                                        cols={60}
+                                        value={originalObjectAsText}
+                                        placeholder="Your JSON object/array"
+                                        onChange={event => {
+                                            setOriginalObjectAsText(event.target.value);
+                                        }}
+                                    />
+                                    {originalObjectAsText.length} characters
+                                    <button type="button" onClick={updateOriginalObject}>Recalculate</button>
+
+                                    <div className="parsing-error">
+                                        {JSON.stringify(parsingError)}
                                     </div>
-                                </details>
-                            </section>
+                                </div>
+                            </details>
+                        </section>
 
-                            <section id="user-settings">
+                        <section id="user-settings">
 
-                                <details open>
-                                    <summary>
-                                        Settings
-                                    </summary>
+                            <details open>
+                                <summary>
+                                    Settings
+                                </summary>
 
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            name="indentationActivated"
-                                            id="indentationActivated"
-                                            checked={indentObjectTree}
-                                            onChange={event => {
-                                                setIndentObjectTree(event.target.checked);
-                                            }}
-                                        />
-                                        <label htmlFor="indentationActivated">Indent object tree</label>
-                                    </div>
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="indentationActivated"
+                                        id="indentationActivated"
+                                        checked={indentObjectTree}
+                                        onChange={event => {
+                                            setIndentObjectTree(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="indentationActivated">Indent object tree</label>
+                                </div>
 
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            name="showPropertyType"
-                                            id="showPropertyType"
-                                            checked={showPropertyType}
-                                            onChange={event => {
-                                                setShowPropertyType(event.target.checked);
-                                            }}
-                                        />
-                                        <label htmlFor="showPropertyType">Show (enhanced) property type</label>
-                                    </div>
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="showPropertyType"
+                                        id="showPropertyType"
+                                        checked={showPropertyType}
+                                        onChange={event => {
+                                            setShowPropertyType(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="showPropertyType">Show (enhanced) property type</label>
+                                </div>
 
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            name="showMetaData"
-                                            id="showMetaData"
-                                            checked={showMetaData}
-                                            onChange={event => {
-                                                setShowMetaData(event.target.checked);
-                                            }}
-                                        />
-                                        <label htmlFor="showMetaData">Show meta data</label>
-                                    </div>
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="showMetaData"
+                                        id="showMetaData"
+                                        checked={showMetaData}
+                                        onChange={event => {
+                                            setShowMetaData(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="showMetaData">Show meta data</label>
+                                </div>
 
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            name="showNadaValues"
-                                            id="showNadaValues"
-                                            checked={showNadaValues}
-                                            onChange={event => {
-                                                setShowNadaValues(event.target.checked);
-                                            }}
-                                        />
-                                        <label htmlFor="showNadaValues">Show "nada" (falsy) values</label>
-                                    </div>
-                                    
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            name="showIdentifyingValues"
-                                            id="showIdentifyingValues"
-                                            checked={showIdentifyingValues}
-                                            onChange={event => {
-                                                setShowIdentifyingValues(event.target.checked);
-                                            }}
-                                        />
-                                        <label htmlFor="showIdentifyingValues">Show identifying values</label>
-                                    </div>
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="showNadaValues"
+                                        id="showNadaValues"
+                                        checked={showNadaValues}
+                                        onChange={event => {
+                                            setShowNadaValues(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="showNadaValues">Show "nada" (falsy) values</label>
+                                </div>
 
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            name="showLeafs"
-                                            id="showLeafs"
-                                            checked={showLeafs}
-                                            onChange={event => {
-                                                setShowLeafs(event.target.checked);
-                                            }}
-                                        />
-                                        <label htmlFor="showLeafs">Show leafs (i.e. primitive values)</label>
-                                    </div>
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="showIdentifyingValues"
+                                        id="showIdentifyingValues"
+                                        checked={showIdentifyingValues}
+                                        onChange={event => {
+                                            setShowIdentifyingValues(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="showIdentifyingValues">Show identifying values</label>
+                                </div>
 
-                                    <div className="button-row">
-                                        <button type="button" onClick={expandAll}>Expand all</button>
-                                        <button type="button" onClick={collapseAll}>Collapse (almost) all</button>
-                                    </div>
-                                </details>
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="showLeafs"
+                                        id="showLeafs"
+                                        checked={showLeafs}
+                                        onChange={event => {
+                                            setShowLeafs(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="showLeafs">Show leafs (i.e. primitive values)</label>
+                                </div>
 
-                            </section>
+                                <div className="button-row">
+                                    <button type="button" onClick={expandAll}>Expand all</button>
+                                    <button type="button" onClick={collapseAll}>Collapse (almost) all</button>
+                                </div>
+                            </details>
+
+                        </section>
 
                         <section id="filters">
                             <details open>
@@ -423,91 +358,89 @@ export function ObjectViewer() {
                             </details>
                         </section>
 
-                            <section id="statistics">
-                                <details open>
-                                    <summary>
-                                        Statistics
-                                    </summary>
+                        <section id="statistics">
+                            <details open>
+                                <summary>
+                                    Statistics
+                                </summary>
 
-                                    <div>
-                                        <strong>{totalNumberOfRows}</strong> rows (<strong>{numberOfVisibleRows}</strong> visible),
-                                    </div>
+                                <div>
+                                    <strong>{totalNumberOfRows}</strong> rows (<strong>{numberOfVisibleRows}</strong> visible),
+                                </div>
 
-                                    <div>
-                                        {totalNumberOfLeafs} leafs
-                                    </div>
+                                <div>
+                                    {totalNumberOfLeafs} leafs
+                                </div>
 
-                                    <div>
-                                        {totalNumberOfObjects} objects
-                                    </div>
+                                <div>
+                                    {totalNumberOfObjects} objects
+                                </div>
 
-                                    <div>
-                                        {totalNumberOfArrays} arrays
-                                    </div>
+                                <div>
+                                    {totalNumberOfArrays} arrays
+                                </div>
 
-                                    <div>
-                                        Depth: {deepestLevel}
-                                    </div>
+                                <div>
+                                    Depth: {deepestLevel}
+                                </div>
 
-                                    <div>
-                                        "Now": <Timestamp timestamp={now.toString()} />
-                                    </div>
-                                </details>
-                            </section>
+                                <div>
+                                    "Now": <Timestamp timestamp={now.toString()} />
+                                </div>
+                            </details>
+                        </section>
 
-                        </form>
-                        
-                    </details>
-                    
-                </aside>
-                
-                <details open>
-                    <summary>
-                        <h2>Object tree</h2>
-                    </summary>
-
-                    <div className="object-viewer">
-                        {objectViewerRows}
-                    </div>
+                    </form>
 
                 </details>
-                
-                <details>
-                    <summary>
-                        <h2>Original object</h2>
-                    </summary>
-                    
-                    <pre>
-                        {JSON.stringify(originalObject, null, 4)}
-                    </pre>
-                    
-                </details>
 
-                <details>
-                    <summary>
-                        <h2>Original object converted to object tree</h2>
-                    </summary>
+            </aside>
 
-                    <pre>
-                        {JSON.stringify(objectTree, null, 4)}
-                    </pre>
-                    
-                </details>
+            <details open>
+                <summary>
+                    <h2>Object tree</h2>
+                </summary>
 
-                <details>
-                    <summary>
-                        <h2>Object tree converted to DisplayRow[]</h2>
-                    </summary>
+                <div className="object-viewer">
+                    {objectViewerRows}
+                </div>
 
-                    <pre>
-                        {JSON.stringify(displayRows, null, 4)}
-                    </pre>
-                    
-                </details>
-                
+            </details>
 
-            </main>
+            <details>
+                <summary>
+                    <h2>Original object</h2>
+                </summary>
 
-        // </UserConfigurationProvider>
+                <pre>
+                    {JSON.stringify(originalObject, null, 4)}
+                </pre>
+
+            </details>
+
+            <details>
+                <summary>
+                    <h2>Original object converted to object tree</h2>
+                </summary>
+
+                <pre>
+                    {JSON.stringify(objectTree, null, 4)}
+                </pre>
+
+            </details>
+
+            <details>
+                <summary>
+                    <h2>Object tree converted to DisplayRow[]</h2>
+                </summary>
+
+                <pre>
+                    {JSON.stringify(displayRows, null, 4)}
+                </pre>
+
+            </details>
+
+
+        </main>
     );
 }

@@ -31,50 +31,38 @@ const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
 const isTimestamp = (s: string): boolean => {
     const isTimestamp: boolean = regExpTimestamp.test(s);
-    // console.log('isTimestamp', isTimestamp, s);
     return isTimestamp;
 };
 
 const isLocalDate = (s: string): boolean => {
     const isLocalDate: boolean = regExpLocalDate.test(s);
-    // console.log('isLocalDate', isLocalDate, s);
     return isLocalDate;
 };
 
 const isLocalTime = (s: string): boolean => {
     const isLocalTime: boolean = regExpLocalTime.test(s);
-    // console.log('isLocalTime', isLocalTime, s);
     return isLocalTime;
 };
 
 const potentialCountryCode = (s: string): boolean => {
     const isPotentialCountryCode: boolean = regExpCountryCode.test(s);
-    // console.log('isPotentialCountryCode', isPotentialCountryCode, s);
     return isPotentialCountryCode;
 };
 
 const potentialLocale = (s: string): boolean => {
     const isPotentialLocale: boolean = regExpLocale.test(s);
-    // console.log('isPotentialLocale', isPotentialLocale, s);
     return isPotentialLocale;
 };
 
 const potentialEmailAddress = (s: string): boolean => {
     const isPotentialEmailAddress: boolean = regExpEmailAddress.test(s);
-    // console.log('isPotentialEmailAddress', isPotentialEmailAddress, s);
     return isPotentialEmailAddress;
 };
 
 const isArrayIndex = (s: string): boolean => {
     const isArrayIndex: boolean = regExpArrayIndexString.test(s);
-    // console.log('isArrayIndex', isArrayIndex, s);
     return isArrayIndex;
 };
-
-
-
-
-//------
 
 const templateRootObjectNode: ObjectNode = {
     nodeType: "object",
@@ -84,7 +72,6 @@ const templateRootObjectNode: ObjectNode = {
     isExpanded: false,
     isVisible: false,
     length: -8888,
-    //parentId: null,
     propertyMetaData: "/Root of tree/",
     propertyName: "<root>",
     propertyTypeEnhanced: "object",
@@ -94,7 +81,6 @@ const templateRootObjectNode: ObjectNode = {
 
 const templateEmptyObjectNode: ObjectNode = {
     nodeType: "object",
-    // convenientIdentifierWhenCollapsed: "/Object node template/",
     id: "/Not defined yet/",
     isExpanded: false,
     isVisible: false,
@@ -145,7 +131,7 @@ export function convertObjectToTree(
     const root: ObjectNode = createEmptyRoot();
 
     if (typeof originalObject === "object" && Array.isArray(originalObject)) {
-        console.log('IS ARRAY!!!! originalObject', originalObject);
+        debug('IS ARRAY!!!! originalObject', originalObject);
         root.nodeType = "array";
         root.propertyTypeEnhanced = "array";
 
@@ -157,10 +143,8 @@ export function convertObjectToTree(
     } else {
 
         const foo: ObjectNode = convertObjectToTreeHelper(originalObject, root);
-        //console.warn('foo', foo);
     }
     
-
     info(`Created ${id} object tree nodes`);
 
     return root; // TODO return foo????
@@ -203,8 +187,6 @@ export function convertObjectToTreeHelper(
     currentObjectNode: ObjectNode,
 ): ObjectNode {
 
-    // const currentObjectNode: ObjectNode = structuredClone(currentObjectNodeInput);
-
     info(`Converting property "${currentObjectNode.propertyName}" to object tree`);
     const currentId = id;
     
@@ -212,11 +194,7 @@ export function convertObjectToTreeHelper(
     // - For each property, traverse depth-first and create a sub object tree.
 
     const propertyNames: string[] = Object.getOwnPropertyNames(originalObject);
-    // const sortedPropertyNames: string[] = propertyNames.toSorted();
     const sortedPropertyNames: string[] = propertyNames.toSorted(sortPropertyNames);
-
-    // logPropertyNamesArray(propertyNames, "Property names");
-    // logPropertyNamesArray(sortedPropertyNames, "Sorted property names");
     
     for (let i = 0; i < sortedPropertyNames.length; i++) {
         const propertyName: string = sortedPropertyNames[i];
@@ -229,13 +207,10 @@ export function convertObjectToTreeHelper(
         const isObject: boolean = propertyTypeOriginal === "object";
         const isArray: boolean = isObject && Array.isArray(propertyValue);
         const isNull: boolean = isObject && propertyValue === null;
-        // const isUndefined: boolean = isObject && propertyValue === undefined;
         const isRecursive: boolean = !isNull && (isObject || isArray);
 
-        // console.log('Handling propertyName', propertyName, propertyTypeOriginal, isArray, isRecursive, propertyValue);
-
         if (!isRecursive) {
-            // console.info('[PRIMITIVE LEAF FOUND] propertyName', propertyName);
+            trace('[PRIMITIVE LEAF FOUND] propertyName', propertyName);
             
             const leaf: PrimitiveLeaf = {
                 nodeType: "leaf",
@@ -245,7 +220,6 @@ export function convertObjectToTreeHelper(
                 level: currentObjectNode.level + 1,
                 parentId: `${currentObjectNode.id}`,
                 propertyMetaData: buildMetaData(propertyTypeEnhanced, propertyValue),
-                // propertyMetaData: `${propertyName} = ${propertyValue}`,
                 propertyName,
                 propertyTypeEnhanced,
                 propertyTypeOriginal,
@@ -256,13 +230,11 @@ export function convertObjectToTreeHelper(
 
         } else {
             if (isObject && !isArray) {
-                // console.error('[OBJECT FOUND] propertyName', propertyName);
+                trace('[OBJECT FOUND] propertyName', propertyName);
 
                 if (propertyValue !== null) {
 
                     const objectNode: ObjectNode = createEmptyObjectNode();
-                    // objectNode.convenientIdentifierWhenCollapsed = `${propertyName}: ${propertyTypeEnhanced}`;
-                    // objectNode.propertyName = `Property name is '${propertyName}'`;
                     objectNode.propertyName = propertyName;
                     objectNode.level = currentObjectNode.level + 1;
                     objectNode.id = `${currentObjectNode.id}.${nextId()}`;
@@ -274,19 +246,12 @@ export function convertObjectToTreeHelper(
                     debug(`subObject for "${propertyName}"`, subObject);
 
                     currentObjectNode.containedProperties[propertyName] = subObject;
-                    // currentObjectNode.containedProperties = {
-                    //     ...currentObjectNode.containedProperties,
-                    //     propertyName: subObject,
-                    // };
-
-                    
                 }
 
             } else {
-                // console.warn('[ARRAY FOUND] propertyName', propertyName);
+                trace('[ARRAY FOUND] propertyName', propertyName);
 
                 const arrayNode: ObjectNode = createEmptyArrayNode();
-                // arrayNode.convenientIdentifierWhenCollapsed = `${propertyName}: ${propertyTypeEnhanced}`;
                 arrayNode.propertyName = propertyName;
                 arrayNode.level = currentObjectNode.level + 1;
                 arrayNode.id = `${currentObjectNode.id}.${nextId()}`;
@@ -315,11 +280,11 @@ export function convertObjectToTreeHelper(
 // Value is not nullish.
 const valueIsDefined = (value: any): boolean => value !== undefined && value !== null;
 
+const goodPropertyNames: string[] = ["uuid", "id", "name", "fullName", "firstName", "lastName", "postCode", "city", "country", "x", "y", "z", "propertyName", "propertyValue"];
+
 function getPossibleIdentifyingProperties(
     objectNode: ObjectNode,
 ): Record<string, PropertyValue> {
-
-    const goodPropertyNames: string[] = ["uuid", "id", "name", "fullName", "firstName", "lastName", "postCode", "city", "country", "x", "y", "z", "propertyName", "propertyValue"];
 
     const result: Record<string, PropertyValue> = {};
 
@@ -338,7 +303,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
 
     if (currentObjectNode.nodeType !== "leaf") {
 
-        warning('#### currentObjectNode.propertyName', currentObjectNode.propertyName, Object.getOwnPropertyNames(currentObjectNode.containedProperties).length, currentObjectNode.containedProperties);
+        debug('currentObjectNode.propertyName', currentObjectNode.propertyName, Object.getOwnPropertyNames(currentObjectNode.containedProperties).length, currentObjectNode.containedProperties);
 
         const {id, uuid, name, fullName, firstName, lastName, postCode, city, country, x, y, z, propertyName, propertyValue}: Record<string, PropertyValue> =
             getPossibleIdentifyingProperties(currentObjectNode);
@@ -430,8 +395,6 @@ export function convertTreeToDisplayRows(
 
     const children: Record<string, ObjectTree> = objectRoot.containedProperties;
 
-
-
     // TODO This ugly block does not need to be duplicated. See duplikat i helper-metoden.
     const propertyNames: string[] = Object.getOwnPropertyNames(children);
     debug('propertyNames', propertyNames);
@@ -440,7 +403,6 @@ export function convertTreeToDisplayRows(
     hardcodedRoot.hasChildren = hardcodedRoot.numberOfChildren > 0;
 
     displayRows.push(hardcodedRoot);
-
 
     for (let i = 0; i < propertyNames.length; i++) {
         const propertyName: string = propertyNames[i];
@@ -456,7 +418,6 @@ export function convertTreeToDisplayRows(
 
     return displayRows;
 }
-
 
 export function convertTreeToDisplayRowsHelper(
     currentObjectNode: ObjectTree,
@@ -505,7 +466,6 @@ export function convertTreeToDisplayRowsHelper(
     if (currentObjectNode.nodeType === "object" || currentObjectNode.nodeType === "array") {
         
         const children: Record<string, ObjectTree> = (currentObjectNode as ObjectNode).containedProperties;
-
 
         const propertyNames: string[] = Object.getOwnPropertyNames(children);
         debug('propertyNames', propertyNames);
@@ -589,7 +549,6 @@ const buildMetaData = (
 
     if (propertyTypeEnhanced === "CountryCode") {
         const countryCode: string = propertyValue as string;
-        // return getFlagEmoji(propertyValue as string);
         return `${getFlagEmoji(countryCode)} ${getRegionName(countryCode)}`
     }
 
@@ -680,13 +639,7 @@ const getPossiblePrimitiveValue = (objectNode: ObjectNode, requestedPropertyName
     return null;
 };
 
-export const isAncestor = (id: string, ancestorId: string) => {
-    return id.split(".").includes(ancestorId); // TODO FUNKAR NOG INTE!!!!!
-};
-
 export const isDescendant = (id: string, descendantId: string) => {
     return descendantId.startsWith(`${id}.`);
 };
-
-
 

@@ -8,11 +8,7 @@ html {
 }
 
 .object-viewer {
-    /*font-size: 16px;*/
-    /*line-height: 1.4rem;*/
     white-space: nowrap;
-    /*font-family: Arial, sans-serif;*/
-
 
     font-family: Menlo, "Courier New", monospace;
 
@@ -53,7 +49,6 @@ html {
                     background-color: rgb(235, 255, 235);
                 }
             }
-            
         }
 
         .row-number {
@@ -62,10 +57,10 @@ html {
             min-width: 2rem;
             text-align: end;
 
-            /* &:hover {
+            :hover > & {
                 font-weight: bold;
-                font-size: 1.2rem;
-            } */
+                color: black;
+            }
         }
 
         .recursive-toggle-icon {
@@ -77,7 +72,6 @@ html {
         .object-property-type {
             min-width: 6rem;
             font-size: 0.85rem;
-            /*color: rgb(180, 180, 180);*/
             color: darkcyan;
         }
 
@@ -103,7 +97,6 @@ html {
             }
 
             & .string {
-                /*white-space: pre;*/
                 white-space: pre-wrap;
 
                 &.extra-spaces {
@@ -164,7 +157,6 @@ html {
         .convenient-identifier {
             min-width: 6rem;
             font-size: 0.9rem;
-            /*color: var(--color-lighter);*/
             color: skyblue;
         }
 
@@ -251,14 +243,11 @@ html {
         .indentation-level-14 {
             margin-inline-start: calc(14 * var(--indentation));
         }
-
     }
 
     .hidden {
         display: none;
     }
-
-
 }
 
 aside#toolbar {
@@ -293,13 +282,9 @@ aside#toolbar {
             
             &::after {
                 content: "+";
-                /*color: white;*/
-                /*background-color: darkgreen;*/
-                /*border-radius: 1em;*/
                 font-weight: bold;
                 font-size: 1.1rem;
                 font-family: Menlo, "Courier New", monospace;
-                /*padding: 0 5px;*/
                 margin-inline-start: 5px;
             }
             
@@ -334,14 +319,5 @@ form {
         flex-direction: row;
         gap: 1rem;
     }
-    
-    /*#user-settings {*/
-    /*    */
-    /*    & details[open] {*/
-    /*        display: flex;*/
-    /*        flex-direction: column;*/
-    /*        gap: 2.5rem;*/
-    /*    }*/
-    /*}*/
 }
 

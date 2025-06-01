@@ -103,12 +103,4 @@ export interface UserConfigurationContextType {
     setShowLeafs: (value: boolean) => void;
     setShowIdentifyingValues: (value: boolean) => void;
     setFilterOnProperty: (value: string) => void;
-
-    // TODO REMOVE BELOW
-    toggleIndentObjectTree: () => void;
-    toggleShowPropertyType: () => void;
-    toggleShowMetaData: () => void;
-    toggleShowNadaValues: () => void;
-    toggleShowLeafs: () => void;
-    toggleShowIdentifyingValues: () => void;
 }

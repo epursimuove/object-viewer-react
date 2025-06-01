@@ -25,13 +25,8 @@ export function ObjectViewerRow(
     const visibleIfLeaf: boolean = showLeafs || !isLeaf;
     const visibleNode: boolean = displayRow.isVisible;
 
-
-    const isVisible: boolean = // TODO
+    const isVisible: boolean =
         visibleNode && visibleIfLeaf && visibleIfNada;
-
-    // const isVisible: boolean = // TODO
-    //     (displayRow.isVisible && displayRow.rowType !== "leaf") ||
-    //     (displayRow.isVisible && showLeafs && displayRow.rowType === "leaf");
 
     const rowItemCssClasses: string = `
         row-item-wrapper
@@ -67,8 +62,6 @@ export function ObjectViewerRow(
             <div className={`object-property-name`}>
                 {displayRow.propertyName}
             </div>
-
-            
             
             {
                 isLeaf ?
@@ -87,7 +80,6 @@ export function ObjectViewerRow(
                         </div>
                     )
             }
-
             
             <div className={`object-property-meta-data ${showMetaData && isLeaf ? '' : 'hidden'}`}>
                 {displayRow.propertyMetaData}
