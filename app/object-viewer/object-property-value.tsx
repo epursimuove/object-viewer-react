@@ -10,6 +10,8 @@ export function ObjectPropertyValue(
     }
 ) {
 
+    const textContainsExtraSpaces = displayRow.propertyTypeEnhanced === "string" && containsExtraSpaces(displayRow.propertyValue as string);
+
     return (
         <>
             {
@@ -27,7 +29,7 @@ export function ObjectPropertyValue(
             }
             {
                 displayRow.propertyTypeEnhanced === "string" &&
-                <span className={`string ${containsExtraSpaces(displayRow.propertyValue as string) && "extra-spaces"}`} title={containsExtraSpaces(displayRow.propertyValue as string) ? "NB! Text contains extra spaces, which may cause problems!" : ""}>
+                <span className={`string ${textContainsExtraSpaces && "extra-spaces"}`} title={textContainsExtraSpaces ? `NB! Text contains extra spaces (in ${textContainsExtraSpaces}), which may cause problems!` : undefined}>
                     {`${displayRow.propertyValue}`}
                 </span>
             }
@@ -57,6 +59,25 @@ export function ObjectPropertyValue(
     );
 }
 
-const containsExtraSpaces = (text: string): boolean =>
-    text.startsWith(" ") || text.endsWith(" ") || text.includes("  ");
+const containsExtraSpaces = (text: string): null | "start" | "middle" | "end" | "start-middle" | "start-end" | "middle-end" | "start-middle-end" => {
+
+
+    let result: string[] = [];
+
+    if (text.startsWith(" ")) {
+        result.push("start");
+    }
+    if (text.includes("  ")) {
+        result.push("middle");
+    }
+    if (text.endsWith(" ")) {
+        result.push("end");
+    }
+
+    if (result.length > 0) {
+        return result.join("-") as "start" | "middle" | "end" | "start-middle" | "start-end" | "middle-end" | "start-middle-end";
+    }
+
+    return null;
+};
 

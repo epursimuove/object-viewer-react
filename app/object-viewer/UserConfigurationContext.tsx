@@ -1,4 +1,4 @@
-import type {UserConfigurationContextType} from "~/types";
+import type {PropertyTypeEnhanced, UserConfigurationContextType} from "~/types";
 import {type Context, createContext, type ReactNode, useContext, useState} from "react";
 
 
@@ -10,6 +10,7 @@ const defaultUserConfigurationContext: UserConfigurationContextType = {
     showPropertyType: true,
     showIdentifyingValues: true,
     filterOnProperty: "",
+    filterOnPropertyTypeEnhanced: [],
 
     setIndentObjectTree: (value: boolean) => {},
     setShowPropertyType: (value: boolean) => {},
@@ -18,6 +19,7 @@ const defaultUserConfigurationContext: UserConfigurationContextType = {
     setShowLeafs: (value: boolean) => {},
     setShowIdentifyingValues: (value: boolean) => {},
     setFilterOnProperty: (value: string) => {},
+    setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => {},
 };
 
 const UserConfigurationContext: Context<UserConfigurationContextType> =
@@ -32,14 +34,15 @@ type UserConfigurationContextProps = {
 
 export function UserConfigurationProvider({children}: UserConfigurationContextProps) {
 
-    const [indentObjectTree, setIndentObjectTree] = useState(true);
-    const [showPropertyType, setShowPropertyType] = useState(true);
-    const [showMetaData, setShowMetaData] = useState(true);
-    const [showNadaValues, setShowNadaValues] = useState(true);
-    const [showLeafs, setShowLeafs] = useState(true);
-    const [showIdentifyingValues, setShowIdentifyingValues] = useState(true);
+    const [indentObjectTree, setIndentObjectTree] = useState<boolean>(true);
+    const [showPropertyType, setShowPropertyType] = useState<boolean>(true);
+    const [showMetaData, setShowMetaData] = useState<boolean>(true);
+    const [showNadaValues, setShowNadaValues] = useState<boolean>(true);
+    const [showLeafs, setShowLeafs] = useState<boolean>(true);
+    const [showIdentifyingValues, setShowIdentifyingValues] = useState<boolean>(true);
 
-    const [filterOnProperty, setFilterOnProperty] = useState("");
+    const [filterOnProperty, setFilterOnProperty] = useState<string>("");
+    const [filterOnPropertyTypeEnhanced, setFilterOnEnhancedPropertyType] = useState<PropertyTypeEnhanced[]>([]);
 
     const userConfigurationContext: UserConfigurationContextType = {
         indentObjectTree,
@@ -49,6 +52,7 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
         showLeafs,
         showIdentifyingValues,
         filterOnProperty,
+        filterOnPropertyTypeEnhanced,
 
         setIndentObjectTree: (value: boolean) => setIndentObjectTree(value),
         setShowPropertyType: (value: boolean) => setShowPropertyType(value),
@@ -57,6 +61,7 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
         setShowLeafs: (value: boolean) => setShowLeafs(value),
         setShowIdentifyingValues: (value: boolean) => setShowIdentifyingValues(value),
         setFilterOnProperty: (value: string) => setFilterOnProperty(value),
+        setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => setFilterOnEnhancedPropertyType(value),
     };
 
     return (

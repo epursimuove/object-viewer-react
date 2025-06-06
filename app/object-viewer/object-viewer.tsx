@@ -1,8 +1,8 @@
 import {exampleObject} from "~/object-viewer/example-data";
-import type {DisplayRow, ObjectNode, ObjectTree, PropertyValue} from "~/types";
+import type {DisplayRow, ObjectNode, ObjectTree, PropertyTypeEnhanced, PropertyValue} from "~/types";
 import {convertObjectToTree, convertTreeToDisplayRows, isDescendant, now} from "~/util";
 import "./object-viewer.css";
-import {type SyntheticEvent, useEffect, useState} from "react";
+import {type ChangeEvent, type SyntheticEvent, useEffect, useState} from "react";
 import {version as appVersion} from "../../package-lock.json";
 import {ObjectViewerRow} from "~/object-viewer/object-viewer-row";
 import {UserConfigurationProvider, useUserConfigurationContext} from "~/object-viewer/UserConfigurationContext";
@@ -31,7 +31,7 @@ export function ObjectViewer() {
     const [originalObject, setOriginalObject] =
         useState<Record<string, PropertyValue>>({});
     
-    const { indentObjectTree, showPropertyType, showNadaValues, showMetaData, showLeafs, showIdentifyingValues, filterOnProperty, setIndentObjectTree, setShowPropertyType, setShowMetaData, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty } =
+    const { indentObjectTree, showPropertyType, showNadaValues, showMetaData, showLeafs, showIdentifyingValues, filterOnProperty, filterOnPropertyTypeEnhanced, setIndentObjectTree, setShowPropertyType, setShowMetaData, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty, setFilterOnPropertyTypeEnhanced } =
         useUserConfigurationContext();
 
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
@@ -79,7 +79,18 @@ export function ObjectViewer() {
         .length;
     
     const numberOfVisibleRows: number = displayRows
-        .filter((displayRow: DisplayRow) => displayRow.isVisible)
+        // .filter((displayRow: DisplayRow) => displayRow.isVisible)
+        .filter((displayRow: DisplayRow) => {
+            const isLeaf: boolean = displayRow.rowType === "leaf";
+            const visibleIfNada: boolean = showNadaValues || !displayRow.isNada;
+            const visibleIfLeaf: boolean = showLeafs || !isLeaf;
+            const visibleNode: boolean = displayRow.isVisible;
+
+            const isVisible: boolean =
+                visibleNode && visibleIfLeaf && visibleIfNada;
+
+            return isVisible;
+        })
         .length;
     
     const deepestLevel: number = displayRows
@@ -177,7 +188,7 @@ export function ObjectViewer() {
         setDisplayRows(nextDisplayRows);
     }
 
-    const objectViewerRows = displayRows
+    const visibleRows: DisplayRow[] = displayRows
         .filter((displayRow: DisplayRow) => {
             if (filterOnProperty !== "") {
                 const matchingPropertyName: boolean =
@@ -190,12 +201,45 @@ export function ObjectViewer() {
             }
             return true;
         })
-    .map((displayRow: DisplayRow) => {
+        .filter((displayRow: DisplayRow) => {
+            if (filterOnPropertyTypeEnhanced.length > 0) {
+                return filterOnPropertyTypeEnhanced.includes(displayRow.propertyTypeEnhanced);
+            }
+            return true;
+        });
 
-        return (
-            <ObjectViewerRow key={displayRow.rowNumber} displayRow={displayRow} toggleRow={toggleRow} />
-        );
-    });
+
+    const objectViewerRows = visibleRows
+        .map((displayRow: DisplayRow) => {
+
+            return (
+                <ObjectViewerRow
+                    key={displayRow.rowNumber}
+                    displayRow={displayRow}
+                    toggleRow={toggleRow}
+                />
+            );
+        });
+
+    const numberOfVisibleRows2: number = visibleRows
+        // .filter((displayRow: DisplayRow) => displayRow.isVisible)
+        .filter((displayRow: DisplayRow) => {
+            const isLeaf: boolean = displayRow.rowType === "leaf";
+            const visibleIfNada: boolean = showNadaValues || !displayRow.isNada;
+            const visibleIfLeaf: boolean = showLeafs || !isLeaf;
+            const visibleNode: boolean = displayRow.isVisible;
+
+            const isVisible: boolean =
+                visibleNode && visibleIfLeaf && visibleIfNada;
+
+            return isVisible;
+        })
+        .length;
+
+    const actualPropertyTypeEnhancedValues: PropertyTypeEnhanced[] =
+        Array.from(new Set(displayRows
+            .map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced)))
+            .toSorted((a, b) => a.localeCompare(b));
     
     logInfoPretty("DONE", false);
     
@@ -224,8 +268,8 @@ export function ObjectViewer() {
                                     <textarea
                                         name="originalObject"
                                         id="originalObject"
-                                        rows={30}
-                                        cols={60}
+                                        rows={20}
+                                        cols={40}
                                         value={originalObjectAsText}
                                         placeholder="Your JSON object/array"
                                         onChange={event => {
@@ -291,19 +335,6 @@ export function ObjectViewer() {
                                 <div>
                                     <input
                                         type="checkbox"
-                                        name="showNadaValues"
-                                        id="showNadaValues"
-                                        checked={showNadaValues}
-                                        onChange={event => {
-                                            setShowNadaValues(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="showNadaValues">Show "nada" (falsy) values</label>
-                                </div>
-
-                                <div>
-                                    <input
-                                        type="checkbox"
                                         name="showIdentifyingValues"
                                         id="showIdentifyingValues"
                                         checked={showIdentifyingValues}
@@ -312,6 +343,19 @@ export function ObjectViewer() {
                                         }}
                                     />
                                     <label htmlFor="showIdentifyingValues">Show identifying values</label>
+                                </div>
+
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="showNadaValues"
+                                        id="showNadaValues"
+                                        checked={showNadaValues}
+                                        onChange={event => {
+                                            setShowNadaValues(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="showNadaValues">Show "nada" (falsy) values</label>
                                 </div>
 
                                 <div>
@@ -342,7 +386,7 @@ export function ObjectViewer() {
                                 </summary>
 
                                 <div>
-                                    <label htmlFor="filterOnProperty">Property</label>
+                                    <label htmlFor="filterOnProperty">Property (name/value)</label>
                                     <input
                                         type="text"
                                         name="filterOnProperty"
@@ -355,6 +399,35 @@ export function ObjectViewer() {
                                     />
                                 </div>
 
+                                <div>
+                                    <label htmlFor="filterOnPropertyTypeEnhanced">
+                                        Enhanced property type
+                                        {' '}
+                                        <small>({actualPropertyTypeEnhancedValues.length})</small>
+                                    </label>
+                                    <select
+                                        multiple
+                                        name="filterOnPropertyTypeEnhanced"
+                                        id="filterOnPropertyTypeEnhanced"
+                                        size={actualPropertyTypeEnhancedValues.length}
+                                        value={filterOnPropertyTypeEnhanced}
+                                        onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+                                            const options: HTMLOptionElement[] =
+                                                Array.from(event.target.selectedOptions);
+                                            const values: PropertyTypeEnhanced[] =
+                                                options.map(option => option.value as PropertyTypeEnhanced);
+
+                                            setFilterOnPropertyTypeEnhanced(values);
+                                        }}
+                                    >
+                                        {
+                                            actualPropertyTypeEnhancedValues.map(type => (
+                                                <option key={type} value={type}>{type}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+
                             </details>
                         </section>
 
@@ -365,28 +438,45 @@ export function ObjectViewer() {
                                 </summary>
 
                                 <div>
-                                    <strong>{totalNumberOfRows}</strong> rows (<strong>{numberOfVisibleRows}</strong> visible),
+                                    <span className="label">Rows:</span>
+                                    <strong className="number">{totalNumberOfRows}</strong>
                                 </div>
 
                                 <div>
-                                    {totalNumberOfLeafs} leafs
+                                    <span className="label">Visible:</span>
+                                    <strong className="number">{numberOfVisibleRows}</strong>
                                 </div>
 
                                 <div>
-                                    {totalNumberOfObjects} objects
+                                    <span className="label">Visible2:</span>
+                                    <strong className="number">{numberOfVisibleRows2}</strong>
                                 </div>
 
                                 <div>
-                                    {totalNumberOfArrays} arrays
+                                    <span className="label">Leafs:</span>
+                                    <span className="number">{totalNumberOfLeafs}</span>
                                 </div>
 
                                 <div>
-                                    Depth: {deepestLevel}
+                                    <span className="label">Objects:</span>
+                                    <span className="number">{totalNumberOfObjects}</span>
                                 </div>
 
                                 <div>
-                                    "Now": <Timestamp timestamp={now.toString()} />
+                                    <span className="label">Arrays:</span>
+                                    <span className="number">{totalNumberOfArrays}</span>
                                 </div>
+
+                                <div>
+                                    <span className="label">Depth:</span>
+                                    <span className="number">{deepestLevel}</span>
+                                </div>
+ 
+                                <div>
+                                    <span className="label">"Now":</span>
+                                    <Timestamp timestamp={now.toString()} />
+                                </div>
+
                             </details>
                         </section>
 

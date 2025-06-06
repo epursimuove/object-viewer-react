@@ -4,6 +4,10 @@ html {
   font-size: 14px;
 }
 
+body {
+  overflow-y: scroll;
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin-block: 3rem 1rem;
   
@@ -66,6 +70,7 @@ form {
   .json-object {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
   }
 
 }

@@ -15,7 +15,7 @@ export const now: Temporal.Instant = getNow();
 
 export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
 
-export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d:\d\d)(\.\d+)?Z$/;
+export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d)(:\d\d(\.\d+)?)?Z$/;
 
 const regExpLocalDate: RegExp = /^\d\d\d\d-\d\d-\d\d$/;
 
@@ -23,9 +23,9 @@ const regExpLocalTime: RegExp = /^\d\d:\d\d:\d\d$/;
 
 const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
-const regExpLocale: RegExp = /^[a-z]{2}-[A-Z]{2}$/;
+const regExpLocale: RegExp = /^[a-z]{2}_[A-Z]{2}$/;
 
-const regExpEmailAddress: RegExp = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,}$/;
+const regExpEmailAddress: RegExp = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,}$/;
 
 const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
@@ -280,7 +280,7 @@ export function convertObjectToTreeHelper(
 // Value is not nullish.
 const valueIsDefined = (value: any): boolean => value !== undefined && value !== null;
 
-const goodPropertyNames: string[] = ["uuid", "id", "name", "fullName", "firstName", "lastName", "postCode", "city", "country", "x", "y", "z", "propertyName", "propertyValue"];
+const goodPropertyNames: string[] = ["uuid", "id", "name", "fullName", "firstName", "lastName", "postCode", "city", "country", "x", "y", "z", "propertyName", "propertyValue", "depth", "width", "height", "type"];
 
 function getPossibleIdentifyingProperties(
     objectNode: ObjectNode,
@@ -305,13 +305,16 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
 
         debug('currentObjectNode.propertyName', currentObjectNode.propertyName, Object.getOwnPropertyNames(currentObjectNode.containedProperties).length, currentObjectNode.containedProperties);
 
-        const {id, uuid, name, fullName, firstName, lastName, postCode, city, country, x, y, z, propertyName, propertyValue}: Record<string, PropertyValue> =
+        const {id, uuid, name, fullName, firstName, lastName, postCode, city, country, x, y, z, propertyName, propertyValue, depth, width, height, type}: Record<string, PropertyValue> =
             getPossibleIdentifyingProperties(currentObjectNode);
 
         const identifyingValueParts: string[] = [];
 
         if (id || uuid) {
             identifyingValueParts.push(uuid ? `Uuid: ${uuid}` : `Id: ${id}`);
+        }
+        if (type) {
+            identifyingValueParts.push(`Type: ${type}`);
         }
         if (name || fullName) {
             identifyingValueParts.push(fullName ? `Name: ${fullName}` : `Name: ${name}`);
@@ -344,6 +347,15 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
         }
         if (valueIsDefined(z)) {
             identifyingValueParts.push(`z: ${z}`);
+        }
+        if (valueIsDefined(width)) {
+            identifyingValueParts.push(`width: ${width}`);
+        }
+        if (valueIsDefined(height)) {
+            identifyingValueParts.push(`height: ${height}`);
+        }
+        if (valueIsDefined(depth)) {
+            identifyingValueParts.push(`depth: ${depth}`);
         }
         if (propertyName || propertyValue) {
             if (propertyName) {

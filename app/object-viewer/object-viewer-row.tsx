@@ -28,6 +28,10 @@ export function ObjectViewerRow(
     const isVisible: boolean =
         visibleNode && visibleIfLeaf && visibleIfNada;
 
+    const originalAndEnhancedDiffer: boolean =
+        !isArray && // We skip arrays, even if their type is object.
+        displayRow.propertyTypeEnhanced !== displayRow.propertyTypeOriginal;
+
     const rowItemCssClasses: string = `
         row-item-wrapper
          ${displayRow.propertyTypeEnhanced === "object" && displayRow.propertyValue !== null ? 'recursive-structure object-header' : ''}
@@ -53,7 +57,10 @@ export function ObjectViewerRow(
                 {displayRow.recursiveToggleIcon || ""}
             </div>
 
-            <div className={`object-property-type ${showPropertyType ? '' : 'hidden'}`}>
+            <div
+                className={`object-property-type ${showPropertyType ? '' : 'hidden'} ${originalAndEnhancedDiffer && 'original-and-enhanced-differ'}`}
+                title={originalAndEnhancedDiffer ? `Actual type is '${displayRow.propertyTypeOriginal}'` : undefined}
+            >
                 {displayRow.propertyTypeEnhanced}
                 {isObject && displayRow.propertyValue !== null ? `(${displayRow.numberOfChildren})` : ''}
                 {isArray ? `[${displayRow.numberOfChildren}]` : ''}

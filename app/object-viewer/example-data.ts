@@ -86,7 +86,7 @@ export const exampleObject: {} = {
     timestampOfBirth: "1983-11-07T16:40:00Z",
     address: {
         registered: "2025-05-24T07:15:00Z",
-        permanent: true,
+        type: "residence",
         street: "Långgatan 123",
         postCode: "111 22",
         city: "Stockholm",
@@ -158,12 +158,51 @@ export const exampleObject: {} = {
         now.add({minutes: 45}),
         now.subtract({hours: 15}),
         now.add({hours: 15}),
+        now.toZonedDateTimeISO("UTC").startOfDay().toInstant(),
+        now.toZonedDateTimeISO("UTC").with({hour: 23, minute: 59, second: 59}).toInstant(),
+        now.toZonedDateTimeISO("UTC").with({month: 1, day: 1}).startOfDay().toInstant(),
+        now.toZonedDateTimeISO("UTC").with({month: 12, day: 31, hour: 23, minute: 59, second: 59}).toInstant(),
     ],
     longerText: "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
-    preferredLocale: "en-SE",
-    primaryEmail: "john.doe@example.com",
-    secondaryEmail: "john@doe.se",
+    preferredLocale: "en_SE",
+    secondaryLocale: "sv_SE",
+    emailPrimary: "john.doe@example.com",
+    emailSecondary: "john@doe.se",
+    emailWork: "john.s.doe@the.special.company.org",
     currentLocalTime: "21:05:20",
+    dimension: {
+        depth: 80,
+        width: 300,
+        height: 150,
+    },
+    suspiciousString: " A lot  of extra spaces ",
+    // largeNumbers: [ // BigInt not supported out-of-the-box by JSON.
+    //     1n,
+    //     -1n,
+    //     12345678901234567890n,
+    // ],
+    flights: [
+        {
+            from: {
+                airport: "ABC",
+                departureTime: "2035-12-10T20:45Z",
+            },
+            to: {
+                airport: "XYZ",
+                arrivalTime: "2035-12-11T07:22Z",
+            },
+        },
+        {
+            from: {
+                airport: "XYZ",
+                departureTime: "2036-01-07T08:10Z",
+            },
+            to: {
+                airport: "ABC",
+                arrivalTime: "2036-01-07T23:57Z",
+            },
+        },
+    ],
 };
 
 export const exampleArray = [exampleObject, exampleObject];

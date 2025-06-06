@@ -5,7 +5,7 @@ export type PropertyTypeOriginal =
     | "number"
     | "boolean"
     | "object"
-    | "array"
+    | "array" // TODO Is this really original???
     | "bigint"
     | "symbol"
     | "function"
@@ -95,6 +95,7 @@ export interface UserConfigurationContextType {
     showLeafs: boolean;
     showIdentifyingValues: boolean;
     filterOnProperty: string;
+    filterOnPropertyTypeEnhanced: PropertyTypeEnhanced[];
 
     setIndentObjectTree: (value: boolean) => void;
     setShowPropertyType: (value: boolean) => void;
@@ -103,4 +104,5 @@ export interface UserConfigurationContextType {
     setShowLeafs: (value: boolean) => void;
     setShowIdentifyingValues: (value: boolean) => void;
     setFilterOnProperty: (value: string) => void;
+    setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => void;
 }
