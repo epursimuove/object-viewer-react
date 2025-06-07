@@ -24,6 +24,17 @@ details {
   }
 }
 
+main {
+  & > details {
+    summary {
+      position: sticky;
+      top: -2rem;
+      background-color: white;
+    }
+
+  }
+}
+
 footer {
   margin-block-start: 5rem;
   border-block-start: 1px solid rgb(180, 180, 180);
