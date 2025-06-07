@@ -77,22 +77,7 @@ export function ObjectViewer() {
     const totalNumberOfArrays: number = displayRows
         .filter((displayRow: DisplayRow) => displayRow.rowType === "array")
         .length;
-    
-    const numberOfVisibleRows: number = displayRows
-        // .filter((displayRow: DisplayRow) => displayRow.isVisible)
-        .filter((displayRow: DisplayRow) => {
-            const isLeaf: boolean = displayRow.rowType === "leaf";
-            const visibleIfNada: boolean = showNadaValues || !displayRow.isNada;
-            const visibleIfLeaf: boolean = showLeafs || !isLeaf;
-            const visibleNode: boolean = displayRow.isVisible;
-
-            const isVisible: boolean =
-                visibleNode && visibleIfLeaf && visibleIfNada;
-
-            return isVisible;
-        })
-        .length;
-    
+        
     const deepestLevel: number = displayRows
         .map((displayRow: DisplayRow) => displayRow.indentationLevel)
         .reduce((acc: number, currentIndentationLevel: number): number => Math.max(acc, currentIndentationLevel), 0);
@@ -221,7 +206,7 @@ export function ObjectViewer() {
             );
         });
 
-    const numberOfVisibleRows2: number = visibleRows
+    const numberOfVisibleRows: number = visibleRows
         // .filter((displayRow: DisplayRow) => displayRow.isVisible)
         .filter((displayRow: DisplayRow) => {
             const isLeaf: boolean = displayRow.rowType === "leaf";
@@ -448,11 +433,6 @@ export function ObjectViewer() {
                                 </div>
 
                                 <div>
-                                    <span className="label">Visible2:</span>
-                                    <strong className="number">{numberOfVisibleRows2}</strong>
-                                </div>
-
-                                <div>
                                     <span className="label">Leafs:</span>
                                     <span className="number">{totalNumberOfLeafs}</span>
                                 </div>
@@ -488,7 +468,7 @@ export function ObjectViewer() {
 
             <details open>
                 <summary>
-                    <h2>Object tree <small>{numberOfVisibleRows2} of {totalNumberOfRows}</small></h2>
+                    <h2>Object tree <small>{numberOfVisibleRows} of {totalNumberOfRows}</small></h2>
                 </summary>
 
                 <div className="object-viewer">
