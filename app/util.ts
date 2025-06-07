@@ -15,7 +15,7 @@ export const now: Temporal.Instant = getNow();
 
 export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
 
-export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d)(:\d\d(\.\d+)?)?Z$/;
+export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\.\d+)?)?)Z$/;
 
 const regExpLocalDate: RegExp = /^\d\d\d\d-\d\d-\d\d$/;
 
@@ -573,6 +573,21 @@ const buildMetaData = (
             const timestamp: Temporal.Instant = Temporal.Instant.from(propertyValue as string);
             
             const duration: Temporal.Duration = now.since(timestamp);
+
+            const roundedDuration: Temporal.Duration = duration.round({
+                largestUnit: "years",
+                // roundingMode: "ceil",
+                // Use the ISO calendar; you can convert to another calendar using
+                // withCalendar()
+                relativeTo: now.toZonedDateTimeISO("UTC"),
+            });
+
+            return `${prettifiedDuration(roundedDuration)}`;
+        } else if (propertyTypeEnhanced === "LocalDate") {
+            const localDate: Temporal.PlainDate = Temporal.PlainDate.from(propertyValue as string);
+
+            const duration: Temporal.Duration =
+                now.toZonedDateTimeISO("UTC").since(localDate.toZonedDateTime("UTC"));
 
             const roundedDuration: Temporal.Duration = duration.round({
                 largestUnit: "years",

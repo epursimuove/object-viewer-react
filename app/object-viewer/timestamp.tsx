@@ -37,7 +37,7 @@ const divideTimestamp = (timestamp: string): TimestampParts => {
     if (matches) {
         return {
             datePart: matches[1],
-            timePart: matches[2],
+            timePart: matches[2].slice(0, 8),
         };
     }
 

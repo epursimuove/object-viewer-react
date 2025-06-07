@@ -70,7 +70,20 @@ export default function AboutPage() {
                 </li>
 
                 <li>
-                    NB! The timestamp values are compared to the time when the object tree was <em>recalculated</em>, so these comparisons are not dynamically updated. You see the "now" value that is used in the <em>Statistics</em> section in the toolbar.
+                    Date and time.
+                    <ul>
+                        <li>
+                            The UTC time zone is used for timestamps. No, there will probably not be any support for <a href="https://anders.nemonisimors.com/timestamps">timestamps</a> in other <a href="https://anders.nemonisimors.com/timeZones">time zones</a> in the future.
+                        </li>
+
+                        <li>
+                            NB! The timestamp values are compared to the time when the object tree was <em>recalculated</em>, so these comparisons are not dynamically updated. You see the "now" value that is used in the <em>Statistics</em> section in the toolbar.
+                        </li>
+
+                        <li>
+                            NB! The local date values are also "compared" to "now", to give you a ballpark guess. But don't take these comparisons too seriously, since they are not precise (and really are bad practice)! Local dates are compared against UTC (since we need some fixed point in time).
+                        </li>
+                    </ul>
                 </li>
             </ul>
             

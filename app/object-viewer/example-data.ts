@@ -137,6 +137,8 @@ export const exampleObject: {} = {
         "[1]": false,
         "a": true,
         "z": true,
+        "A": false,
+        "Z": false,
         0: false,
         1: false,
         UUID: true,
@@ -149,20 +151,28 @@ export const exampleObject: {} = {
             last: "Doe",
         },
     },
-    timestamps: [
-        "1970-01-01T00:00:00Z",
-        "2025-12-24T14:00:00Z",
-        "2000-01-01T00:00:00Z",
-        "2069-08-10T12:00:00Z",
-        now.subtract({minutes: 45}),
-        now.add({minutes: 45}),
-        now.subtract({hours: 15}),
-        now.add({hours: 15}),
-        now.toZonedDateTimeISO("UTC").startOfDay().toInstant(),
-        now.toZonedDateTimeISO("UTC").with({hour: 23, minute: 59, second: 59}).toInstant(),
-        now.toZonedDateTimeISO("UTC").with({month: 1, day: 1}).startOfDay().toInstant(),
-        now.toZonedDateTimeISO("UTC").with({month: 12, day: 31, hour: 23, minute: 59, second: 59}).toInstant(),
-    ],
+    dateAndTime: {
+        timestamps: [
+            "1970-01-01T00:00:00Z",
+            "2025-12-24T14:00:00Z",
+            "2000-01-01T00:00:00Z",
+            "2069-08-10T12:00:00Z",
+            now.subtract({ minutes: 45 }),
+            now.add({ minutes: 45 }),
+            now.subtract({ hours: 15 }),
+            now.add({ hours: 15 }),
+            now.toZonedDateTimeISO("UTC").startOfDay().toInstant(),
+            now.toZonedDateTimeISO("UTC").with({ hour: 23, minute: 59, second: 59 }).toInstant(),
+            now.toZonedDateTimeISO("UTC").with({ month: 1, day: 1 }).startOfDay().toInstant(),
+            now.toZonedDateTimeISO("UTC").with({ month: 12, day: 31, hour: 23, minute: 59, second: 59 }).toInstant(),
+        ],
+        localDates: [
+            "1969-07-20",
+            now.toString().slice(0, 10),
+            now.add({hours: 24}).toString().slice(0, 10),
+            now.add({hours: 24 * 20}).toString().slice(0, 10),
+        ],
+    },
     longerText: "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
     preferredLocale: "en_SE",
     secondaryLocale: "sv_SE",
@@ -202,6 +212,31 @@ export const exampleObject: {} = {
                 arrivalTime: "2036-01-07T23:57Z",
             },
         },
+    ],
+    dateOfGraduation: "2005-06-07",
+    deeplyNested: {
+        firstLevel: {
+            secondLevel: {
+                thirdLevel: {
+                    fourthLevel: {
+                        fifthLevel: {
+                            sixthLevel: {
+                                seventhLevel: {
+                                    theHiddenValue: 98765,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+    urls: [
+        "https://www.foobar.com",
+        "http://www.foobar.com",
+        "localhost:1234",
+        "localhost:1234/project",
+        "https://foobar.com/more/and/more",
     ],
 };
 

@@ -488,7 +488,7 @@ export function ObjectViewer() {
 
             <details open>
                 <summary>
-                    <h2>Object tree</h2>
+                    <h2>Object tree <small>{numberOfVisibleRows2} of {totalNumberOfRows}</small></h2>
                 </summary>
 
                 <div className="object-viewer">
