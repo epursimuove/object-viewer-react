@@ -27,6 +27,12 @@ const regExpLocale: RegExp = /^[a-z]{2}_[A-Z]{2}$/;
 
 const regExpEmailAddress: RegExp = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,}$/;
 
+const regExpSecureURL: RegExp = /^https:\/\/[^ ]+$/;
+
+const regExpInsecureURL: RegExp = /^http:\/\/[^ ]+$/;
+
+const regExpLocalhostURL: RegExp = /^localhost:[\d]{1,5}[^ ]*$/;
+
 const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
 const isTimestamp = (s: string): boolean => {
@@ -42,6 +48,11 @@ const isLocalDate = (s: string): boolean => {
 const isLocalTime = (s: string): boolean => {
     const isLocalTime: boolean = regExpLocalTime.test(s);
     return isLocalTime;
+};
+
+const isURL = (s: string): boolean => {
+    const isURL: boolean = regExpSecureURL.test(s) || regExpInsecureURL.test(s) || regExpLocalhostURL.test(s);
+    return isURL;
 };
 
 const potentialCountryCode = (s: string): boolean => {
@@ -530,7 +541,10 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
                                                 "EmailAddress" :
                                                 propertyTypeOriginal === "string" && propertyValue === "" ?
                                                     "EmptyString" :
-                                                    propertyTypeOriginal;
+                                                    propertyTypeOriginal === "string" && isURL(propertyValue as string) ?
+                                                        "URL" :
+
+                                                        propertyTypeOriginal;
     // TODO More options
 
     return propertyTypEnhanced;
@@ -555,7 +569,7 @@ const buildMetaData = (
     propertyValue: PropertyValue,
 ): string | undefined => {
 
-    if (propertyTypeEnhanced === "string" || propertyTypeEnhanced === "EmailAddress") {
+    if (["string", "EmailAddress", "URL"].includes(propertyTypeEnhanced)) {
         return `${(propertyValue as string).length} characters`;
     }
 

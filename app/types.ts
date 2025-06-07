@@ -32,6 +32,7 @@ export type PropertyTypeEnhanced =
     | "UndefinedValue"
     | "EmptyString"
     | "Integer"
+    | "URL"
     | "Zero";
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
