@@ -109,7 +109,10 @@ export const exampleObject: {} = {
     emptyObject: {},
     emptyArray: [],
     thisIsNull: null,
-    thisIsUndefinedWillBeIgnored: undefined,
+    thisIsUndefinedWillBeIgnored: undefined, // undefined is not valid JSON value, will be ignored.
+    // thisIsBigInt: 1n, // BigInt not supported out-of-the-box by JSON.
+    thisIsSymbol: Symbol("test"), // Symbol is not valid JSON value, will be ignored.
+    thisIsFunction: (a: number, b: number) => a + b, // Function is not valid JSON value, will be ignored.
     nadaEmptyString: "",
     nadaZero: 0,
     nadaZeroAgain: 0.0,

@@ -339,7 +339,7 @@ aside#toolbar {
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-end;
-                    gap: 1rem;
+                    gap: 0.5rem;
 
                     & .label {
                         color: var(--color-lighter);

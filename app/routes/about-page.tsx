@@ -15,7 +15,7 @@ export default function AboutPage() {
             <h1>About</h1>
             
             <p>
-                <em>NNM Object Viewer</em> is a convenient tool that displays a JSON object as an object tree. The tool handles objects and arrays.
+                <em>NNM Object Viewer</em> is a convenient tool that displays a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">JSON</a> object as an object tree. The tool handles objects and arrays.
             </p>
             
             <p>
