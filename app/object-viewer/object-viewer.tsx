@@ -31,7 +31,7 @@ export function ObjectViewer() {
     const [originalObject, setOriginalObject] =
         useState<Record<string, PropertyValue>>({});
     
-    const { indentObjectTree, showPropertyType, showNadaValues, showMetaData, showLeafs, showIdentifyingValues, filterOnProperty, filterOnPropertyTypeEnhanced, setIndentObjectTree, setShowPropertyType, setShowMetaData, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty, setFilterOnPropertyTypeEnhanced } =
+    const { indentObjectTree, showPropertyType, showNadaValues, showMetaData, showLeafs, showIdentifyingValues, filterOnProperty, filterOnPropertyTypeEnhanced, setIndentObjectTree, setShowPropertyType, setShowMetaData, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty, setFilterOnPropertyTypeEnhanced, resetFilters } =
         useUserConfigurationContext();
 
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
@@ -92,6 +92,7 @@ export function ObjectViewer() {
             debug('nextOriginalObject', nextOriginalObject);
 
             setOriginalObject(nextOriginalObject);
+            resetFilters();
             
         } catch (err) {
 
@@ -225,6 +226,8 @@ export function ObjectViewer() {
         Array.from(new Set(displayRows
             .map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced)))
             .toSorted((a, b) => a.localeCompare(b));
+
+    const filtersActivated = () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0;
     
     logInfoPretty("DONE", false);
     
@@ -365,10 +368,14 @@ export function ObjectViewer() {
                         </section>
 
                         <section id="filters">
-                            <details open>
+                            <details open className={`${filtersActivated() && "filters-active"}`}>
                                 <summary>
                                     Filters
                                 </summary>
+                                
+                                <div className="button-row">
+                                    <button type="reset" onClick={resetFilters}>Reset</button>
+                                </div>
 
                                 <div>
                                     <label htmlFor="filterOnProperty">Property (name/value)</label>

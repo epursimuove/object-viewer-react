@@ -20,6 +20,8 @@ const defaultUserConfigurationContext: UserConfigurationContextType = {
     setShowIdentifyingValues: (value: boolean) => {},
     setFilterOnProperty: (value: string) => {},
     setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => {},
+
+    resetFilters: () => {},
 };
 
 const UserConfigurationContext: Context<UserConfigurationContextType> =
@@ -62,6 +64,11 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
         setShowIdentifyingValues: (value: boolean) => setShowIdentifyingValues(value),
         setFilterOnProperty: (value: string) => setFilterOnProperty(value),
         setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => setFilterOnEnhancedPropertyType(value),
+
+        resetFilters: () => {
+            setFilterOnProperty("");
+            setFilterOnEnhancedPropertyType([]);
+        },
     };
 
     return (

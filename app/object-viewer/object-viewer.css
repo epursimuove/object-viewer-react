@@ -319,6 +319,10 @@ aside#toolbar {
             flex-direction: column;
             gap: 1rem; */
 
+            &.filters-active {
+                background-color: greenyellow;
+            }
+
             div {
                 display: flex;
                 flex-direction: column;

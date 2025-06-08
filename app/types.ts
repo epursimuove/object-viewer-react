@@ -106,4 +106,6 @@ export interface UserConfigurationContextType {
     setShowIdentifyingValues: (value: boolean) => void;
     setFilterOnProperty: (value: string) => void;
     setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => void;
+
+    resetFilters: () => void;
 }
