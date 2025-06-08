@@ -19,7 +19,7 @@ export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\
 
 const regExpLocalDate: RegExp = /^\d\d\d\d-\d\d-\d\d$/;
 
-const regExpLocalTime: RegExp = /^\d\d:\d\d:\d\d$/;
+const regExpLocalTime: RegExp = /^\d\d:\d\d(:\d\d)?$/;
 
 const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 

@@ -175,6 +175,11 @@ export const exampleObject: {} = {
             now.add({hours: 24}).toString().slice(0, 10),
             now.add({hours: 24 * 20}).toString().slice(0, 10),
         ],
+        localTimes: [
+            "08:25:30",
+            "21:40:00",
+            "14:05",
+        ],
     },
     longerText: "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
     preferredLocale: "en_SE",
