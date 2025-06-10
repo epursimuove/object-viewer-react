@@ -36,6 +36,7 @@ export function ObjectViewerRow(
         row-item-wrapper
          ${displayRow.propertyTypeEnhanced === "object" && displayRow.propertyValue !== null ? 'recursive-structure object-header' : ''}
          ${displayRow.propertyTypeEnhanced === "array" ? 'recursive-structure array-header' : ''}
+         ${isLeaf && 'leaf'}
          ${displayRow.hasChildren ? 'contains-children' : ''}
           ${displayRow.recursiveToggleIcon === "∅" ? 'empty' : ''}
           ${isVisible ? '' : 'hidden'}

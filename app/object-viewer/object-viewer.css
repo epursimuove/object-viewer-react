@@ -81,12 +81,15 @@ html {
 
         .object-property-name {
             min-width: 12rem;
-            font-weight: bold;
             color: purple;
 
             & .derived-array-index {
                 font-size: 0.85rem;
                 color: rgb(180, 180, 180);
+            }
+
+            :not(.leaf) > & {
+                font-weight: bold;
             }
         }
 
