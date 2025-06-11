@@ -140,7 +140,7 @@ export function ObjectViewer() {
     }
 
 
-    const toggleRow = (rowNumber: number, event: SyntheticEvent) => {
+    const toggleRow = (rowNumber: number, event: MouseEvent) => {
         debug('Toggling', rowNumber, event.currentTarget);
 
         const currentRowItem: DisplayRow = displayRows[rowNumber - 1];
@@ -152,6 +152,8 @@ export function ObjectViewer() {
             recursiveToggleIcon: currentRowItem.recursiveToggleIcon === "+" ? "-" : "+",
         };
 
+        const shiftClick = event.shiftKey; // Shift + click should only expand first sub-level, click expands all children.
+
         const nextDisplayRows: DisplayRow[] =
             displayRows.map((displayRow: DisplayRow, index: number) => {
 
@@ -159,11 +161,15 @@ export function ObjectViewer() {
                     trace('displayRow, nextRowItem', displayRow, nextRowItem);
                     return nextRowItem;
                 } else if (isDescendant(nextRowItem.id, displayRow.id)) {
+
+                    const isExpanded = !shiftClick && nextRowItem.isExpanded;
+                    const isVisible = nextRowItem.isExpanded && (!shiftClick || nextRowItem.id === displayRow.parentId);
+
                     return {
                         ...displayRow,
-                        isExpanded: false,
-                        isVisible: nextRowItem.isExpanded && nextRowItem.id === displayRow.parentId,
-                        recursiveToggleIcon: displayRow.rowType === "leaf" ? "" : !displayRow.hasChildren ? "∅" : currentRowItem.recursiveToggleIcon === "+" ? "+" : "-",
+                        isExpanded,
+                        isVisible,
+                        recursiveToggleIcon: displayRow.rowType === "leaf" ? "" : !displayRow.hasChildren ? "∅" : isExpanded ? "-" : "+",
                     }
                 }
                 return {
