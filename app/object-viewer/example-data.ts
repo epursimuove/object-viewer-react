@@ -224,7 +224,6 @@ export const exampleObject: {} = {
                 },
                 preferredLocale: "en_SE",
                 secondaryLocale: "sv_SE",
-                yetAnotherLocale: "da-DK",
                 emailPrimary: "john.doe@example.com",
                 emailSecondary: "john@doe.se",
                 emailWork: "john.s.doe@the.special.company.org",
@@ -355,6 +354,13 @@ export const exampleObject: {} = {
                 "localhost:1234",
                 "localhost:1234/project",
                 "https://foobar.com/more/and/more",
+            ],
+            locales: [
+                "en_US",
+                "en_GB",
+                "en_IN",
+                "en-AU",
+                "ja-JP",
             ],
 
         },

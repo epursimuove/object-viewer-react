@@ -1,5 +1,6 @@
 import type {
     DisplayRow,
+    NodeBase,
     ObjectNode, ObjectTree, PrimitiveLeaf,
     PropertyTypeEnhanced, PropertyTypeOriginal,
      PropertyValue,
@@ -23,7 +24,7 @@ const regExpLocalTime: RegExp = /^\d\d:\d\d(:\d\d)?$/;
 
 const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
-const regExpLocale: RegExp = /^[a-z]{2}_[A-Z]{2}$/;
+const regExpLocale: RegExp = /^[a-z]{2}[_-][A-Z]{2}$/;
 
 const regExpEmailAddress: RegExp = /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,}$/;
 
@@ -80,6 +81,8 @@ const templateRootObjectNode: ObjectNode = {
     convenientIdentifierWhenCollapsed: "/Root of tree/",
     id: "0",
     level: 0,
+    depthBelow: -1,
+    numberOfDescendants: -1,
     isExpanded: false,
     isVisible: false,
     length: -8888,
@@ -97,6 +100,8 @@ const templateEmptyObjectNode: ObjectNode = {
     isVisible: false,
     length: -7777,
     level: -7777,
+    depthBelow: -111,
+    numberOfDescendants: -111,
     parentId: "/Not defined yet/",
     propertyMetaData: "/Object node template/",
     propertyName: "/Object node template/",
@@ -281,6 +286,8 @@ export function convertObjectToTreeHelper(
 
     currentObjectNode.length = Object.getOwnPropertyNames(currentObjectNode.containedProperties).length;
 
+    decideDescendantsAndDepthBelow(currentObjectNode);
+
     decideOptionalConvenientIdentifier(currentObjectNode);
 
     info(`Created ${id - currentId} object tree nodes under "${currentObjectNode.propertyName}"`);
@@ -308,6 +315,33 @@ function getPossibleIdentifyingProperties(
     }
 
     return result;
+}
+
+function decideDescendantsAndDepthBelow(currentObjectNode: ObjectNode) {
+
+    const containedPropertyNames: string[] = Object.getOwnPropertyNames(currentObjectNode.containedProperties);
+
+    let depthBelow = 0;
+    let numberOfDescendants = 0;
+
+    for (let i = 0; i < containedPropertyNames.length; i++) {
+        const propertyName: string = containedPropertyNames[i];
+
+        const property: ObjectTree = currentObjectNode.containedProperties[propertyName];
+
+        if (property && property.nodeType !== "leaf") {
+            depthBelow = Math.max(depthBelow, (property as NodeBase).depthBelow);
+            numberOfDescendants += (property as NodeBase).numberOfDescendants + 1;
+        } else {
+            numberOfDescendants += 1;
+        }
+    }
+
+    currentObjectNode.depthBelow = depthBelow + 1;
+    currentObjectNode.numberOfDescendants = numberOfDescendants;
+
+    currentObjectNode.propertyMetaData =
+     `Level: ${currentObjectNode.level}, depth below: ${currentObjectNode.depthBelow}, descendants: ${currentObjectNode.numberOfDescendants}`;
 }
 
 function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
@@ -559,9 +593,14 @@ function getFlagEmoji(countryCode: string): string {
 }
 
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
 
 function getRegionName(countryCode: string): string {
     return regionNames.of(countryCode) || "?";
+}
+
+function getLanguageName(languageCode: string): string {
+    return languageNames.of(languageCode) || "?";
 }
 
 const buildMetaData = (
@@ -576,6 +615,13 @@ const buildMetaData = (
     if (propertyTypeEnhanced === "CountryCode") {
         const countryCode: string = propertyValue as string;
         return `${getFlagEmoji(countryCode)} ${getRegionName(countryCode)}`
+    }
+
+    if (propertyTypeEnhanced === "Locale") {
+        const locale: string = propertyValue as string;
+        const languageCode: string = locale.slice(0, 2);
+        const countryCode: string = locale.slice(-2);
+        return `${getLanguageName(languageCode)} (in ${getFlagEmoji(countryCode)} ${getRegionName(countryCode)})`
     }
 
     if (propertyTypeEnhanced === "Timestamp" ||

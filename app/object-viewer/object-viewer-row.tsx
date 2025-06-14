@@ -89,7 +89,7 @@ export function ObjectViewerRow(
                     )
             }
             
-            <div className={`object-property-meta-data ${showMetaData && isLeaf ? '' : 'hidden'}`}>
+            <div className={`object-property-meta-data ${showMetaData /*&& isLeaf*/ ? '' : 'hidden'}`}>
                 {displayRow.propertyMetaData}
             </div>
 

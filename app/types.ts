@@ -53,6 +53,8 @@ export interface TreeBase {
 
 export interface NodeBase {
     length: number;
+    depthBelow: number;
+    numberOfDescendants: number;
     convenientIdentifierWhenCollapsed?: string;
     isExpanded: boolean;
 }
