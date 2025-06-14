@@ -1,251 +1,392 @@
-import {now} from "../util";
+import { now } from "../util";
+
+// let counter = 1;
+
+// const createLabel = (label: string) => {
+//     return `${counter++} - ${label}`;
+// }
 
 export const exampleObject: {} = {
-    id: 123456789,
-    guid: "9988-3344-2233",
-    created: "2025-05-01T05:20:00Z",
-    firstName: "John",
-    lastName: "Doe",
-    married: true,
-    retired: false,
-    parents: {
-        caroline: {
-            UUID: 36284,
-            fullName: " Caroline Johnson",
-            age: 105,
-        },
-        lars: {
-            uuid: 785,
-            fullName: "Lars Östberg ",
-            age: 96,
-        },
-    },
-    children: {
-        adam: {
-            uuid: 9238,
-            fullName: "Adam Gray",
-            age: 23,
-            characteristics: [
-                {
-                    propertyName: "heightInCentimeter",
-                    propertyValue: 173,
+    "1 - Documentation": {
+        "_README": "Basic documentation is found here in the actual object tree.",
+        "1.1 - Primitives": {
+            "1.1.1 - Strings": {
+                "_README": "Strings can often be treated as something else than just random characters. So educated guesses are made and some properties therefore get enhanced types.",
+                text: "Some text value",
+                extraSpaces: "Text containing  extra space characters will be flagged",
+            },
+            "1.1.2 - Booleans": {
+                "true": true,
+                "false": false,
+            },
+            "1.1.3 - Numbers": {
+                "_README": "Numbers is represented by the 'number' type, but we enhance by indicating if it is an integer or a floating point number.",
+                "1.1.3.1 - Integers": {
+                    negative: -123,
+                    zero: 0,
+                    positive: 456,
                 },
-                {
-                    propertyName: "eyeColor",
-                    propertyValue: "brown",
+                "1.1.3.2 - Floating points": {
+                    negative: -123.456,
+                    zero: 0.0,
+                    positive: 456.789,
                 },
+
+
+            },
+
+        },
+        "1.2 - Objects": {
+            emptyObject: {},
+            objectWithProperties: {
+                bar: 1,
+                baz: 2,
+            },
+
+        },
+        "1.3 - Arrays": {
+            emptyArray: [],
+            arrayWithStrings: [
+                "first",
+                "second",
             ],
+
         },
-        bridget: {
-            uuid: 5543,
-            fullName: "Bridget Gray",
-            age: 14,
-            characteristics: [
-                {
-                    propertyName: "heightInCentimeter",
-                    propertyValue: 182,
-                },
-                {
-                    propertyName: "eyeColor",
-                    propertyValue: "green",
-                },
+        "1.4 - 'Nada' values": {
+            nadaEmptyString: "",
+            nadaZero: 0,
+            nadaZeroAgain: 0.0,
+            nadaFalse: false,
+            nadaNull: null,
+            nadaUndefinedWillBeIgnored: undefined,
+
+        },
+        "1.5 - Date and time": {
+            timestamps: [
+                "2015-12-24T14:00:00Z",
+                "2030-12-24T14:00:00Z",
             ],
-        },
-        christine: {
-            uuid: 1128,
-            fullName: "Christine Gray",
-            age: 5,
-            characteristics: [
-                {
-                    propertyName: "heightInCentimeter",
-                    propertyValue: 127,
-                },
-                {
-                    propertyName: "eyeColor",
-                    propertyValue: "blue",
-                },
+            localDates: [
+                "2024-12-24",
+                "2038-05-06",
             ],
+            localTimes: [
+                "14:00:00",
+                "21:45:30",
+            ],
+
         },
-    },
-    children2: [{
-        name: "Adam",
-        age: 23,
-    },
-        {
-            name: "Bridget",
-            age: 14,
+        "1.6 - Ignored values": {
+            thisIsUndefinedWillBeIgnored: undefined, // undefined is not valid JSON value, will be ignored.
+            // thisIsBigInt: 1n, // BigInt not supported out-of-the-box by JSON.
+            thisIsSymbol: Symbol("test"), // Symbol is not valid JSON value, will be ignored.
+            thisIsFunction: (a: number, b: number) => a + b, // Function is not valid JSON value, will be ignored.
+
         },
-        {
-            name: "Christine",
-            age: 5,
+        "1.7 - Sets and Maps": {
+            thisIsASet: new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
+            "thisIsAnotherSet<SET>": new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
+            thisIsAMap: new Map([ // A Map is as default represented as empty object.
+                [1, "one"],
+                [2, "two"],
+                [3, "three"],
+            ]),
+            "thisIsAnotherMap<MAP>": new Map([ // A Map is as default represented as empty object.
+                [1, "one"],
+                [2, "two"],
+                [3, "three"],
+            ]),
+
         },
-    ],
-    phones: ["012-34567", "070-987654321"],
-    phones2: {home: "012-34567", mobile: "070-987654321"},
-    dateOfBirth: "1983-11-07",
-    timestampOfBirth: "1983-11-07T16:40:00Z",
-    address: {
-        registered: "2025-05-24T07:15:00Z",
-        type: "residence",
-        street: "Långgatan 123",
-        postCode: "111 22",
-        city: "Stockholm",
-        country: "Sweden",
-        countryCode: "SE",
-        coordinates: {
-            latitude: 98765,
-            longitude: 4567,
+
+        "1.8 - Enhanced property types": {
+            localDate: "1970-01-01",
+            localTime: "08:22",
+            timestamp: "2000-01-01T00:00Z",
+            countryCode: "SE",
+            locale: "en_GB",
+            email: "john@doe.com",
+            url: "https://foo.com",
+            integer: 42,
+
         },
-    },
-    vector3D: {
-        x: 9.3,
-        y: 102.34,
-        z: 0.29,
-    },
-    vector2D: {
-        x: 0,
-        y: 4711,
-    },
-    emptyObject: {},
-    emptyArray: [],
-    thisIsNull: null,
-    thisIsUndefinedWillBeIgnored: undefined, // undefined is not valid JSON value, will be ignored.
-    // thisIsBigInt: 1n, // BigInt not supported out-of-the-box by JSON.
-    thisIsSymbol: Symbol("test"), // Symbol is not valid JSON value, will be ignored.
-    thisIsFunction: (a: number, b: number) => a + b, // Function is not valid JSON value, will be ignored.
-    nadaEmptyString: "",
-    nadaZero: 0,
-    nadaZeroAgain: 0.0,
-    nadaFalse: false,
-    nadaNull: null,
-    nadaUndefinedWillBeIgnored: undefined,
-    thisIsASet: new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
-    "thisIsAnotherSet<SET>": new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
-    thisIsAMap: new Map([ // A Map is as default represented as empty object.
-        [1, "one"],
-        [2, "two"],
-        [3, "three"],
-    ]),
-    "thisIsAnotherMap<MAP>": new Map([ // A Map is as default represented as empty object.
-        [1, "one"],
-        [2, "two"],
-        [3, "three"],
-    ]),
-    arraysWithinArrays: [
-        [456, 789, "abc", "xyz", [], ["List of countries", ["SE", "DK", "FI", "NO", "IS", "GB", "BR", "US", "JP", "AU", "NZ", "ES", "AR", "FR", "DE", "CH", "NL", "BE"], {city: "Malmö", temperatureCelsius: -23}, "Some text containing extra  spaces"]],
-        [{hours: 23, minutes: 34, seconds: 27}],
-    ],
-    evilPropertiesObject: {
-        "[0]": true,
-        "[1]": false,
-        "a": true,
-        "z": true,
-        "A": false,
-        "Z": false,
-        0: false,
-        1: false,
-        UUID: true,
-        Uuid: true,
-        uuid: false,
-    },
-    evilPropertiesObject2: {
-        name: {
-            first: "Lisa",
-            last: "Doe",
+        "1.9 - Convenient identifiers": {
+            ids: [],
+            names: [],
+            mathAndPhysics: [],
+
         },
+
+        "1.25 - Misc": {
+
+        },
+
     },
-    dateAndTime: {
-        timestamps: [
-            "1970-01-01T00:00:00Z",
-            "2025-12-24T14:00:00Z",
-            "2000-01-01T00:00:00Z",
-            "2069-08-10T12:00:00Z",
-            now.subtract({ minutes: 45 }),
-            now.add({ minutes: 45 }),
-            now.subtract({ hours: 15 }),
-            now.add({ hours: 15 }),
-            now.toZonedDateTimeISO("UTC").startOfDay().toInstant(),
-            now.toZonedDateTimeISO("UTC").with({ hour: 23, minute: 59, second: 59 }).toInstant(),
-            now.toZonedDateTimeISO("UTC").with({ month: 1, day: 1 }).startOfDay().toInstant(),
-            now.toZonedDateTimeISO("UTC").with({ month: 12, day: 31, hour: 23, minute: 59, second: 59 }).toInstant(),
-        ],
-        localDates: [
-            "1969-07-20",
-            now.toString().slice(0, 10),
-            now.add({hours: 24}).toString().slice(0, 10),
-            now.add({hours: 24 * 20}).toString().slice(0, 10),
-        ],
-        localTimes: [
-            "08:25:30",
-            "21:40:00",
-            "14:05",
-        ],
-    },
-    longerText: "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
-    preferredLocale: "en_SE",
-    secondaryLocale: "sv_SE",
-    emailPrimary: "john.doe@example.com",
-    emailSecondary: "john@doe.se",
-    emailWork: "john.s.doe@the.special.company.org",
-    currentLocalTime: "21:05:20",
-    dimension: {
-        depth: 80,
-        width: 300,
-        height: 150,
-    },
-    suspiciousString: " A lot  of extra spaces ",
-    // largeNumbers: [ // BigInt not supported out-of-the-box by JSON.
-    //     1n,
-    //     -1n,
-    //     12345678901234567890n,
-    // ],
-    flights: [
-        {
-            from: {
-                airport: "ABC",
-                departureTime: "2035-12-10T20:45Z",
+    "2 - Examples": {
+        "2.1 - Person": {
+            john: {
+                id: 123456789,
+                guid: "9988-3344-2233",
+                created: "2025-05-01T05:20:00Z",
+                firstName: "John",
+                lastName: "Doe",
+                married: true,
+                retired: false,
+                parents: {
+                    caroline: {
+                        UUID: 36284,
+                        fullName: " Caroline Johnson",
+                        age: 105,
+                    },
+                    lars: {
+                        uuid: 785,
+                        fullName: "Lars Östberg ",
+                        age: 96,
+                    },
+                },
+                children: {
+                    adam: {
+                        uuid: 9238,
+                        fullName: "Adam Gray",
+                        age: 23,
+                        characteristics: [
+                            {
+                                propertyName: "heightInCentimeter",
+                                propertyValue: 173,
+                            },
+                            {
+                                propertyName: "eyeColor",
+                                propertyValue: "brown",
+                            },
+                        ],
+                    },
+                    bridget: {
+                        uuid: 5543,
+                        fullName: "Bridget Gray",
+                        age: 14,
+                        characteristics: [
+                            {
+                                propertyName: "heightInCentimeter",
+                                propertyValue: 182,
+                            },
+                            {
+                                propertyName: "eyeColor",
+                                propertyValue: "green",
+                            },
+                        ],
+                    },
+                    christine: {
+                        uuid: 1128,
+                        fullName: "Christine Gray",
+                        age: 5,
+                        characteristics: [
+                            {
+                                propertyName: "heightInCentimeter",
+                                propertyValue: 127,
+                            },
+                            {
+                                propertyName: "eyeColor",
+                                propertyValue: "blue",
+                            },
+                        ],
+                    },
+                },
+                children2: [{
+                    name: "Adam",
+                    age: 23,
+                },
+                {
+                    name: "Bridget",
+                    age: 14,
+                },
+                {
+                    name: "Christine",
+                    age: 5,
+                },
+                ],
+                phones: ["012-34567", "070-987654321"],
+                phones2: { home: "012-34567", mobile: "070-987654321" },
+                dateOfBirth: "1983-11-07",
+                timestampOfBirth: "1983-11-07T16:40:00Z",
+                dateOfGraduation: "2005-06-07",
+                address: {
+                    registered: "2025-05-24T07:15:00Z",
+                    type: "residence",
+                    street: "Långgatan 123",
+                    postCode: "111 22",
+                    city: "Stockholm",
+                    country: "Sweden",
+                    countryCode: "SE",
+                    coordinates: {
+                        latitude: 98765,
+                        longitude: 4567,
+                    },
+                },
+                preferredLocale: "en_SE",
+                secondaryLocale: "sv_SE",
+                yetAnotherLocale: "da-DK",
+                emailPrimary: "john.doe@example.com",
+                emailSecondary: "john@doe.se",
+                emailWork: "john.s.doe@the.special.company.org",
+                currentLocalTime: "21:05:20",
+
             },
-            to: {
-                airport: "XYZ",
-                arrivalTime: "2035-12-11T07:22Z",
-            },
         },
-        {
-            from: {
-                airport: "XYZ",
-                departureTime: "2036-01-07T08:10Z",
+        "2.2 - Math": {
+            vector3D: {
+                x: 9.3,
+                y: 102.34,
+                z: 0.29,
             },
-            to: {
-                airport: "ABC",
-                arrivalTime: "2036-01-07T23:57Z",
+            vector2D: {
+                x: 0,
+                y: 4711,
             },
+            dimension: {
+                depth: 80,
+                width: 300,
+                height: 150,
+            },
+
         },
-    ],
-    dateOfGraduation: "2005-06-07",
-    deeplyNested: {
-        firstLevel: {
-            secondLevel: {
-                thirdLevel: {
-                    fourthLevel: {
-                        fifthLevel: {
-                            sixthLevel: {
-                                seventhLevel: {
-                                    theHiddenValue: 98765,
+        "2.3 - Texts": {
+            longerText: "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
+            textWithNewlines: "You can also\nuse newlines\nin your texts that will be formatted\na little bit different.",
+            suspiciousString: " A lot  of extra spaces ",
+
+        },
+        "2.4 - Nested arrays and objects": {
+            deeplyNestedObject: {
+                firstLevel: {
+                    secondLevel: {
+                        thirdLevel: {
+                            fourthLevel: {
+                                fifthLevel: {
+                                    sixthLevel: {
+                                        seventhLevel: {
+                                            theHiddenValue: 98765,
+                                        },
+                                    },
                                 },
                             },
                         },
                     },
                 },
             },
+            deeplyNestedArray: [
+                [
+                    [
+                        [
+                            [
+                                [
+                                    [
+                                        [
+                                            4711,
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            arraysWithinArrays: [
+                [456, 789, "abc", "xyz", [], ["List of countries", ["SE", "DK", "FI", "NO", "IS", "GB", "BR", "US", "JP", "AU", "NZ", "ES", "AR", "FR", "DE", "CH", "NL", "BE"], { city: "Malmö", temperatureCelsius: -23 }, "Some text containing extra  spaces"]],
+                [{ hours: 23, minutes: 34, seconds: 27 }],
+            ],
+
         },
+        "2.5 - Date and time": {
+            dateAndTime: {
+                timestamps: [
+                    "1970-01-01T00:00:00Z",
+                    "2025-12-24T14:00:00Z",
+                    "2000-01-01T00:00:00Z",
+                    "2069-08-10T12:00:00Z",
+                    now.subtract({ minutes: 45 }),
+                    now.add({ minutes: 45 }),
+                    now.subtract({ hours: 15 }),
+                    now.add({ hours: 15 }),
+                    now.toZonedDateTimeISO("UTC").startOfDay().toInstant(),
+                    now.toZonedDateTimeISO("UTC").with({ hour: 23, minute: 59, second: 59 }).toInstant(),
+                    now.toZonedDateTimeISO("UTC").with({ month: 1, day: 1 }).startOfDay().toInstant(),
+                    now.toZonedDateTimeISO("UTC").with({ month: 12, day: 31, hour: 23, minute: 59, second: 59 }).toInstant(),
+                ],
+                localDates: [
+                    "1969-07-20",
+                    now.toString().slice(0, 10),
+                    now.add({ hours: 24 }).toString().slice(0, 10),
+                    now.add({ hours: 24 * 20 }).toString().slice(0, 10),
+                ],
+                localTimes: [
+                    "08:25:30",
+                    "21:40:00",
+                    "14:05",
+                ],
+            },
+
+        },
+        "2.6 - Misc": {
+            flights: [
+                {
+                    from: {
+                        airport: "ABC",
+                        departureTime: "2035-12-10T20:45Z",
+                    },
+                    to: {
+                        airport: "XYZ",
+                        arrivalTime: "2035-12-11T07:22Z",
+                    },
+                },
+                {
+                    from: {
+                        airport: "XYZ",
+                        departureTime: "2036-01-07T08:10Z",
+                    },
+                    to: {
+                        airport: "ABC",
+                        arrivalTime: "2036-01-07T23:57Z",
+                    },
+                },
+            ],
+            urls: [
+                "https://www.foobar.com",
+                "http://www.foobar.com",
+                "localhost:1234",
+                "localhost:1234/project",
+                "https://foobar.com/more/and/more",
+            ],
+
+        },
+        "2.7 - Gotchas": {
+            evilPropertiesObject: {
+                "[0]": true,
+                "[1]": false,
+                "a": true,
+                "z": true,
+                "A": false,
+                "Z": false,
+                0: false,
+                1: false,
+                UUID: true,
+                Uuid: true,
+                uuid: false,
+            },
+            evilPropertiesObject2: {
+                name: {
+                    first: "Lisa",
+                    last: "Doe",
+                },
+            },
+
+        },
+
     },
-    urls: [
-        "https://www.foobar.com",
-        "http://www.foobar.com",
-        "localhost:1234",
-        "localhost:1234/project",
-        "https://foobar.com/more/and/more",
-    ],
+    // largeNumbers: [ // BigInt not supported out-of-the-box by JSON.
+    //     1n,
+    //     -1n,
+    //     12345678901234567890n,
+    // ],
 };
 
 export const exampleArray = [exampleObject, exampleObject];
