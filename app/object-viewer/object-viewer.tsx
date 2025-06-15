@@ -140,7 +140,7 @@ export function ObjectViewer() {
     }
 
 
-    const toggleRow = (rowNumber: number, event: MouseEvent) => {
+    const toggleRow = (rowNumber: number, event: SyntheticEvent) => {
         debug('Toggling', rowNumber, event.currentTarget);
 
         const currentRowItem: DisplayRow = displayRows[rowNumber - 1];
@@ -152,7 +152,7 @@ export function ObjectViewer() {
             recursiveToggleIcon: currentRowItem.recursiveToggleIcon === "+" ? "-" : "+",
         };
 
-        const shiftClick = event.shiftKey; // Shift + click should only expand first sub-level, click expands all children.
+        const shiftClick = event.nativeEvent instanceof PointerEvent && event.nativeEvent.shiftKey; // Shift + click should only expand first sub-level, click expands all children.
 
         const nextDisplayRows: DisplayRow[] =
             displayRows.map((displayRow: DisplayRow, index: number) => {
