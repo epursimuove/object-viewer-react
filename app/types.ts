@@ -93,7 +93,8 @@ export interface DisplayRow {
 export interface UserConfigurationContextType {
     indentObjectTree: boolean;
     showPropertyType: boolean;
-    showMetaData: boolean;
+    showMetaDataForLeafs: boolean;
+    showMetaDataForNodes: boolean;
     showNadaValues: boolean;
     showLeafs: boolean;
     showIdentifyingValues: boolean;
@@ -102,7 +103,8 @@ export interface UserConfigurationContextType {
 
     setIndentObjectTree: (value: boolean) => void;
     setShowPropertyType: (value: boolean) => void;
-    setShowMetaData: (value: boolean) => void;
+    setShowMetaDataForLeafs: (value: boolean) => void;
+    setShowMetaDataForNodes: (value: boolean) => void;
     setShowNadaValues: (value: boolean) => void;
     setShowLeafs: (value: boolean) => void;
     setShowIdentifyingValues: (value: boolean) => void;

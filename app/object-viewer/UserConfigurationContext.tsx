@@ -5,7 +5,8 @@ import {type Context, createContext, type ReactNode, useContext, useState} from 
 const defaultUserConfigurationContext: UserConfigurationContextType = {
     indentObjectTree: true,
     showLeafs: true,
-    showMetaData: true,
+    showMetaDataForLeafs: true,
+    showMetaDataForNodes: false,
     showNadaValues: true,
     showPropertyType: true,
     showIdentifyingValues: true,
@@ -14,7 +15,8 @@ const defaultUserConfigurationContext: UserConfigurationContextType = {
 
     setIndentObjectTree: (value: boolean) => {},
     setShowPropertyType: (value: boolean) => {},
-    setShowMetaData: (value: boolean) => {},
+    setShowMetaDataForLeafs: (value: boolean) => {},
+    setShowMetaDataForNodes: (value: boolean) => {},
     setShowNadaValues: (value: boolean) => {},
     setShowLeafs: (value: boolean) => {},
     setShowIdentifyingValues: (value: boolean) => {},
@@ -38,7 +40,8 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
 
     const [indentObjectTree, setIndentObjectTree] = useState<boolean>(true);
     const [showPropertyType, setShowPropertyType] = useState<boolean>(true);
-    const [showMetaData, setShowMetaData] = useState<boolean>(true);
+    const [showMetaDataForLeafs, setShowMetaDataForLeafs] = useState<boolean>(true);
+    const [showMetaDataForNodes, setShowMetaDataForNodes] = useState<boolean>(false);
     const [showNadaValues, setShowNadaValues] = useState<boolean>(true);
     const [showLeafs, setShowLeafs] = useState<boolean>(true);
     const [showIdentifyingValues, setShowIdentifyingValues] = useState<boolean>(true);
@@ -49,7 +52,8 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
     const userConfigurationContext: UserConfigurationContextType = {
         indentObjectTree,
         showPropertyType,
-        showMetaData,
+        showMetaDataForLeafs,
+        showMetaDataForNodes,
         showNadaValues,
         showLeafs,
         showIdentifyingValues,
@@ -58,7 +62,8 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
 
         setIndentObjectTree: (value: boolean) => setIndentObjectTree(value),
         setShowPropertyType: (value: boolean) => setShowPropertyType(value),
-        setShowMetaData: (value: boolean) => setShowMetaData(value),
+        setShowMetaDataForLeafs: (value: boolean) => setShowMetaDataForLeafs(value),
+        setShowMetaDataForNodes: (value: boolean) => setShowMetaDataForNodes(value),
         setShowNadaValues: (value: boolean) => setShowNadaValues(value),
         setShowLeafs: (value: boolean) => setShowLeafs(value),
         setShowIdentifyingValues: (value: boolean) => setShowIdentifyingValues(value),

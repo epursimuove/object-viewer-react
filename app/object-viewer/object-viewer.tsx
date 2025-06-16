@@ -31,7 +31,7 @@ export function ObjectViewer() {
     const [originalObject, setOriginalObject] =
         useState<Record<string, PropertyValue>>({});
     
-    const { indentObjectTree, showPropertyType, showNadaValues, showMetaData, showLeafs, showIdentifyingValues, filterOnProperty, filterOnPropertyTypeEnhanced, setIndentObjectTree, setShowPropertyType, setShowMetaData, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty, setFilterOnPropertyTypeEnhanced, resetFilters } =
+    const { indentObjectTree, showPropertyType, showNadaValues, showMetaDataForLeafs, showMetaDataForNodes, showLeafs, showIdentifyingValues, filterOnProperty, filterOnPropertyTypeEnhanced, setIndentObjectTree, setShowPropertyType, setShowMetaDataForLeafs, setShowMetaDataForNodes, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty, setFilterOnPropertyTypeEnhanced, resetFilters } =
         useUserConfigurationContext();
 
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
@@ -316,14 +316,27 @@ export function ObjectViewer() {
                                 <div>
                                     <input
                                         type="checkbox"
-                                        name="showMetaData"
-                                        id="showMetaData"
-                                        checked={showMetaData}
+                                        name="showMetaDataForLeafs"
+                                        id="showMetaDataForLeafs"
+                                        checked={showMetaDataForLeafs}
                                         onChange={event => {
-                                            setShowMetaData(event.target.checked);
+                                            setShowMetaDataForLeafs(event.target.checked);
                                         }}
                                     />
-                                    <label htmlFor="showMetaData">Show meta data</label>
+                                    <label htmlFor="showMetaDataForLeafs">Show meta data for leafs</label>
+                                </div>
+
+                                <div>
+                                    <input
+                                        type="checkbox"
+                                        name="showMetaDataForNodes"
+                                        id="showMetaDataForNodes"
+                                        checked={showMetaDataForNodes}
+                                        onChange={event => {
+                                            setShowMetaDataForNodes(event.target.checked);
+                                        }}
+                                    />
+                                    <label htmlFor="showMetaDataForNodes">Show meta data for nodes</label>
                                 </div>
 
                                 <div>
