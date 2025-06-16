@@ -91,7 +91,7 @@ export default function AboutPage() {
             <h3>Tips</h3>
             
             <p>
-                A good way to see an overview of the tree structure, by getting rid of the "noise" from the leafs, is to "Expand all" rows and uncheck the "Show leafs". .
+                A good way to see an overview of the tree structure, by getting rid of the "noise" from the leaves, is to "Expand all" rows and uncheck the "Show leaves". .
             </p>
             
             

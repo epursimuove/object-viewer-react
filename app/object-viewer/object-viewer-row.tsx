@@ -14,7 +14,7 @@ export function ObjectViewerRow(
     }
 ) {
 
-    const {indentObjectTree, showPropertyType, showNadaValues, showMetaDataForLeafs, showMetaDataForNodes, showLeafs, showIdentifyingValues, setShowPropertyType, setShowMetaDataForLeafs, setShowMetaDataForNodes, setShowNadaValues, setShowLeafs, setShowIdentifyingValues} =
+    const {indentObjectTree, showPropertyType, showNadaValues, showMetaDataForLeaves, showMetaDataForNodes, showLeaves, showIdentifyingValues, setShowPropertyType, setShowMetaDataForLeaves, setShowMetaDataForNodes, setShowNadaValues, setShowLeaves, setShowIdentifyingValues} =
         useUserConfigurationContext();
 
     const isLeaf: boolean = displayRow.rowType === "leaf";
@@ -22,7 +22,7 @@ export function ObjectViewerRow(
     const isArray: boolean = displayRow.rowType === "array";
     
     const visibleIfNada: boolean = showNadaValues || !displayRow.isNada;
-    const visibleIfLeaf: boolean = showLeafs || !isLeaf;
+    const visibleIfLeaf: boolean = showLeaves || !isLeaf;
     const visibleNode: boolean = displayRow.isVisible;
 
     const isVisible: boolean =
@@ -89,7 +89,7 @@ export function ObjectViewerRow(
                     )
             }
             
-            <div className={`object-property-meta-data ${(showMetaDataForLeafs && isLeaf) || (showMetaDataForNodes && !isLeaf) ? '' : 'hidden'}`}>
+            <div className={`object-property-meta-data ${(showMetaDataForLeaves && isLeaf) || (showMetaDataForNodes && !isLeaf) ? '' : 'hidden'}`}>
                 {displayRow.propertyMetaData}
             </div>
 

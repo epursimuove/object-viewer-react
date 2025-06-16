@@ -4,8 +4,8 @@ import {type Context, createContext, type ReactNode, useContext, useState} from 
 
 const defaultUserConfigurationContext: UserConfigurationContextType = {
     indentObjectTree: true,
-    showLeafs: true,
-    showMetaDataForLeafs: true,
+    showLeaves: true,
+    showMetaDataForLeaves: true,
     showMetaDataForNodes: false,
     showNadaValues: true,
     showPropertyType: true,
@@ -15,10 +15,10 @@ const defaultUserConfigurationContext: UserConfigurationContextType = {
 
     setIndentObjectTree: (value: boolean) => {},
     setShowPropertyType: (value: boolean) => {},
-    setShowMetaDataForLeafs: (value: boolean) => {},
+    setShowMetaDataForLeaves: (value: boolean) => {},
     setShowMetaDataForNodes: (value: boolean) => {},
     setShowNadaValues: (value: boolean) => {},
-    setShowLeafs: (value: boolean) => {},
+    setShowLeaves: (value: boolean) => {},
     setShowIdentifyingValues: (value: boolean) => {},
     setFilterOnProperty: (value: string) => {},
     setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => {},
@@ -40,10 +40,10 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
 
     const [indentObjectTree, setIndentObjectTree] = useState<boolean>(true);
     const [showPropertyType, setShowPropertyType] = useState<boolean>(true);
-    const [showMetaDataForLeafs, setShowMetaDataForLeafs] = useState<boolean>(true);
+    const [showMetaDataForLeaves, setShowMetaDataForLeaves] = useState<boolean>(true);
     const [showMetaDataForNodes, setShowMetaDataForNodes] = useState<boolean>(false);
     const [showNadaValues, setShowNadaValues] = useState<boolean>(true);
-    const [showLeafs, setShowLeafs] = useState<boolean>(true);
+    const [showLeaves, setShowLeaves] = useState<boolean>(true);
     const [showIdentifyingValues, setShowIdentifyingValues] = useState<boolean>(true);
 
     const [filterOnProperty, setFilterOnProperty] = useState<string>("");
@@ -52,20 +52,20 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
     const userConfigurationContext: UserConfigurationContextType = {
         indentObjectTree,
         showPropertyType,
-        showMetaDataForLeafs,
+        showMetaDataForLeaves,
         showMetaDataForNodes,
         showNadaValues,
-        showLeafs,
+        showLeaves,
         showIdentifyingValues,
         filterOnProperty,
         filterOnPropertyTypeEnhanced,
 
         setIndentObjectTree: (value: boolean) => setIndentObjectTree(value),
         setShowPropertyType: (value: boolean) => setShowPropertyType(value),
-        setShowMetaDataForLeafs: (value: boolean) => setShowMetaDataForLeafs(value),
+        setShowMetaDataForLeaves: (value: boolean) => setShowMetaDataForLeaves(value),
         setShowMetaDataForNodes: (value: boolean) => setShowMetaDataForNodes(value),
         setShowNadaValues: (value: boolean) => setShowNadaValues(value),
-        setShowLeafs: (value: boolean) => setShowLeafs(value),
+        setShowLeaves: (value: boolean) => setShowLeaves(value),
         setShowIdentifyingValues: (value: boolean) => setShowIdentifyingValues(value),
         setFilterOnProperty: (value: string) => setFilterOnProperty(value),
         setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => setFilterOnEnhancedPropertyType(value),

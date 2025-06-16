@@ -31,7 +31,7 @@ export function ObjectViewer() {
     const [originalObject, setOriginalObject] =
         useState<Record<string, PropertyValue>>({});
     
-    const { indentObjectTree, showPropertyType, showNadaValues, showMetaDataForLeafs, showMetaDataForNodes, showLeafs, showIdentifyingValues, filterOnProperty, filterOnPropertyTypeEnhanced, setIndentObjectTree, setShowPropertyType, setShowMetaDataForLeafs, setShowMetaDataForNodes, setShowNadaValues, setShowLeafs, setShowIdentifyingValues, setFilterOnProperty, setFilterOnPropertyTypeEnhanced, resetFilters } =
+    const { indentObjectTree, showPropertyType, showNadaValues, showMetaDataForLeaves, showMetaDataForNodes, showLeaves, showIdentifyingValues, filterOnProperty, filterOnPropertyTypeEnhanced, setIndentObjectTree, setShowPropertyType, setShowMetaDataForLeaves, setShowMetaDataForNodes, setShowNadaValues, setShowLeaves, setShowIdentifyingValues, setFilterOnProperty, setFilterOnPropertyTypeEnhanced, resetFilters } =
         useUserConfigurationContext();
 
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
@@ -66,7 +66,7 @@ export function ObjectViewer() {
 
     const totalNumberOfRows: number = displayRows.length;
     
-    const totalNumberOfLeafs: number = displayRows
+    const totalNumberOfLeaves: number = displayRows
         .filter((displayRow: DisplayRow) => displayRow.rowType === "leaf")
         .length;
     
@@ -218,7 +218,7 @@ export function ObjectViewer() {
         .filter((displayRow: DisplayRow) => {
             const isLeaf: boolean = displayRow.rowType === "leaf";
             const visibleIfNada: boolean = showNadaValues || !displayRow.isNada;
-            const visibleIfLeaf: boolean = showLeafs || !isLeaf;
+            const visibleIfLeaf: boolean = showLeaves || !isLeaf;
             const visibleNode: boolean = displayRow.isVisible;
 
             const isVisible: boolean =
@@ -316,14 +316,14 @@ export function ObjectViewer() {
                                 <div>
                                     <input
                                         type="checkbox"
-                                        name="showMetaDataForLeafs"
-                                        id="showMetaDataForLeafs"
-                                        checked={showMetaDataForLeafs}
+                                        name="showMetaDataForLeaves"
+                                        id="showMetaDataForLeaves"
+                                        checked={showMetaDataForLeaves}
                                         onChange={event => {
-                                            setShowMetaDataForLeafs(event.target.checked);
+                                            setShowMetaDataForLeaves(event.target.checked);
                                         }}
                                     />
-                                    <label htmlFor="showMetaDataForLeafs">Show meta data for leafs</label>
+                                    <label htmlFor="showMetaDataForLeaves">Show meta data for leaves</label>
                                 </div>
 
                                 <div>
@@ -368,14 +368,14 @@ export function ObjectViewer() {
                                 <div>
                                     <input
                                         type="checkbox"
-                                        name="showLeafs"
-                                        id="showLeafs"
-                                        checked={showLeafs}
+                                        name="showLeaves"
+                                        id="showLeaves"
+                                        checked={showLeaves}
                                         onChange={event => {
-                                            setShowLeafs(event.target.checked);
+                                            setShowLeaves(event.target.checked);
                                         }}
                                     />
-                                    <label htmlFor="showLeafs">Show leafs (i.e. primitive values)</label>
+                                    <label htmlFor="showLeaves">Show leaves (i.e. primitive values)</label>
                                 </div>
 
                                 <div className="button-row">
@@ -459,8 +459,8 @@ export function ObjectViewer() {
                                 </div>
 
                                 <div>
-                                    <span className="label">Leafs:</span>
-                                    <span className="number">{totalNumberOfLeafs}</span>
+                                    <span className="label">Leaves:</span>
+                                    <span className="number">{totalNumberOfLeaves}</span>
                                 </div>
 
                                 <div>

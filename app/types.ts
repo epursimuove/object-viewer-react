@@ -93,20 +93,20 @@ export interface DisplayRow {
 export interface UserConfigurationContextType {
     indentObjectTree: boolean;
     showPropertyType: boolean;
-    showMetaDataForLeafs: boolean;
+    showMetaDataForLeaves: boolean;
     showMetaDataForNodes: boolean;
     showNadaValues: boolean;
-    showLeafs: boolean;
+    showLeaves: boolean;
     showIdentifyingValues: boolean;
     filterOnProperty: string;
     filterOnPropertyTypeEnhanced: PropertyTypeEnhanced[];
 
     setIndentObjectTree: (value: boolean) => void;
     setShowPropertyType: (value: boolean) => void;
-    setShowMetaDataForLeafs: (value: boolean) => void;
+    setShowMetaDataForLeaves: (value: boolean) => void;
     setShowMetaDataForNodes: (value: boolean) => void;
     setShowNadaValues: (value: boolean) => void;
-    setShowLeafs: (value: boolean) => void;
+    setShowLeaves: (value: boolean) => void;
     setShowIdentifyingValues: (value: boolean) => void;
     setFilterOnProperty: (value: string) => void;
     setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => void;
