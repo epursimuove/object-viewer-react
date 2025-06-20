@@ -88,9 +88,9 @@ html {
                 color: rgb(180, 180, 180);
             }
 
-            :not(.leaf) > & {
+            /* :not(.leaf) > & { */
                 font-weight: bold;
-            }
+            /* } */
         }
 
         .object-property-value {
