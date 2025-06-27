@@ -262,6 +262,8 @@ aside#toolbar {
     top: 10px;
     right: 10px;
     z-index: 1;
+    max-height: 90vh;
+    overflow-y: auto;
     background-color: rgb(240, 240, 255);
     padding: 0.1rem;
     border: 1px solid green;

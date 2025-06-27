@@ -2,7 +2,7 @@ import {exampleObject} from "~/object-viewer/example-data";
 import type {DisplayRow, ObjectNode, ObjectTree, PropertyTypeEnhanced, PropertyValue} from "~/types";
 import {convertObjectToTree, convertTreeToDisplayRows, isDescendant, now} from "~/util";
 import "./object-viewer.css";
-import {type ChangeEvent, type SyntheticEvent, useEffect, useState} from "react";
+import {type ChangeEvent, type SyntheticEvent, useEffect, useRef, useState} from "react";
 import {version as appVersion} from "../../package-lock.json";
 import {ObjectViewerRow} from "~/object-viewer/object-viewer-row";
 import {UserConfigurationProvider, useUserConfigurationContext} from "~/object-viewer/UserConfigurationContext";
@@ -234,6 +234,30 @@ export function ObjectViewer() {
             .toSorted((a, b) => a.localeCompare(b));
 
     const filtersActivated = () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0;
+
+    const jsonObjectSection = useRef<HTMLDetailsElement | null>(null);
+    const jsonObjectTextArea = useRef<HTMLTextAreaElement | null>(null);
+
+    useEffect(() => {
+        const jsonObjectSectionDetailsElement = jsonObjectSection.current;
+        const jsonObjectTextAreaElement = jsonObjectTextArea.current;
+
+        if (jsonObjectSectionDetailsElement && jsonObjectTextAreaElement) {
+            const handleToggle = () => {
+                if (jsonObjectSectionDetailsElement.open) {
+                    jsonObjectTextAreaElement.focus();
+                }
+            };
+
+            jsonObjectSectionDetailsElement.addEventListener("toggle", handleToggle);
+
+            // Cleanup on component unmount.
+            return () => {
+                jsonObjectSectionDetailsElement.removeEventListener("toggle", handleToggle);
+            }
+        }
+
+    }, []);
     
     logInfoPretty("DONE", false);
     
@@ -252,7 +276,7 @@ export function ObjectViewer() {
 
                     <form>
                         <section>
-                            <details>
+                            <details ref={jsonObjectSection}>
                                 <summary>
                                     JSON object
                                 </summary>
@@ -260,6 +284,7 @@ export function ObjectViewer() {
                                 <div className={"json-object"}>
                                     <label htmlFor="originalObject">JSON object/array</label>
                                     <textarea
+                                        ref={jsonObjectTextArea}
                                         name="originalObject"
                                         id="originalObject"
                                         rows={20}
