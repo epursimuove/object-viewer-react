@@ -14,19 +14,52 @@ export const exampleObject: {} = {
                 "_README": "Strings can often be treated as something else than just random characters. So educated guesses are made and some properties therefore get enhanced types.",
                 text: "Some text value",
                 extraSpaces: "Text containing  extra space characters will be flagged",
+                "1.1.1.1 - Enhanced property types from strings": {
+                    localDate: "1970-01-01",
+                    localTime: "08:22",
+                    timestamp: "2000-01-01T00:00Z",
+                    countryCode: "SE",
+                    locale: "en_GB",
+                    email: "john@doe.com",
+                    url: "https://foo.com",
+                    "1.1.1.1.1 - Date and time": {
+                        "_README": "We can differentiate timestamps, local dates and local times.",
+                        timestamps: [
+                            "2015-12-24T14:00:00Z",
+                            "2030-12-24T14:00:00Z",
+                        ],
+                        localDates: [
+                            "2024-12-24",
+                            "2038-05-06",
+                        ],
+                        localTimes: [
+                            "14:00:00",
+                            "21:45:30",
+                        ],
+
+                    },
+
+                },
+
             },
             "1.1.2 - Booleans": {
                 "true": true,
                 "false": false,
             },
             "1.1.3 - Numbers": {
-                "_README": "Numbers is represented by the 'number' type, but we enhance by indicating if it is an integer or a floating point number.",
-                "1.1.3.1 - Integers": {
+                "_README": "Numbers are represented by the 'number' type, but we enhance by indicating if it is an integer or a floating point number.",
+                "1.1.3.1 - Enhanced property types from numbers": {
+                    integer: 42,
+                    zero: 0,
+
+                },
+
+                "1.1.3.2 - Integers": {
                     negative: -123,
                     zero: 0,
                     positive: 456,
                 },
-                "1.1.3.2 - Floating points": {
+                "1.1.3.3 - Floating points": {
                     negative: -123.456,
                     zero: 0.0,
                     positive: 456.789,
@@ -53,27 +86,13 @@ export const exampleObject: {} = {
 
         },
         "1.4 - 'Nada' values": {
+            "_README": "Values that often are the default value and may not contain 'valuable' information, can be indicated (and hidden).",
             nadaEmptyString: "",
             nadaZero: 0,
             nadaZeroAgain: 0.0,
             nadaFalse: false,
             nadaNull: null,
             nadaUndefinedWillBeIgnored: undefined,
-
-        },
-        "1.5 - Date and time": {
-            timestamps: [
-                "2015-12-24T14:00:00Z",
-                "2030-12-24T14:00:00Z",
-            ],
-            localDates: [
-                "2024-12-24",
-                "2038-05-06",
-            ],
-            localTimes: [
-                "14:00:00",
-                "21:45:30",
-            ],
 
         },
         "1.6 - Ignored values": {
@@ -99,25 +118,51 @@ export const exampleObject: {} = {
 
         },
 
-        "1.8 - Enhanced property types": {
-            localDate: "1970-01-01",
-            localTime: "08:22",
-            timestamp: "2000-01-01T00:00Z",
-            countryCode: "SE",
-            locale: "en_GB",
-            email: "john@doe.com",
-            url: "https://foo.com",
-            integer: 42,
+        "1.8 - Convenient identifiers": {
+            "_README": "For many objects we can collect information from the properties and display convenient identifiers for those objects.",
+            ids: [
+                {
+                    id: 123456,
+                },
+                {
+                    uuid: "99-22-00-33",
+                },
+            ],
+            names: [
+                {
+                    name: "Linda",
+                },
+                {
+                    firstName: "Nicolina",
+                    lastName: "Johnson",
+                },
 
+            ],
+            address: [
+                {
+                    city: "New York",
+                    country: "United States",
+                },
+            ],
+            mathAndPhysics: [
+                {
+                    x: 50,
+                    y: 60,
+                    z: 70,
+                },
+                {
+                    x: -90,
+                    y: 450,
+                },
+                {
+                    depth: 50,
+                    width: 60,
+                    height: 70,
+                },
+            ],
         },
-        "1.9 - Convenient identifiers": {
-            ids: [],
-            names: [],
-            mathAndPhysics: [],
 
-        },
-
-        "1.25 - Misc": {
+        "1.9 - Misc": {
 
         },
 

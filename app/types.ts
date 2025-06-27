@@ -73,7 +73,7 @@ export type ObjectTree = PrimitiveLeaf | ObjectNode;
 export interface DisplayRow {
     rowType: "leaf" | "object" | "array";
     rowNumber: number;
-    indentationLevel: number; // Or string???
+    indentationLevel: number;
     recursiveToggleIcon: "" | "+" | "-" | "∅";
     propertyTypeOriginal: PropertyTypeOriginal;
     propertyTypeEnhanced: PropertyTypeEnhanced;

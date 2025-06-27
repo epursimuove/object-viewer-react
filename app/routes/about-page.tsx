@@ -27,30 +27,31 @@ export default function AboutPage() {
 
             <ul>
                 <li>
-                    Three types of rows are handled:
+                    Two types of rows are handled:
                     <ul>
                         <li>
-                            Either a simple primitive property, i.e. a <em>leaf</em>.
+                            Either a <em>simple primitive property</em>, i.e. a <em>leaf</em>.
                         </li>
                         <li>
-                            Or a sub-object, a nested recursive object structure.
+                            Or a <em>nested recursive object structure</em>, which can be either an <em>object</em> or an <em>array</em>. These two recursive structures, called <em>object nodes</em>, are treated similar. An array can be seen as an object with the indexes as property names.
                         </li>
-                        <li>
-                            Or an array, also a nested recursive object structure, containing different sub-objects.
-                        </li>
+                        {/* <ul>
+                            <li>
+                                A sub-object.
+                            </li>
+                            <li>
+                                An array.
+                            </li>
+                        </ul> */}
                     </ul>
                 </li>
-                
-                <li>
-                    The recursive structures objects and arrays are treated similar. An array can be seen as an object with the indexes as property names. Arrays and objects are handled as <em>object nodes</em>.
-                </li>
-                
+                                
                 <li>
                     Properties are sorted ascending (for each level).
                 </li>
                 
                 <li>
-                    When clicking an object-header, that specific subtree is toggled. Only the <em>first</em> sublevel is visible when expanded, but <em>all</em> the sublevels are hidden when collapsed.
+                    When clicking on an object node row, the underlying subtree is toggled. Per default, <em>all</em> the sublevels are displayed when expanded and hidden when collapsed. By shift-clicking you can expand only the <em>first</em> sublevel.
                 </li>
                 
                 <li>
@@ -73,7 +74,7 @@ export default function AboutPage() {
                     Date and time.
                     <ul>
                         <li>
-                            The UTC time zone is used for timestamps. No, there will probably not be any support for <a href="https://anders.nemonisimors.com/timestamps">timestamps</a> in other <a href="https://anders.nemonisimors.com/timeZones">time zones</a> in the future.
+                            The <a href="https://anders.nemonisimors.com/currentTime">UTC</a> time zone is used for timestamps. No, there will probably not be any support for <a href="https://anders.nemonisimors.com/timestamps">timestamps</a> in other <a href="https://anders.nemonisimors.com/timeZones">time zones</a> in the future.
                         </li>
 
                         <li>
@@ -85,13 +86,21 @@ export default function AboutPage() {
                         </li>
                     </ul>
                 </li>
+
             </ul>
             
             
             <h3>Tips</h3>
             
             <p>
-                A good way to see an overview of the tree structure, by getting rid of the "noise" from the leaves, is to "Expand all" rows and uncheck the "Show leaves". .
+                A good way to see an overview of the tree structure, by getting rid of the "noise" from the leaves, is to "Expand all" rows and uncheck the "Show leaves".
+            </p>
+
+
+            <h3>Suspicious values</h3>
+
+            <p>
+                Strings containing extra whitespaces often result in errors. So when a string value contains whitespaces in the beginning or end, or if there are multiple consecutive whitespaces in the middle, the string value is marked as suspicious. The value is red, and by hovering the value, you get information about why it is suspicious.
             </p>
             
             
