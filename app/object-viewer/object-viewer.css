@@ -5,6 +5,7 @@ html {
     --color-lighter: rgb(160, 160, 160);
     --color-boolean-border: rgb(230, 230, 230);
     
+    width: max-content;
 }
 
 .object-viewer {
@@ -95,7 +96,7 @@ html {
 
         .object-property-value {
             min-width: 20rem;
-            max-width: 80rem;
+            max-width: 40rem;
             color: black;
 
             &:before {
