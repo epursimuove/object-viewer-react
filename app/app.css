@@ -40,6 +40,22 @@ footer {
   border-block-start: 1px solid rgb(180, 180, 180);
   font-size: 0.9rem;
   color: rgb(180, 180, 180);
+
+  & #floating-logo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgb(255, 255, 255);
+    padding: 5px;
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+  }
 }
 
 nav {

@@ -1,0 +1,32 @@
+<svg width="4096"
+     height="640"
+     xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+        <style type="text/css"><![CDATA[
+        .character {
+         stroke: dodgerblue;
+         stroke-width: 32;
+         stroke-linecap: round;
+         stroke-linejoin: round;
+         stroke-opacity: 1;
+         fill: none;
+       }
+    ]]></style>
+    </defs>
+
+    <!--    <rect x="96" y="96" width="3904" height="448" fill="blue" opacity="0.1"/>-->
+
+    <path d="M 96 544 l 448 -448 l 448 448 l 448 -448"
+          class="character"
+    />
+
+    <path d="m 1152 544 l 448 -448 l 448 448 l 448 -448"
+          class="character"
+    />
+
+    <path d="M 2208 544 l 448 -448 l 448 448 l 448 -448 l 448 448"
+          class="character"
+    />
+
+</svg>

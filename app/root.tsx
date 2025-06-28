@@ -76,6 +76,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div>
           <img src="./favicon-nnm-alternative-2.svg" width={32} height={32} alt="Logo for NNM" />
         </div>
+
+          <div id="floating-logo">
+            <img src="./LogoNNM_blue_transparent_background.svg" width={80} alt="Logo for NNM" />
+            <div>
+              Object Viewer
+            </div>
+          </div>
       </footer>
       </body>
     </html>
