@@ -308,7 +308,15 @@ export const exampleObject: {} = {
                                 fifthLevel: {
                                     sixthLevel: {
                                         seventhLevel: {
-                                            theHiddenValue: 98765,
+                                            eighthLevel: {
+                                                ninthLevel: {
+                                                    tenthLevel: {
+                                                        eleventhLevel: {
+                                                            theAnswerToEverything: 42,
+                                                        },
+                                                    },
+                                                },
+                                            },
                                         },
                                     },
                                 },

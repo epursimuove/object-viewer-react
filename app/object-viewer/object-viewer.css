@@ -251,6 +251,18 @@ html {
         .indentation-level-14 {
             margin-inline-start: calc(14 * var(--indentation));
         }
+
+        .indentation-level-15 {
+            margin-inline-start: calc(15 * var(--indentation));
+        }
+
+        .indentation-level-16 {
+            margin-inline-start: calc(16 * var(--indentation));
+        }
+
+        .indentation-level-17 {
+            margin-inline-start: calc(17 * var(--indentation));
+        }
     }
 
     .hidden {
