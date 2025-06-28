@@ -258,6 +258,8 @@ export function ObjectViewer() {
         }
 
     }, []);
+
+    const rowsPercentage: number = Math.ceil((numberOfVisibleRows / totalNumberOfRows) * 100);
     
     logInfoPretty("DONE", false);
     
@@ -519,7 +521,7 @@ export function ObjectViewer() {
 
             <details open>
                 <summary>
-                    <h2>Object tree <small>{numberOfVisibleRows} of {totalNumberOfRows}</small></h2>
+                    <h2>Object tree <small>{numberOfVisibleRows} of {totalNumberOfRows} ({rowsPercentage}%)</small></h2>
                 </summary>
 
                 <div className="object-viewer">
