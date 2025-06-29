@@ -75,6 +75,16 @@ export function ObjectViewerRow(
                 isLeaf ?
                     (
                         <div className="object-property-value">
+
+                            {
+                                displayRow.propertyTypeEnhanced === "ColorRGB" &&
+                                <span
+                                    className="color-indicator"
+                                    style={{ backgroundColor: `${displayRow.propertyValue}` }}>
+                                    &nbsp;
+                                </span>
+                            }
+
                             <ObjectPropertyValue displayRow={displayRow} />
                         </div>
                     ) : (

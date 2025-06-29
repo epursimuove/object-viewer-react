@@ -22,6 +22,8 @@ export const exampleObject: {} = {
                     locale: "en_GB",
                     email: "john@doe.com",
                     url: "https://foo.com",
+                    color: "#ff00ff",
+                    color2: "rgb(0, 255, 255)",
                     "1.1.1.1.1 - Date and time": {
                         "_README": "We can differentiate timestamps, local dates and local times.",
                         timestamps: [
@@ -415,7 +417,20 @@ export const exampleObject: {} = {
                 "en-AU",
                 "ja-JP",
             ],
-
+            colors: [
+                "#ff0000",
+                "#00ff00",
+                "#0000FF",
+                "#00FFFF",
+                "#FFFF00",
+                "#2468ac",
+                "#ca8642",
+                "rgb(0, 255, 255)",
+                "rgb(255, 0, 255)",
+                "rgb(255, 255, 0)",
+                "rgb(50, 150, 250)",
+                "rgb(250, 150, 50)",
+            ],
         },
         "2.7 - Gotchas": {
             evilPropertiesObject: {
@@ -446,6 +461,11 @@ export const exampleObject: {} = {
     //     -1n,
     //     12345678901234567890n,
     // ],
+    "3 - Copyright": {
+        firstName: "Anders",
+        lastName: "Gustafson",
+        url: "https://anders.nemonisimors.com",
+    },
 };
 
 export const exampleArray = [exampleObject, exampleObject];

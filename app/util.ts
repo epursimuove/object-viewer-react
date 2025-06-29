@@ -36,6 +36,10 @@ const regExpLocalhostURL: RegExp = /^localhost:[\d]{1,5}[^ ]*$/;
 
 const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
+const regExpHexColorRGB: RegExp = /^#[0-9a-fA-F]{6}$/;
+
+const regExpRGBColorRGB: RegExp = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/;
+
 const isTimestamp = (s: string): boolean => {
     const isTimestamp: boolean = regExpTimestamp.test(s);
     return isTimestamp;
@@ -54,6 +58,11 @@ const isLocalTime = (s: string): boolean => {
 const isURL = (s: string): boolean => {
     const isURL: boolean = regExpSecureURL.test(s) || regExpInsecureURL.test(s) || regExpLocalhostURL.test(s);
     return isURL;
+};
+
+const isColorRGB = (s: string): boolean => {
+    const isColorRGB: boolean = regExpHexColorRGB.test(s) || regExpRGBColorRGB.test(s);
+    return isColorRGB;
 };
 
 const potentialCountryCode = (s: string): boolean => {
@@ -577,8 +586,10 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
                                                     "EmptyString" :
                                                     propertyTypeOriginal === "string" && isURL(propertyValue as string) ?
                                                         "URL" :
+                                                        propertyTypeOriginal === "string" && isColorRGB(propertyValue as string) ?
+                                                            "ColorRGB" :
 
-                                                        propertyTypeOriginal;
+                                                            propertyTypeOriginal;
     // TODO More options
 
     return propertyTypEnhanced;
@@ -660,7 +671,46 @@ const buildMetaData = (
             return `${prettifiedDuration(roundedDuration)}`;
         }
     }
+
+    if (propertyTypeEnhanced === "ColorRGB") {
+        const colorCode: string = propertyValue as string;
+        if (colorCode.startsWith("#")) {
+            const { red, green, blue } = splitIntoColorParts(colorCode);
+
+            return `rgb(${red}, ${green}, ${blue})`;
+        }
+        else if (colorCode.startsWith("rgb(")) {
+            const hexRGB = convertToHexRGB(colorCode);
+
+            return `#${hexRGB}`;
+        }
+    }
 }
+
+const splitIntoColorParts = (colorCodeHexRGB: string): {red: number, green: number, blue: number} => {
+
+    const redHex: string = colorCodeHexRGB.slice(1, 3);
+    const greenHex: string = colorCodeHexRGB.slice(3, 5);
+    const blueHex: string = colorCodeHexRGB.slice(5, 7);
+
+    return {
+        red: parseInt(redHex, 16),
+        green: parseInt(greenHex, 16),
+        blue: parseInt(blueHex, 16),
+    };
+};
+
+const convertDecimalToHex = (decimal: string): string =>
+    parseInt(decimal, 10).toString(16).toUpperCase().padStart(2, "0");
+
+const convertToHexRGB = (colorCodeRGB: string): string => {
+    const rgbParts: string[] = colorCodeRGB.slice(4).split(",");
+    const red: string = convertDecimalToHex(rgbParts[0]);
+    const green: string = convertDecimalToHex(rgbParts[1]);
+    const blue: string = convertDecimalToHex(rgbParts[2]);
+
+    return `${red}${green}${blue}`;
+};
 
 const prettifiedDuration = (duration: Temporal.Duration): string => {
     let durationPart: string = "??????";

@@ -33,7 +33,8 @@ export type PropertyTypeEnhanced =
     | "EmptyString"
     | "Integer"
     | "URL"
-    | "Zero";
+    | "Zero"
+    | "ColorRGB";
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 
