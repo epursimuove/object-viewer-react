@@ -4,7 +4,7 @@ html {
     --color-divider: rgb(200, 200, 200);
     --color-lighter: rgb(160, 160, 160);
     --color-boolean-border: rgb(230, 230, 230);
-    
+
     width: max-content;
 }
 
@@ -14,7 +14,6 @@ html {
     font-family: Menlo, "Courier New", monospace;
 
     .row-item-wrapper {
-
         display: flex;
         flex-direction: row;
         align-items: baseline;
@@ -90,7 +89,7 @@ html {
             }
 
             /* :not(.leaf) > & { */
-                font-weight: bold;
+            font-weight: bold;
             /* } */
         }
 
@@ -167,7 +166,6 @@ html {
             & .nada-value {
                 color: var(--color-nada);
             }
-
         }
 
         .convenient-identifier {
@@ -184,16 +182,16 @@ html {
             /*&.suspicious {*/
             /*    color: red;*/
             /*    font-weight: bold;*/
-            
+
             /*    &:after {*/
             /*        content: " ! Suspicious content";*/
             /*    }*/
             /*}*/
-            
+
             /*&.extra-spaces {*/
             /*    color: red;*/
             /*    font-weight: bold;*/
-            
+
             /*    &:after {*/
             /*        content: " ! Extra spaces";*/
             /*    }*/
@@ -289,16 +287,15 @@ aside#toolbar {
     padding: 0.1rem;
     border: 1px solid green;
     border-radius: 0.5rem;
-    
+
     & form {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         /* align-items: flex-end; */
     }
-    
+
     details {
-        
         padding: 0.5rem;
         border: 1px solid transparent;
         border-radius: 0.5rem;
@@ -306,7 +303,7 @@ aside#toolbar {
         &[open]:not(.menu-wrapper) {
             border: 1px solid rgb(150, 150, 150);
         }
-        
+
         summary {
             text-align: right;
             text-transform: uppercase;
@@ -316,7 +313,7 @@ aside#toolbar {
             &:hover {
                 cursor: pointer;
             }
-            
+
             &::after {
                 content: "+";
                 font-weight: bold;
@@ -324,23 +321,19 @@ aside#toolbar {
                 font-family: Menlo, "Courier New", monospace;
                 margin-inline-start: 5px;
             }
-            
+
             [open] > &::after {
                 content: "−";
             }
-
         }
-        
+
         & details[open] {
             background-color: rgb(255, 255, 240);
         }
-        
-
     }
 
     #filters {
         details {
-
             /* display: flex;
             flex-direction: column;
             gap: 1rem; */
@@ -363,34 +356,60 @@ aside#toolbar {
         }
     }
 
-        #statistics {
-            details {
-                div {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: flex-end;
-                    gap: 0.5rem;
+    #statistics {
+        details {
+            div {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                gap: 0.5rem;
 
-                    & .label {
-                        color: var(--color-lighter);
-                        min-width: 4rem;
-                    }
-    
-                    & .number {
-                        font-family: Menlo, "Courier New", monospace;
-                        min-width: 2rem;
-                        text-align: end;
-                    }
+                & .label {
+                    color: var(--color-lighter);
+                    min-width: 4rem;
+                }
+
+                & .number {
+                    font-family: Menlo, "Courier New", monospace;
+                    min-width: 2rem;
+                    text-align: end;
                 }
             }
-        }}
+        }
+    }
+
+    #history {
+        details {
+            font-family: Menlo, "Courier New", monospace;
+
+            div.history-item-row {
+                cursor: pointer;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                gap: 1rem;
+
+                &:hover {
+                    background-color: aquamarine;
+                }
+
+                .index {
+                    font-size: 0.85rem;
+                    color: var(--color-lighter);
+                }
+
+                .id {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
 
 form {
-    
     .button-row {
         display: flex;
         flex-direction: row;
         gap: 1rem;
     }
 }
-

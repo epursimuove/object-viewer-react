@@ -1,7 +1,9 @@
+import type { Temporal } from "@js-temporal/polyfill";
+
 export type PropertyName = string;
 
 export type PropertyTypeOriginal =
-    "string"
+    | "string"
     | "number"
     | "boolean"
     | "object"
@@ -13,7 +15,7 @@ export type PropertyTypeOriginal =
 
 // TODO Is is possible to extend from PropertyTypeOriginal?!?
 export type PropertyTypeEnhanced =
-    "string"
+    | "string"
     | "number"
     | "boolean"
     | "object"
@@ -36,16 +38,22 @@ export type PropertyTypeEnhanced =
     | "Zero"
     | "ColorRGB";
 
-export type PropertyValue = number | string | boolean | null | object | undefined;
+export type PropertyValue =
+    | number
+    | string
+    | boolean
+    | null
+    | object
+    | undefined;
 
 export interface TreeBase {
     nodeType: "leaf" | "object" | "array";
     id: string;
     parentId?: string;
     level: number;
-    
+
     isVisible: boolean;
-    
+
     propertyName: PropertyName;
     propertyTypeOriginal: PropertyTypeOriginal;
     propertyTypeEnhanced: PropertyTypeEnhanced;
@@ -113,4 +121,12 @@ export interface UserConfigurationContextType {
     setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => void;
 
     resetFilters: () => void;
+}
+
+export interface HistoryItem {
+    id: string;
+    checksum: string;
+    object: Record<string, PropertyValue>;
+    timestampFirstView: Temporal.Instant;
+    timestampLastView: Temporal.Instant;
 }
