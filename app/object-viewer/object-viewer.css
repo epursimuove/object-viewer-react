@@ -8,6 +8,12 @@ html {
     width: max-content;
 }
 
+@media screen and (max-width: 600px) {
+    html {
+        --indentation: 1rem;
+    }
+}
+
 .object-viewer {
     white-space: nowrap;
 
@@ -380,9 +386,8 @@ aside#toolbar {
 
     #history {
         details {
-            font-family: Menlo, "Courier New", monospace;
-
             div.history-item-row {
+                font-family: Menlo, "Courier New", monospace;
                 cursor: pointer;
                 display: flex;
                 flex-direction: row;
