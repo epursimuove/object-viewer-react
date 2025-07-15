@@ -10,6 +10,7 @@ import type {
 import {
     convertObjectToTree,
     convertTreeToDisplayRows,
+    improveColor,
     isDescendant,
     loadHistoryFromStorage,
     now,
@@ -139,9 +140,12 @@ export function ObjectViewer() {
 
             if (saveHistory) {
                 saveHistoryToStorage(nextOriginalObject);
+                // setHistoryItems(loadHistoryFromStorage());
+                // setHistoryItems2(loadHistoryFromStorage());
             }
         } catch (err) {
             error("error", err);
+            console.error("error", typeof err, (err as SyntaxError).name);
             setParsingError(err as SyntaxError);
         }
     }
@@ -314,6 +318,15 @@ export function ObjectViewer() {
     const rowsPercentage: number = Math.ceil((numberOfVisibleRows / totalNumberOfRows) * 100);
 
     let historyItems: HistoryItem[] = loadHistoryFromStorage();
+    // const [historyItems2, setHistoryItems2] = useState<HistoryItem[]>(loadHistoryFromStorage());
+
+    // useEffect(() => {
+    //     console.info("On mounting", historyItems2);
+    // }, []);
+
+    // useEffect(() => {
+    //     console.info("HEHEHEEH", historyItems2);
+    // }, [historyItems2]);
 
     function retrieveObjectFromHistory(historyItem: HistoryItem) {
         debug(`Retrieve object from history`);
@@ -323,6 +336,13 @@ export function ObjectViewer() {
         resetFilters();
         saveHistoryToStorage(historyItem.object); // So the sorting order of the history will be updated.
     }
+
+    // function clearHistory() {
+    //     debug(`Clearing history`);
+    //     clearHistoryInStorage();
+    //     // setHistoryItems(loadHistoryFromStorage());
+    //     // historyItems = loadHistoryFromStorage();
+    // }
 
     logInfoPretty("DONE", false);
 
@@ -365,7 +385,7 @@ export function ObjectViewer() {
                                         Recalculate
                                     </button>
                                     <div className="parsing-error">
-                                        {JSON.stringify(parsingError)}
+                                        {parsingError && `${parsingError}`}
                                     </div>
                                 </div>
                             </details>
@@ -382,17 +402,37 @@ export function ObjectViewer() {
                                             key={historyItem.id}
                                             className="history-item-row"
                                             onClick={() => retrieveObjectFromHistory(historyItem)}
+                                            title={`Used ${historyItem.timestampFirstView
+                                                .toString()
+                                                .slice(0, 10)} - ${historyItem.timestampLastView
+                                                .toString()
+                                                .slice(0, 10)}`}
                                         >
-                                            <span className="index">{index + 1}:</span>
+                                            <span className="index">{index + 1}</span>
+
                                             <span className="id">
                                                 {prettifySha256(historyItem.id).toUpperCase()}
                                             </span>
-                                            {/* {" "}
-                                            {historyItem.timestampFirstView.toString().slice(0, 19)}
-                                            {" - "}
-                                            {historyItem.timestampLastView.toString().slice(0, 19)} */}
+
+                                            <span
+                                                className="color-indicator"
+                                                style={{
+                                                    backgroundColor: `#${improveColor(
+                                                        prettifySha256(historyItem.id, 6)
+                                                    )}`,
+                                                    width: "2rem",
+                                                }}
+                                            >
+                                                &nbsp;
+                                            </span>
                                         </div>
                                     ))}
+
+                                    {/* {historyItems.length > 0 && (
+                                        <button type="button" onClick={clearHistory}>
+                                            Clear history
+                                        </button>
+                                    )} */}
                                 </div>
                             </details>
                         </section>

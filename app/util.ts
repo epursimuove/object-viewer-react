@@ -816,11 +816,15 @@ export const isDescendant = (id: string, descendantId: string) => {
 };
 
 const storageKeyForHistory = "__NNM_Object_Viewer_History__";
-const maxNumberOfHistoryItems = 5;
+const maxNumberOfHistoryItems = 7;
 
-export const prettifySha256 = (sha256Code: string): string => sha256Code.slice(-2);
+export const prettifySha256 = (sha256Code: string, numberOfCharacters = 3): string =>
+    sha256Code.slice(-numberOfCharacters);
 
-export const saveHistoryToStorage = (object: Record<string, PropertyValue>): void => {
+export const saveHistoryToStorage = (
+    object: Record<string, PropertyValue>
+    // callback?: () => void
+): void => {
     let historyItems: HistoryItem[] = loadHistoryFromStorage();
     debug(
         "Current history from local storage",
@@ -868,6 +872,9 @@ export const saveHistoryToStorage = (object: Record<string, PropertyValue>): voi
             storageKeyForHistory,
             JSON.stringify(historyItems.slice(0, maxNumberOfHistoryItems))
         );
+        // if (callback) {
+        //     callback();
+        // }
     });
 };
 
@@ -878,6 +885,10 @@ export const loadHistoryFromStorage = (): HistoryItem[] => {
 
     return historyItems;
 };
+
+// export const clearHistoryInStorage = (): void => {
+//     localStorage.removeItem(storageKeyForHistory);
+// };
 
 async function sha256(message: string) {
     // Encode the message as a Uint8Array.
@@ -895,3 +906,31 @@ async function sha256(message: string) {
 
 // console.log("HEKKI", sha256("HEJ"));
 // sha256("HELLEL").then((value) => console.log("HRHEJR", value));
+
+export const improveColor = (colorHex: string): string => {
+    if (colorHex.length !== 6) {
+        return colorHex;
+    }
+
+    const redPart: string = colorHex.slice(0, 2);
+    const greenPart: string = colorHex.slice(2, 4);
+    const bluePart: string = colorHex.slice(4, 6);
+
+    const newRedPart: string = getImprovedColorPart(redPart);
+    const newGreenPart: string = getImprovedColorPart(greenPart);
+    const newBluePart: string = getImprovedColorPart(bluePart);
+
+    return `${newRedPart}${newGreenPart}${newBluePart}`;
+};
+
+const getImprovedColorPart = (hex: string): string => {
+    const current: number = Number.parseInt(hex, 16);
+
+    if (current < 85) {
+        return "00";
+    }
+    if (current < 170) {
+        return "80";
+    }
+    return "ff";
+};

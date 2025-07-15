@@ -8,10 +8,11 @@ import { now } from "../util";
 
 export const exampleObject: {} = {
     "1 - Documentation": {
-        "_README": "Basic documentation is found here in the actual object tree.",
+        _README: "Basic documentation is found here in the actual object tree.",
         "1.1 - Primitives": {
             "1.1.1 - Strings": {
-                "_README": "Strings can often be treated as something else than just random characters. So educated guesses are made and some properties therefore get enhanced types.",
+                _README:
+                    "Strings can often be treated as something else than just random characters. So educated guesses are made and some properties therefore get enhanced types.",
                 text: "Some text value",
                 extraSpaces: "Text containing  extra space characters will be flagged",
                 "1.1.1.1 - Enhanced property types from strings": {
@@ -25,35 +26,23 @@ export const exampleObject: {} = {
                     color: "#ff00ff",
                     color2: "rgb(0, 255, 255)",
                     "1.1.1.1.1 - Date and time": {
-                        "_README": "We can differentiate timestamps, local dates and local times.",
-                        timestamps: [
-                            "2015-12-24T14:00:00Z",
-                            "2030-12-24T14:00:00Z",
-                        ],
-                        localDates: [
-                            "2024-12-24",
-                            "2038-05-06",
-                        ],
-                        localTimes: [
-                            "14:00:00",
-                            "21:45:30",
-                        ],
-
+                        _README: "We can differentiate timestamps, local dates and local times.",
+                        timestamps: ["2015-12-24T14:00:00Z", "2030-12-24T14:00:00Z"],
+                        localDates: ["2024-12-24", "2038-05-06"],
+                        localTimes: ["14:00:00", "21:45:30"],
                     },
-
                 },
-
             },
             "1.1.2 - Booleans": {
-                "true": true,
-                "false": false,
+                true: true,
+                false: false,
             },
             "1.1.3 - Numbers": {
-                "_README": "Numbers are represented by the 'number' type, but we enhance by indicating if it is an integer or a floating point number.",
+                _README:
+                    "Numbers are represented by the 'number' type, but we enhance by indicating if it is an integer or a floating point number.",
                 "1.1.3.1 - Enhanced property types from numbers": {
                     integer: 42,
                     zero: 0,
-
                 },
 
                 "1.1.3.2 - Integers": {
@@ -66,10 +55,7 @@ export const exampleObject: {} = {
                     zero: 0.0,
                     positive: 456.789,
                 },
-
-
             },
-
         },
         "1.2 - Objects": {
             emptyObject: {},
@@ -77,51 +63,47 @@ export const exampleObject: {} = {
                 bar: 1,
                 baz: 2,
             },
-
         },
         "1.3 - Arrays": {
             emptyArray: [],
-            arrayWithStrings: [
-                "first",
-                "second",
-            ],
-
+            arrayWithStrings: ["first", "second"],
         },
         "1.4 - 'Nada' values": {
-            "_README": "Values that often are the default value and may not contain 'valuable' information, can be indicated (and hidden).",
+            _README:
+                "Values that often are the default value and may not contain 'valuable' information, can be indicated (and hidden).",
             nadaEmptyString: "",
             nadaZero: 0,
             nadaZeroAgain: 0.0,
             nadaFalse: false,
             nadaNull: null,
             nadaUndefinedWillBeIgnored: undefined,
-
         },
         "1.6 - Ignored values": {
             thisIsUndefinedWillBeIgnored: undefined, // undefined is not valid JSON value, will be ignored.
             // thisIsBigInt: 1n, // BigInt not supported out-of-the-box by JSON.
             thisIsSymbol: Symbol("test"), // Symbol is not valid JSON value, will be ignored.
             thisIsFunction: (a: number, b: number) => a + b, // Function is not valid JSON value, will be ignored.
-
         },
         "1.7 - Sets and Maps": {
             thisIsASet: new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
             "thisIsAnotherSet<SET>": new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
-            thisIsAMap: new Map([ // A Map is as default represented as empty object.
+            thisIsAMap: new Map([
+                // A Map is as default represented as empty object.
                 [1, "one"],
                 [2, "two"],
                 [3, "three"],
             ]),
-            "thisIsAnotherMap<MAP>": new Map([ // A Map is as default represented as empty object.
+            "thisIsAnotherMap<MAP>": new Map([
+                // A Map is as default represented as empty object.
                 [1, "one"],
                 [2, "two"],
                 [3, "three"],
             ]),
-
         },
 
         "1.8 - Convenient identifiers": {
-            "_README": "For many objects we can collect information from the properties and display convenient identifiers for those objects.",
+            _README:
+                "For many objects we can collect information from the properties and display convenient identifiers for those objects.",
             ids: [
                 {
                     id: 123456,
@@ -138,7 +120,6 @@ export const exampleObject: {} = {
                     firstName: "Nicolina",
                     lastName: "Johnson",
                 },
-
             ],
             address: [
                 {
@@ -164,10 +145,7 @@ export const exampleObject: {} = {
             ],
         },
 
-        "1.9 - Misc": {
-
-        },
-
+        "1.9 - Misc": {},
     },
     "2 - Examples": {
         "2.1 - Person": {
@@ -238,18 +216,19 @@ export const exampleObject: {} = {
                         ],
                     },
                 },
-                children2: [{
-                    name: "Adam",
-                    age: 23,
-                },
-                {
-                    name: "Bridget",
-                    age: 14,
-                },
-                {
-                    name: "Christine",
-                    age: 5,
-                },
+                children2: [
+                    {
+                        name: "Adam",
+                        age: 23,
+                    },
+                    {
+                        name: "Bridget",
+                        age: 14,
+                    },
+                    {
+                        name: "Christine",
+                        age: 5,
+                    },
                 ],
                 phones: ["012-34567", "070-987654321"],
                 phones2: { home: "012-34567", mobile: "070-987654321" },
@@ -275,7 +254,6 @@ export const exampleObject: {} = {
                 emailSecondary: "john@doe.se",
                 emailWork: "john.s.doe@the.special.company.org",
                 currentLocalTime: "21:05:20",
-
             },
         },
         "2.2 - Math": {
@@ -293,13 +271,13 @@ export const exampleObject: {} = {
                 width: 300,
                 height: 150,
             },
-
         },
         "2.3 - Texts": {
-            longerText: "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
-            textWithNewlines: "You can also\nuse newlines\nin your texts that will be formatted\na little bit different.",
+            longerText:
+                "An example of what will happen if the text in a string property is a bit longer than the normal small examples. Hopefully it will wrap nicely depending on the width of the browser window. The text will be at least minimum width wide and not wider than maximum width. Perhaps the text should be truncated in some way, if it is really long? Though, I like the current solution.",
+            textWithNewlines:
+                "You can also\nuse newlines\nin your texts that will be formatted\na little bit different.",
             suspiciousString: " A lot  of extra spaces ",
-
         },
         "2.4 - Nested arrays and objects": {
             deeplyNestedObject: {
@@ -327,28 +305,42 @@ export const exampleObject: {} = {
                     },
                 },
             },
-            deeplyNestedArray: [
+            deeplyNestedArray: [[[[[[[[4711]]]]]]]],
+            arraysWithinArrays: [
                 [
+                    456,
+                    789,
+                    "abc",
+                    "xyz",
+                    [],
                     [
+                        "List of countries",
                         [
-                            [
-                                [
-                                    [
-                                        [
-                                            4711,
-                                        ],
-                                    ],
-                                ],
-                            ],
+                            "SE",
+                            "DK",
+                            "FI",
+                            "NO",
+                            "IS",
+                            "GB",
+                            "BR",
+                            "US",
+                            "JP",
+                            "AU",
+                            "NZ",
+                            "ES",
+                            "AR",
+                            "FR",
+                            "DE",
+                            "CH",
+                            "NL",
+                            "BE",
                         ],
+                        { city: "Malmö", temperatureCelsius: -23 },
+                        "Some text containing extra  spaces",
                     ],
                 ],
-            ],
-            arraysWithinArrays: [
-                [456, 789, "abc", "xyz", [], ["List of countries", ["SE", "DK", "FI", "NO", "IS", "GB", "BR", "US", "JP", "AU", "NZ", "ES", "AR", "FR", "DE", "CH", "NL", "BE"], { city: "Malmö", temperatureCelsius: -23 }, "Some text containing extra  spaces"]],
                 [{ hours: 23, minutes: 34, seconds: 27 }],
             ],
-
         },
         "2.5 - Date and time": {
             dateAndTime: {
@@ -362,23 +354,31 @@ export const exampleObject: {} = {
                     now.subtract({ hours: 15 }),
                     now.add({ hours: 15 }),
                     now.toZonedDateTimeISO("UTC").startOfDay().toInstant(),
-                    now.toZonedDateTimeISO("UTC").with({ hour: 23, minute: 59, second: 59 }).toInstant(),
-                    now.toZonedDateTimeISO("UTC").with({ month: 1, day: 1 }).startOfDay().toInstant(),
-                    now.toZonedDateTimeISO("UTC").with({ month: 12, day: 31, hour: 23, minute: 59, second: 59 }).toInstant(),
+                    now
+                        .toZonedDateTimeISO("UTC")
+                        .with({ hour: 23, minute: 59, second: 59 })
+                        .toInstant(),
+                    now
+                        .toZonedDateTimeISO("UTC")
+                        .with({ month: 1, day: 1 })
+                        .startOfDay()
+                        .toInstant(),
+                    now
+                        .toZonedDateTimeISO("UTC")
+                        .with({ month: 12, day: 31, hour: 23, minute: 59, second: 59 })
+                        .toInstant(),
                 ],
                 localDates: [
                     "1969-07-20",
                     now.toString().slice(0, 10),
                     now.add({ hours: 24 }).toString().slice(0, 10),
-                    now.add({ hours: 24 * 20 }).toString().slice(0, 10),
+                    now
+                        .add({ hours: 24 * 20 })
+                        .toString()
+                        .slice(0, 10),
                 ],
-                localTimes: [
-                    "08:25:30",
-                    "21:40:00",
-                    "14:05",
-                ],
+                localTimes: ["08:25:30", "21:40:00", "14:05"],
             },
-
         },
         "2.6 - Misc": {
             flights: [
@@ -416,6 +416,10 @@ export const exampleObject: {} = {
                 "en_IN",
                 "en-AU",
                 "ja-JP",
+                "fi-FI",
+                "en_IE",
+                "it_IT",
+                "fr_FR",
             ],
             colors: [
                 "#ff0000",
@@ -423,6 +427,8 @@ export const exampleObject: {} = {
                 "#0000FF",
                 "#00FFFF",
                 "#FFFF00",
+                "#FFFFFF",
+                "#000000",
                 "#2468ac",
                 "#ca8642",
                 "rgb(0, 255, 255)",
@@ -436,10 +442,10 @@ export const exampleObject: {} = {
             evilPropertiesObject: {
                 "[0]": true,
                 "[1]": false,
-                "a": true,
-                "z": true,
-                "A": false,
-                "Z": false,
+                a: true,
+                z: true,
+                A: false,
+                Z: false,
                 0: false,
                 1: false,
                 UUID: true,
@@ -452,9 +458,7 @@ export const exampleObject: {} = {
                     last: "Doe",
                 },
             },
-
         },
-
     },
     // largeNumbers: [ // BigInt not supported out-of-the-box by JSON.
     //     1n,
