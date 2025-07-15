@@ -160,7 +160,7 @@ html {
             }
 
             & .timestamp {
-                color: darkmagenta;
+                /* color: darkmagenta; */
                 display: inline-flex;
                 flex-direction: row;
                 gap: 0.2rem;
@@ -170,6 +170,10 @@ html {
                     color: var(--color-divider);
                     font-size: 0.75rem;
                 }
+            }
+
+            & :is(.timestamp, .local-date, .local-time) {
+                color: green;
             }
 
             & .nada-value {

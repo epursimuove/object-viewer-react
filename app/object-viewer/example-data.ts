@@ -25,6 +25,8 @@ export const exampleObject: {} = {
                     url: "https://foo.com",
                     color: "#ff00ff",
                     color2: "rgb(0, 255, 255)",
+                    semVer: "1.2.3",
+                    phone: "+460701234567",
                     "1.1.1.1.1 - Date and time": {
                         _README: "We can differentiate timestamps, local dates and local times.",
                         timestamps: ["2015-12-24T14:00:00Z", "2030-12-24T14:00:00Z"],
@@ -437,6 +439,11 @@ export const exampleObject: {} = {
                 "rgb(50, 150, 250)",
                 "rgb(250, 150, 50)",
             ],
+            semanticVersioning: ["9.8.7", "15.16.17", "0.101.9999"],
+            theUser: {
+                username: "angus",
+            },
+            phoneNumbers: ["+46701112223", "+460709876543"],
         },
         "2.7 - Gotchas": {
             evilPropertiesObject: {

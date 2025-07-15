@@ -36,15 +36,11 @@ export type PropertyTypeEnhanced =
     | "Integer"
     | "URL"
     | "Zero"
-    | "ColorRGB";
+    | "ColorRGB"
+    | "SemVer"
+    | "PhoneNumber";
 
-export type PropertyValue =
-    | number
-    | string
-    | boolean
-    | null
-    | object
-    | undefined;
+export type PropertyValue = number | string | boolean | null | object | undefined;
 
 export interface TreeBase {
     nodeType: "leaf" | "object" | "array";

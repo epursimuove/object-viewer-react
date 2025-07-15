@@ -128,8 +128,6 @@ export function ObjectViewer() {
 
         setParsingError(null);
 
-        console.log(localStorage.length);
-
         try {
             const nextOriginalObject: Record<string, PropertyValue> =
                 JSON.parse(originalObjectAsText);

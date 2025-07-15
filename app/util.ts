@@ -45,6 +45,10 @@ const regExpHexColorRGB: RegExp = /^#[0-9a-fA-F]{6}$/;
 
 const regExpRGBColorRGB: RegExp = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/;
 
+const regExpSemanticVersioning: RegExp = /^\d+\.\d+\.\d+$/;
+
+const regExpPhoneNumber: RegExp = /^\+\d{2}\d{2,3}\d{7}$/; // Swedish mobile number.
+
 const isTimestamp = (s: string): boolean => {
     const isTimestamp: boolean = regExpTimestamp.test(s);
     return isTimestamp;
@@ -70,6 +74,10 @@ const isColorRGB = (s: string): boolean => {
     const isColorRGB: boolean = regExpHexColorRGB.test(s) || regExpRGBColorRGB.test(s);
     return isColorRGB;
 };
+
+const isSemanticVersioning = (s: string): boolean => regExpSemanticVersioning.test(s);
+
+const isPhoneNumber = (s: string): boolean => regExpPhoneNumber.test(s);
 
 const potentialCountryCode = (s: string): boolean => {
     const isPotentialCountryCode: boolean = regExpCountryCode.test(s);
@@ -312,6 +320,7 @@ const goodPropertyNames: string[] = [
     "uuid",
     "id",
     "name",
+    "username",
     "fullName",
     "firstName",
     "lastName",
@@ -383,6 +392,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
             id,
             uuid,
             name,
+            username,
             fullName,
             firstName,
             lastName,
@@ -407,6 +417,9 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
         }
         if (type) {
             identifyingValueParts.push(`Type: ${type}`);
+        }
+        if (username) {
+            identifyingValueParts.push(`Username: ${username}`);
         }
         if (name || fullName) {
             identifyingValueParts.push(fullName ? `Name: ${fullName}` : `Name: ${name}`);
@@ -626,6 +639,10 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
             ? "URL"
             : propertyTypeOriginal === "string" && isColorRGB(propertyValue as string)
             ? "ColorRGB"
+            : propertyTypeOriginal === "string" && isSemanticVersioning(propertyValue as string)
+            ? "SemVer"
+            : propertyTypeOriginal === "string" && isPhoneNumber(propertyValue as string)
+            ? "PhoneNumber"
             : propertyTypeOriginal;
     // TODO More options
 
