@@ -69,7 +69,7 @@ export const exampleObject: {} = {
         "1.3 - Arrays": {
             emptyArray: [],
             arrayWithStrings: ["first", "second"],
-            arrayWithIntegers: [5, 12, 9, 18, 25, 4, 15, 11],
+            arrayWithIntegers: [-1, 0, 1],
             arrayWithIntegers2: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
             arrayWithNumbers: [3.1415, 2.78, 9.81],
         },
@@ -447,6 +447,8 @@ export const exampleObject: {} = {
                 username: "angus",
             },
             phoneNumbers: ["+46701112223", "+460709876543"],
+            numbers: [0, 0, 0, 0],
+            booleans: [false, false, true],
         },
         "2.7 - Gotchas": {
             evilPropertiesObject: {

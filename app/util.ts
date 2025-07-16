@@ -477,16 +477,46 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
         }
 
         if (currentObjectNode.nodeType === "array") {
-            const typeOfItems = new Set(
+            const typeOriginalOfItems: Set<PropertyTypeOriginal> = new Set(
                 Object.values(currentObjectNode.containedProperties).map(
-                    (objectTree: ObjectTree) => objectTree.propertyTypeEnhanced
+                    (objectTree: ObjectTree) => objectTree.propertyTypeOriginal
                 )
             );
-            if (typeOfItems.size === 1) {
-                const arrayTypeEnhanced: PropertyTypeEnhanced = [...typeOfItems][0];
-                currentObjectNode.convenientIdentifierWhenCollapsed = `${arrayTypeEnhanced}[]`;
 
-                if (arrayTypeEnhanced === "number" || arrayTypeEnhanced === "Integer") {
+            if (typeOriginalOfItems.size === 1) {
+                const arrayTypeOriginal: PropertyTypeOriginal = [...typeOriginalOfItems][0];
+
+                let arrayTypeToDisplay: PropertyTypeOriginal | PropertyTypeEnhanced =
+                    arrayTypeOriginal;
+
+                if (arrayTypeOriginal === "string" || arrayTypeOriginal === "number") {
+                    const typeEnhancedOfItems: Set<PropertyTypeEnhanced> = new Set(
+                        Object.values(currentObjectNode.containedProperties).map(
+                            (objectTree: ObjectTree) => objectTree.propertyTypeEnhanced
+                        )
+                    );
+
+                    if (arrayTypeOriginal === "string") {
+                        if (typeEnhancedOfItems.size === 1) {
+                            arrayTypeToDisplay = [...typeEnhancedOfItems][0];
+                        }
+                    } else if (arrayTypeOriginal === "number") {
+                        if (typeEnhancedOfItems.size === 1) {
+                            arrayTypeToDisplay = [...typeEnhancedOfItems][0];
+                        } /*else if (typeEnhancedOfItems.size === 2) {
+                            if (
+                                typeEnhancedOfItems.has("Zero") &&
+                                typeEnhancedOfItems.has("Integer")
+                            ) {
+                                arrayTypeToDisplay = "Integer";
+                            }
+                        }*/
+                    }
+                }
+
+                currentObjectNode.convenientIdentifierWhenCollapsed = `${arrayTypeToDisplay}[]`;
+
+                if (arrayTypeOriginal === "number") {
                     const values: number[] = Object.values(
                         currentObjectNode.containedProperties
                     ).map(
