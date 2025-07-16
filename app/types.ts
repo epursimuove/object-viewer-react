@@ -38,7 +38,9 @@ export type PropertyTypeEnhanced =
     | "Zero"
     | "ColorRGB"
     | "SemVer"
-    | "PhoneNumber";
+    | "PhoneNumber"
+    | "BooleanFalse"
+    | "BooleanTrue";
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 
@@ -71,6 +73,7 @@ export interface PrimitiveLeaf extends TreeBase {
 
 export interface ObjectNode extends TreeBase, NodeBase {
     containedProperties: Record<string, ObjectTree>; // Can also be indexes for arrays ("0", "1", "2", ...).
+    arithmeticAggregation?: ArithmeticAggregation;
 }
 
 export type ObjectTree = PrimitiveLeaf | ObjectNode;
@@ -93,6 +96,7 @@ export interface DisplayRow {
     id: string;
     parentId?: string;
     isNada: boolean;
+    arithmeticAggregation?: ArithmeticAggregation;
 }
 
 export interface UserConfigurationContextType {
@@ -125,4 +129,12 @@ export interface HistoryItem {
     object: Record<string, PropertyValue>;
     timestampFirstView: Temporal.Instant;
     timestampLastView: Temporal.Instant;
+}
+
+export interface ArithmeticAggregation {
+    min?: number;
+    max?: number;
+    mean?: number;
+    median?: number;
+    sum?: number;
 }

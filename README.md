@@ -1,5 +1,11 @@
 # NNM Object Viewer
 
+_NNM Object Viewer_ is a convenient tool that displays a JSON object as an object tree. The tool handles objects and arrays.
+
+You automatically get helpful information about the actual data, which will help you analysing the content and comparing it to other objects.
+
+The [official version of _NNM Object Viewer_](https://anders.nemonisimors.com/projects/objectViewer).
+
 ## Getting Started
 
 ### Installation

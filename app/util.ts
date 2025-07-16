@@ -1,4 +1,5 @@
 import type {
+    ArithmeticAggregation,
     DisplayRow,
     HistoryItem,
     NodeBase,
@@ -474,8 +475,61 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
         if (identifyingValueParts.length > 0) {
             currentObjectNode.convenientIdentifierWhenCollapsed = identifyingValueParts.join(", ");
         }
+
+        if (currentObjectNode.nodeType === "array") {
+            const typeOfItems = new Set(
+                Object.values(currentObjectNode.containedProperties).map(
+                    (objectTree: ObjectTree) => objectTree.propertyTypeEnhanced
+                )
+            );
+            if (typeOfItems.size === 1) {
+                const arrayTypeEnhanced: PropertyTypeEnhanced = [...typeOfItems][0];
+                currentObjectNode.convenientIdentifierWhenCollapsed = `${arrayTypeEnhanced}[]`;
+
+                if (arrayTypeEnhanced === "number" || arrayTypeEnhanced === "Integer") {
+                    const values: number[] = Object.values(
+                        currentObjectNode.containedProperties
+                    ).map(
+                        (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
+                    ) as number[];
+
+                    const aggregation: ArithmeticAggregation = calculateAggregations(values);
+                    currentObjectNode.arithmeticAggregation = aggregation;
+                }
+            }
+        }
     }
 }
+
+const maxNumberOfDecimals = (n: number, numberOfDecimals = 2): number =>
+    Math.round(n * Math.pow(10, numberOfDecimals)) / Math.pow(10, numberOfDecimals);
+
+const calculateAggregations = (numbers: number[]): ArithmeticAggregation => {
+    const numberOfItems: number = numbers.length;
+    if (numberOfItems === 0) {
+        return {};
+    }
+
+    const sortedValues: number[] = numbers.toSorted((a, b) => a - b);
+    const min: number = sortedValues.at(0)!;
+    const max: number = sortedValues.at(-1)!;
+    const sum: number = sortedValues.reduce((previous, current) => previous + current, 0);
+    const mean: number = maxNumberOfDecimals(sum / numberOfItems);
+    const median: number = calculateMedian(sortedValues);
+
+    return { min, max, mean, median, sum };
+};
+
+const calculateMedian = (numbers: number[]): number => {
+    const numberOfItems: number = numbers.length;
+    const middleIndex = Math.floor(numberOfItems / 2);
+
+    const sortedArray: number[] = numbers.toSorted((a, b) => a - b);
+
+    return numberOfItems % 2 === 0
+        ? (sortedArray[middleIndex] + sortedArray[middleIndex - 1]) / 2
+        : sortedArray[middleIndex];
+};
 
 export function convertTreeToDisplayRows(objectRoot: ObjectNode): DisplayRow[] {
     info(`Converting object tree to display rows`);
@@ -504,6 +558,7 @@ export function convertTreeToDisplayRows(objectRoot: ObjectNode): DisplayRow[] {
         parentId: objectRoot.parentId,
         rowType: objectRoot.nodeType,
         isNada: false,
+        arithmeticAggregation: objectRoot.arithmeticAggregation,
     };
 
     const children: Record<string, ObjectTree> = objectRoot.containedProperties;
@@ -588,6 +643,9 @@ export function convertTreeToDisplayRowsHelper(
         hardcodedNode.convenientIdentifierWhenCollapsed = (
             currentObjectNode as ObjectNode
         ).convenientIdentifierWhenCollapsed;
+        hardcodedNode.arithmeticAggregation = (
+            currentObjectNode as ObjectNode
+        ).arithmeticAggregation;
 
         for (let i = 0; i < propertyNames.length; i++) {
             const propertyName: string = propertyNames[i];
@@ -621,6 +679,10 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
             ? "Zero"
             : propertyTypeOriginal === "number" && Number.isInteger(propertyValue)
             ? "Integer"
+            : propertyTypeOriginal === "boolean" && propertyValue
+            ? "BooleanTrue"
+            : propertyTypeOriginal === "boolean" && !propertyValue
+            ? "BooleanFalse"
             : propertyTypeOriginal === "string" && isTimestamp(propertyValue as string)
             ? "Timestamp"
             : propertyTypeOriginal === "string" && isLocalDate(propertyValue as string)
@@ -672,7 +734,7 @@ const buildMetaData = (
     propertyTypeEnhanced: PropertyTypeEnhanced,
     propertyValue: PropertyValue
 ): string | undefined => {
-    if (["string", "EmailAddress", "URL"].includes(propertyTypeEnhanced)) {
+    if (["string", "EmailAddress", "URL", "PhoneNumber", "SemVer"].includes(propertyTypeEnhanced)) {
         return `${(propertyValue as string).length} characters`;
     }
 

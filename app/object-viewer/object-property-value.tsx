@@ -10,7 +10,7 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
     return (
         <>
             {displayRow.rowType === "leaf" &&
-                displayRow.propertyTypeEnhanced !== "boolean" &&
+                displayRow.propertyTypeOriginal !== "boolean" &&
                 displayRow.propertyTypeEnhanced !== "string" &&
                 displayRow.propertyTypeEnhanced !== "Integer" &&
                 displayRow.propertyTypeEnhanced !== "number" &&
@@ -23,7 +23,7 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
                         {`${displayRow.propertyValue}`}
                     </>
                 )}
-            {displayRow.propertyTypeEnhanced === "boolean" && (
+            {displayRow.propertyTypeOriginal === "boolean" && (
                 <span className={`boolean ${displayRow.propertyValue ? "true" : "false"}`}>
                     {displayRow.propertyValue ? "\u2713" : "\u00A0"}
                 </span>
@@ -46,7 +46,7 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
             {displayRow.propertyTypeEnhanced === "number" && (
                 <span className="floating-point-number">{`${displayRow.propertyValue}`}</span>
             )}
-            {displayRow.isNada && displayRow.propertyTypeEnhanced !== "boolean" && (
+            {displayRow.isNada && displayRow.propertyTypeOriginal !== "boolean" && (
                 <span className="nada-value">{`${displayRow.propertyValue}`}</span>
             )}
             {displayRow.propertyTypeEnhanced === "Timestamp" && (

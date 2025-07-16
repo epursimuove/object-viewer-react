@@ -109,13 +109,6 @@ export default function AboutPage() {
                 </li>
             </ul>
 
-            <h3>Tips</h3>
-
-            <p>
-                A good way to see an overview of the tree structure, by getting rid of the "noise"
-                from the leaves, is to "Expand all" rows and uncheck the "Show leaves".
-            </p>
-
             <h3>Suspicious values</h3>
 
             <p>
@@ -125,11 +118,28 @@ export default function AboutPage() {
                 red, and by hovering the value, you get information about why it is suspicious.
             </p>
 
+            <h3>Arithmetic aggregation</h3>
+
+            <p>
+                When you have arrays of type <code>number[]</code> or <code>Integer[]</code>{" "}
+                convenient values (<em>sum</em>, <em>min</em>, <em>max</em>, <em>mean</em> and{" "}
+                <em>median</em>) are calculated for you. These values are found in the title
+                attribute and are displayed when hovered over <code>number[]</code> or{" "}
+                <code>Integer[]</code>.
+            </p>
+
             <h3>History of objects</h3>
 
             <p>
                 Your seven last viewed JSON objects are stored in your local storage, so you can
                 easily toggle between them.
+            </p>
+
+            <h3>Tips</h3>
+
+            <p>
+                A good way to see an overview of the tree structure, by getting rid of the "noise"
+                from the leaves, is to "Expand all" rows and uncheck the "Show leaves".
             </p>
 
             <h2>
