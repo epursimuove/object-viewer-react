@@ -27,6 +27,7 @@ import {
 } from "~/object-viewer/UserConfigurationContext";
 import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/object-viewer/timestamp";
+import { ColorIndicator } from "./color-indicator";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -412,17 +413,14 @@ export function ObjectViewer() {
                                                 {prettifySha256(historyItem.id).toUpperCase()}
                                             </span>
 
-                                            <span
-                                                className="color-indicator"
-                                                style={{
-                                                    backgroundColor: `#${improveColor(
-                                                        prettifySha256(historyItem.id, 6)
-                                                    )}`,
-                                                    width: "2rem",
-                                                }}
-                                            >
-                                                &nbsp;
-                                            </span>
+                                            <ColorIndicator
+                                                primaryColor={`#${improveColor(
+                                                    prettifySha256(historyItem.id, 6)
+                                                )}`}
+                                                secondaryColor={`#${improveColor(
+                                                    prettifySha256(historyItem.id, 12).slice(0, 6)
+                                                )}`}
+                                            />
                                         </div>
                                     ))}
 

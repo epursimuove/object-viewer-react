@@ -1035,11 +1035,8 @@ export const improveColor = (colorHex: string): string => {
 const getImprovedColorPart = (hex: string): string => {
     const current: number = Number.parseInt(hex, 16);
 
-    if (current < 85) {
+    if (current < 128) {
         return "00";
-    }
-    if (current < 170) {
-        return "80";
     }
     return "ff";
 };

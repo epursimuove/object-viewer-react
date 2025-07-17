@@ -121,13 +121,31 @@ time {
     }
 }
 
-.color-indicator {
-    display: inline-block;
-    min-width: 2rem;
-    height: 0.9lh;
-    /* margin-inline-end: 0.5rem; */
-    border: 1px solid var(--color-lighter);
-    border-radius: 4px;
+.color-indicator-wrapper {
+    --border-radius: 8px;
+
+    span {
+        display: inline-block;
+        min-width: 1.6rem;
+        height: 0.9lh;
+        border: 1px solid var(--color-lighter);
+    }
+
+    .color-indicator-left {
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+
+        .color-indicator-wrapper:not(:has(.color-indicator-right)) & {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+    }
+
+    .color-indicator-right {
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+        border-left: unset;
+    }
 }
 
 .parsing-error {
