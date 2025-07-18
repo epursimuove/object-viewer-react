@@ -29,6 +29,7 @@ import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/object-viewer/timestamp";
 import { ColorIndicator } from "./color-indicator";
 import { SettingsCheckbox } from "./settings-checkbox";
+import { StatisticsRow } from "./statistics-row";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -558,40 +559,17 @@ export function ObjectViewer() {
                             <details open>
                                 <summary>Statistics</summary>
 
-                                <div>
-                                    <span className="label">Rows:</span>
-                                    <strong className="number">{totalNumberOfRows}</strong>
-                                </div>
-
-                                <div>
-                                    <span className="label">Visible:</span>
-                                    <strong className="number">{numberOfVisibleRows}</strong>
-                                </div>
-
-                                <div>
-                                    <span className="label">Leaves:</span>
-                                    <span className="number">{totalNumberOfLeaves}</span>
-                                </div>
-
-                                <div>
-                                    <span className="label">Objects:</span>
-                                    <span className="number">{totalNumberOfObjects}</span>
-                                </div>
-
-                                <div>
-                                    <span className="label">Arrays:</span>
-                                    <span className="number">{totalNumberOfArrays}</span>
-                                </div>
-
-                                <div>
-                                    <span className="label">Depth:</span>
-                                    <span className="number">{deepestLevel}</span>
-                                </div>
-
-                                <div>
-                                    <span className="label">"Now":</span>
-                                    <Timestamp timestamp={now.toString()} />
-                                </div>
+                                <StatisticsRow label="Rows" value={totalNumberOfRows} emphasize />
+                                <StatisticsRow
+                                    label="Visible"
+                                    value={numberOfVisibleRows}
+                                    emphasize
+                                />
+                                <StatisticsRow label="Leaves" value={totalNumberOfLeaves} />
+                                <StatisticsRow label="Objects" value={totalNumberOfObjects} />
+                                <StatisticsRow label="Arrays" value={totalNumberOfArrays} />
+                                <StatisticsRow label="Depth" value={deepestLevel} />
+                                <StatisticsRow label="'Now'" value={now} />
                             </details>
                         </section>
                     </form>
