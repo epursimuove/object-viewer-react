@@ -28,6 +28,7 @@ import {
 import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/object-viewer/timestamp";
 import { ColorIndicator } from "./color-indicator";
+import { SettingsCheckbox } from "./settings-checkbox";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -437,108 +438,54 @@ export function ObjectViewer() {
                             <details open>
                                 <summary>Settings</summary>
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        name="indentationActivated"
-                                        id="indentationActivated"
-                                        checked={indentObjectTree}
-                                        onChange={(event) => {
-                                            setIndentObjectTree(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="indentationActivated">Indent object tree</label>
-                                </div>
+                                <SettingsCheckbox
+                                    label="Indent object tree"
+                                    currentState={indentObjectTree}
+                                    stateUpdater={setIndentObjectTree}
+                                    htmlIdentifier="indentationActivated"
+                                />
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        name="showPropertyType"
-                                        id="showPropertyType"
-                                        checked={showPropertyType}
-                                        onChange={(event) => {
-                                            setShowPropertyType(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="showPropertyType">
-                                        Show (enhanced) property type
-                                    </label>
-                                </div>
+                                <SettingsCheckbox
+                                    label="Show (enhanced) property type"
+                                    currentState={showPropertyType}
+                                    stateUpdater={setShowPropertyType}
+                                    htmlIdentifier="showPropertyType"
+                                />
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        name="showMetaDataForLeaves"
-                                        id="showMetaDataForLeaves"
-                                        checked={showMetaDataForLeaves}
-                                        onChange={(event) => {
-                                            setShowMetaDataForLeaves(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="showMetaDataForLeaves">
-                                        Show meta data for leaves
-                                    </label>
-                                </div>
+                                <SettingsCheckbox
+                                    label="Show meta data for leaves"
+                                    currentState={showMetaDataForLeaves}
+                                    stateUpdater={setShowMetaDataForLeaves}
+                                    htmlIdentifier="showMetaDataForLeaves"
+                                />
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        name="showMetaDataForNodes"
-                                        id="showMetaDataForNodes"
-                                        checked={showMetaDataForNodes}
-                                        onChange={(event) => {
-                                            setShowMetaDataForNodes(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="showMetaDataForNodes">
-                                        Show meta data for nodes
-                                    </label>
-                                </div>
+                                <SettingsCheckbox
+                                    label="Show meta data for nodes"
+                                    currentState={showMetaDataForNodes}
+                                    stateUpdater={setShowMetaDataForNodes}
+                                    htmlIdentifier="showMetaDataForNodes"
+                                />
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        name="showIdentifyingValues"
-                                        id="showIdentifyingValues"
-                                        checked={showIdentifyingValues}
-                                        onChange={(event) => {
-                                            setShowIdentifyingValues(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="showIdentifyingValues">
-                                        Show identifying values
-                                    </label>
-                                </div>
+                                <SettingsCheckbox
+                                    label="Show identifying values"
+                                    currentState={showIdentifyingValues}
+                                    stateUpdater={setShowIdentifyingValues}
+                                    htmlIdentifier="showIdentifyingValues"
+                                />
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        name="showNadaValues"
-                                        id="showNadaValues"
-                                        checked={showNadaValues}
-                                        onChange={(event) => {
-                                            setShowNadaValues(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="showNadaValues">
-                                        Show "nada" (falsy) values
-                                    </label>
-                                </div>
+                                <SettingsCheckbox
+                                    label="Show 'nada' (falsy) values"
+                                    currentState={showNadaValues}
+                                    stateUpdater={setShowNadaValues}
+                                    htmlIdentifier="showNadaValues"
+                                />
 
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        name="showLeaves"
-                                        id="showLeaves"
-                                        checked={showLeaves}
-                                        onChange={(event) => {
-                                            setShowLeaves(event.target.checked);
-                                        }}
-                                    />
-                                    <label htmlFor="showLeaves">
-                                        Show leaves (i.e. primitive values)
-                                    </label>
-                                </div>
+                                <SettingsCheckbox
+                                    label="Show leaves (i.e. primitive values)"
+                                    currentState={showLeaves}
+                                    stateUpdater={setShowLeaves}
+                                    htmlIdentifier="showLeaves"
+                                />
 
                                 <div className="button-row">
                                     <button type="button" onClick={expandAll}>
