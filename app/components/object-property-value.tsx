@@ -1,6 +1,6 @@
 import type { DisplayRow } from "~/types";
-import "./object-viewer.css";
-import { Timestamp } from "~/object-viewer/timestamp";
+import "../object-viewer/object-viewer.css";
+import { Timestamp } from "~/components/timestamp";
 
 export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) {
     const textContainsExtraSpaces =

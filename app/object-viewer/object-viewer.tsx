@@ -20,16 +20,16 @@ import {
 import "./object-viewer.css";
 import { type ChangeEvent, type SyntheticEvent, useEffect, useRef, useState } from "react";
 import { version as appVersion } from "../../package-lock.json";
-import { ObjectViewerRow } from "~/object-viewer/object-viewer-row";
+import { ObjectViewerRow } from "~/components/object-viewer-row";
 import {
     UserConfigurationProvider,
     useUserConfigurationContext,
 } from "~/object-viewer/UserConfigurationContext";
 import { logInfoPretty, useLog } from "~/log-manager/LogManager";
-import { Timestamp } from "~/object-viewer/timestamp";
-import { ColorIndicator } from "./color-indicator";
-import { SettingsCheckbox } from "./settings-checkbox";
-import { StatisticsRow } from "./statistics-row";
+import { Timestamp } from "~/components/timestamp";
+import { ColorIndicator } from "../components/color-indicator";
+import { SettingsCheckbox } from "../components/settings-checkbox";
+import { StatisticsRow } from "../components/statistics-row";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 

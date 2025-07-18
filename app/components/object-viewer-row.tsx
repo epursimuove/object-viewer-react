@@ -1,8 +1,8 @@
 import type { ArithmeticAggregation, DisplayRow } from "~/types";
-import "./object-viewer.css";
+import "../object-viewer/object-viewer.css";
 import { useUserConfigurationContext } from "~/object-viewer/UserConfigurationContext";
 import type { SyntheticEvent } from "react";
-import { ObjectPropertyValue } from "~/object-viewer/object-property-value";
+import { ObjectPropertyValue } from "~/components/object-property-value";
 import { ColorIndicator } from "./color-indicator";
 
 export function ObjectViewerRow({
