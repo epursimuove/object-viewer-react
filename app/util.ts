@@ -930,34 +930,38 @@ const maxNumberOfHistoryItems = 7;
 export const prettifySha256 = (sha256Code: string, numberOfCharacters = 3): string =>
     sha256Code.slice(-numberOfCharacters);
 
+// TODO Place this in HistoryContext instead?!?
 export const saveHistoryToStorage = (
-    object: Record<string, PropertyValue>
-    // callback?: () => void
+    object: Record<string, PropertyValue>,
+    savedHistory: HistoryItem[],
+    setSavedHistory: (value: HistoryItem[]) => void
 ): void => {
-    let historyItems: HistoryItem[] = loadHistoryFromStorage();
+    // const { savedHistory, setSavedHistory, clearSavedHistory } = useHistoryContext();
+
     debug(
         "Current history from local storage",
-        historyItems.map((historyItem: HistoryItem) => prettifySha256(historyItem.id))
+        savedHistory.map((historyItem: HistoryItem) => prettifySha256(historyItem.id))
     );
 
     sha256(JSON.stringify(object)).then((sha256Code: string) => {
         const now: Temporal.Instant = Temporal.Now.instant();
 
-        const alreadyPresentIndex: number = historyItems.findIndex(
+        const alreadyPresentIndex: number = savedHistory.findIndex(
             (historyItem: HistoryItem) => historyItem.checksum === sha256Code
         );
 
         let newItem: HistoryItem;
+        let updatedHistory: HistoryItem[];
 
         if (alreadyPresentIndex >= 0) {
             trace(`Already present at index ${alreadyPresentIndex}`);
             newItem = {
-                ...historyItems[alreadyPresentIndex],
+                ...savedHistory[alreadyPresentIndex],
                 object,
                 timestampLastView: now,
             };
 
-            historyItems = historyItems.toSpliced(alreadyPresentIndex, 1);
+            updatedHistory = savedHistory.toSpliced(alreadyPresentIndex, 1);
         } else {
             trace(`Completely new JSON object with SHA ${prettifySha256(sha256Code)}`);
 
@@ -970,20 +974,18 @@ export const saveHistoryToStorage = (
             };
         }
 
-        historyItems.unshift(newItem);
+        updatedHistory = [newItem, ...savedHistory];
 
         debug(
             "Updated history to save to local storage",
-            historyItems.map((historyItem: HistoryItem) => prettifySha256(historyItem.id))
+            updatedHistory.map((historyItem: HistoryItem) => prettifySha256(historyItem.id))
         );
 
-        localStorage.setItem(
-            storageKeyForHistory,
-            JSON.stringify(historyItems.slice(0, maxNumberOfHistoryItems))
-        );
-        // if (callback) {
-        //     callback();
-        // }
+        const slicedUpdatedHistory = updatedHistory.slice(0, maxNumberOfHistoryItems);
+
+        setSavedHistory(slicedUpdatedHistory);
+
+        localStorage.setItem(storageKeyForHistory, JSON.stringify(slicedUpdatedHistory));
     });
 };
 
@@ -995,9 +997,9 @@ export const loadHistoryFromStorage = (): HistoryItem[] => {
     return historyItems;
 };
 
-// export const clearHistoryInStorage = (): void => {
-//     localStorage.removeItem(storageKeyForHistory);
-// };
+export const clearHistoryInStorage = (): void => {
+    localStorage.removeItem(storageKeyForHistory);
+};
 
 async function sha256(message: string) {
     // Encode the message as a Uint8Array.

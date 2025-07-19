@@ -12,7 +12,6 @@ import {
     convertTreeToDisplayRows,
     improveColor,
     isDescendant,
-    loadHistoryFromStorage,
     now,
     prettifySha256,
     saveHistoryToStorage,
@@ -30,6 +29,7 @@ import { Timestamp } from "~/components/timestamp";
 import { ColorIndicator } from "../components/color-indicator";
 import { SettingsCheckbox } from "../components/settings-checkbox";
 import { StatisticsRow } from "../components/statistics-row";
+import { useHistoryContext } from "./HistoryContext";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -73,6 +73,8 @@ export function ObjectViewer() {
         setFilterOnPropertyTypeEnhanced,
         resetFilters,
     } = useUserConfigurationContext();
+
+    const { savedHistory, setSavedHistory, clearSavedHistory } = useHistoryContext();
 
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
 
@@ -140,9 +142,7 @@ export function ObjectViewer() {
             resetFilters();
 
             if (saveHistory) {
-                saveHistoryToStorage(nextOriginalObject);
-                // setHistoryItems(loadHistoryFromStorage());
-                // setHistoryItems2(loadHistoryFromStorage());
+                saveHistoryToStorage(nextOriginalObject, savedHistory, setSavedHistory);
             }
         } catch (err) {
             error("error", err);
@@ -318,32 +318,31 @@ export function ObjectViewer() {
 
     const rowsPercentage: number = Math.ceil((numberOfVisibleRows / totalNumberOfRows) * 100);
 
-    let historyItems: HistoryItem[] = loadHistoryFromStorage();
-    // const [historyItems2, setHistoryItems2] = useState<HistoryItem[]>(loadHistoryFromStorage());
-
-    // useEffect(() => {
-    //     console.info("On mounting", historyItems2);
-    // }, []);
-
-    // useEffect(() => {
-    //     console.info("HEHEHEEH", historyItems2);
-    // }, [historyItems2]);
-
     function retrieveObjectFromHistory(historyItem: HistoryItem) {
         debug(`Retrieve object from history`);
         setOriginalObjectAsText(JSON.stringify(historyItem.object, null, 4));
 
         setOriginalObject(historyItem.object);
         resetFilters();
-        saveHistoryToStorage(historyItem.object); // So the sorting order of the history will be updated.
+        rearrangeHistory(historyItem);
     }
 
-    // function clearHistory() {
-    //     debug(`Clearing history`);
-    //     clearHistoryInStorage();
-    //     // setHistoryItems(loadHistoryFromStorage());
-    //     // historyItems = loadHistoryFromStorage();
-    // }
+    function rearrangeHistory(historyItem: HistoryItem) {
+        const index: number = savedHistory.findIndex(
+            (historyItem2: HistoryItem) => historyItem.id === historyItem2.id
+        );
+
+        const rearrangedHistory = [historyItem, ...savedHistory.toSpliced(index, 1)];
+
+        setSavedHistory(rearrangedHistory);
+        localStorage.setItem("__NNM_Object_Viewer_History__", JSON.stringify(rearrangedHistory));
+    }
+
+    function clearHistory() {
+        debug(`Clearing history`);
+
+        clearSavedHistory();
+    }
 
     logInfoPretty("DONE", false);
 
@@ -398,7 +397,7 @@ export function ObjectViewer() {
 
                                 <div>
                                     {/* {loadHistoryFromStorage().length} items */}
-                                    {historyItems.map((historyItem: HistoryItem, index: number) => (
+                                    {savedHistory.map((historyItem: HistoryItem, index: number) => (
                                         <div
                                             key={historyItem.id}
                                             className="history-item-row"
@@ -426,11 +425,11 @@ export function ObjectViewer() {
                                         </div>
                                     ))}
 
-                                    {/* {historyItems.length > 0 && (
+                                    {savedHistory.length > 0 && (
                                         <button type="button" onClick={clearHistory}>
                                             Clear history
                                         </button>
-                                    )} */}
+                                    )}
                                 </div>
                             </details>
                         </section>

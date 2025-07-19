@@ -352,6 +352,7 @@ export const exampleObject: {} = {
                 timestamps: [
                     "1970-01-01T00:00:00Z",
                     "2025-12-24T14:00:00Z",
+                    "2025-12-24T14:00:00.123Z",
                     "2000-01-01T00:00:00Z",
                     "2069-08-10T12:00:00Z",
                     now.subtract({ minutes: 45 }),

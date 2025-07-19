@@ -123,6 +123,12 @@ export interface UserConfigurationContextType {
     resetFilters: () => void;
 }
 
+export interface HistoryContextType {
+    savedHistory: HistoryItem[];
+    setSavedHistory: (value: HistoryItem[]) => void;
+    clearSavedHistory: () => void;
+}
+
 export interface HistoryItem {
     id: string;
     checksum: string;

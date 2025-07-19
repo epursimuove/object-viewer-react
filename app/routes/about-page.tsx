@@ -135,6 +135,12 @@ export default function AboutPage() {
                 easily toggle between them.
             </p>
 
+            <p>
+                The history items are tagged with convenient color markers, so they can easily be
+                distinguished. Eight different colors are used, so the combinations of the two
+                colors are 64 (8&times;8).
+            </p>
+
             <h3>Tips</h3>
 
             <p>
@@ -166,6 +172,11 @@ export default function AboutPage() {
                 The first version of <em>NNM Object Viewer</em> was originally released in May 2025
                 and created with React <var>19.1</var>, React router <var>7.6</var> and TypeScript{" "}
                 <var>5.8</var>.
+            </p>
+
+            <p>
+                The code is available at{" "}
+                <a href="https://github.com/epursimuove/object-viewer-react">GitHub</a>.
             </p>
 
             <p>

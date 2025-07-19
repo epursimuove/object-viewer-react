@@ -27,6 +27,7 @@ const globalLogLevel: LogLevel | undefined = LogLevel.TRACE; // TODO
 
 const loggerNames = [
     "LogManager",
+    "HistoryContext.tsx",
     "object-viewer.tsx",
     "tool-bar.tsx",
     "util.ts",
@@ -36,6 +37,7 @@ type LoggerName = (typeof loggerNames)[number];
 class LogManager {
     static configuration: Record<LoggerName, LogConfiguration> = {
         LogManager: { level: LogLevel.INFO },
+        "HistoryContext.tsx": { level: LogLevel.OFF },
         "object-viewer.tsx": { level: LogLevel.OFF },
         "tool-bar.tsx": { level: LogLevel.OFF },
         "util.ts": { level: LogLevel.OFF },
@@ -58,11 +60,7 @@ const getStyleBlackText = (backgroundColor: string): string => {
     return `background-color: ${backgroundColor}; color: black; border-radius: 10%; padding: 3px; font-weight: bold;`;
 };
 
-const buildLogPrefix = (
-    backgroundColor: string,
-    logger: string,
-    context?: string
-): string[] => {
+const buildLogPrefix = (backgroundColor: string, logger: string, context?: string): string[] => {
     const loggerLabel: string = logger.padEnd(20);
 
     if (context) {
@@ -79,8 +77,7 @@ const buildLogPrefix = (
 };
 
 export function useLog(logger: LoggerName, context?: string): Logger {
-    const matchingLogger: LogConfiguration | undefined =
-        LogManager.configuration[logger];
+    const matchingLogger: LogConfiguration | undefined = LogManager.configuration[logger];
 
     if (!matchingLogger) {
         throw new Error("Misconfiguration");
@@ -89,10 +86,7 @@ export function useLog(logger: LoggerName, context?: string): Logger {
     const loggerLabel: string = logger.padEnd(20);
     const contextLabel: string | undefined = context?.padEnd(20);
 
-    const createLogger = (
-        logLevel: LogLevel,
-        backgroundColor: string
-    ): LogSignature => {
+    const createLogger = (logLevel: LogLevel, backgroundColor: string): LogSignature => {
         if (matchingLogger.level >= logLevel) {
             const logPrefixLabel: string[] = buildLogPrefix(
                 backgroundColor,
@@ -145,9 +139,7 @@ export const logInfoPretty = (message: string, start?: boolean) => {
 const { debug, error, info, trace, warning } = useLog("LogManager");
 
 if (LogManager.someActive) {
-    info(
-        `Created - There are ${LogManager.numberOfActiveLoggers} activated loggers`
-    );
+    info(`Created - There are ${LogManager.numberOfActiveLoggers} activated loggers`);
 
     console.table(LogManager.configuration);
     info(`Enjoy the LogManager`);
