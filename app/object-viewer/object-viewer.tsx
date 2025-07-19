@@ -28,6 +28,7 @@ import { ColorIndicator } from "../components/color-indicator";
 import { SettingsCheckbox } from "../components/settings-checkbox";
 import { StatisticsRow } from "../components/statistics-row";
 import { prettifySha256, saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
+import { FilterSection } from "./filter-section";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -288,15 +289,6 @@ export function ObjectViewer() {
             return isVisible;
         }).length;
 
-    const actualPropertyTypeEnhancedValues: PropertyTypeEnhanced[] = Array.from(
-        new Set(displayRows.map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced))
-    ).toSorted((a, b) => a.localeCompare(b));
-
-    const filtersActivated = useMemo(
-        () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0,
-        [filterOnProperty, filterOnPropertyTypeEnhanced]
-    );
-
     const jsonObjectSection = useRef<HTMLDetailsElement | null>(null);
     const jsonObjectTextArea = useRef<HTMLTextAreaElement | null>(null);
 
@@ -505,63 +497,7 @@ export function ObjectViewer() {
                         </section>
 
                         <section id="filters">
-                            <details open className={`${filtersActivated && "filters-active"}`}>
-                                <summary>Filters</summary>
-
-                                <div className="button-row">
-                                    <button
-                                        type="reset"
-                                        onClick={resetFilters}
-                                        disabled={!filtersActivated}
-                                    >
-                                        Reset
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <label htmlFor="filterOnProperty">Property (name/value)</label>
-                                    <input
-                                        type="text"
-                                        name="filterOnProperty"
-                                        id="filterOnProperty"
-                                        size={15}
-                                        value={filterOnProperty}
-                                        onChange={(event) => {
-                                            setFilterOnProperty(event.target.value);
-                                        }}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label htmlFor="filterOnPropertyTypeEnhanced">
-                                        Enhanced property type{" "}
-                                        <small>({actualPropertyTypeEnhancedValues.length})</small>
-                                    </label>
-                                    <select
-                                        multiple
-                                        name="filterOnPropertyTypeEnhanced"
-                                        id="filterOnPropertyTypeEnhanced"
-                                        size={actualPropertyTypeEnhancedValues.length}
-                                        value={filterOnPropertyTypeEnhanced}
-                                        onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                                            const options: HTMLOptionElement[] = Array.from(
-                                                event.target.selectedOptions
-                                            );
-                                            const values: PropertyTypeEnhanced[] = options.map(
-                                                (option) => option.value as PropertyTypeEnhanced
-                                            );
-
-                                            setFilterOnPropertyTypeEnhanced(values);
-                                        }}
-                                    >
-                                        {actualPropertyTypeEnhancedValues.map((type) => (
-                                            <option key={type} value={type}>
-                                                {type}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </details>
+                            <FilterSection displayRows={displayRows} />
                         </section>
 
                         <section id="statistics">
