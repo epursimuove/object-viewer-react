@@ -15,7 +15,7 @@ import {
     now,
 } from "~/util";
 import "./object-viewer.css";
-import { type ChangeEvent, type SyntheticEvent, useEffect, useRef, useState } from "react";
+import { type ChangeEvent, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { version as appVersion } from "../../package-lock.json";
 import { ObjectViewerRow } from "~/components/object-viewer-row";
 import {
@@ -75,6 +75,8 @@ export function ObjectViewer() {
     const { savedHistory, setSavedHistory, clearSavedHistory } = useHistoryContext();
 
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
+
+    const [jsonObjectModified, setJsonObjectModified] = useState<boolean>(false);
 
     const objectTree: ObjectNode = convertObjectToTree(originalObject);
 
@@ -142,6 +144,8 @@ export function ObjectViewer() {
             if (saveHistory) {
                 saveHistoryToStorage(nextOriginalObject, savedHistory, setSavedHistory);
             }
+
+            setJsonObjectModified(false);
         } catch (err) {
             error("error", err);
             console.error("error", typeof err, (err as SyntaxError).name);
@@ -288,8 +292,10 @@ export function ObjectViewer() {
         new Set(displayRows.map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced))
     ).toSorted((a, b) => a.localeCompare(b));
 
-    const filtersActivated = () =>
-        filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0;
+    const filtersActivated = useMemo(
+        () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0,
+        [filterOnProperty, filterOnPropertyTypeEnhanced]
+    );
 
     const jsonObjectSection = useRef<HTMLDetailsElement | null>(null);
     const jsonObjectTextArea = useRef<HTMLTextAreaElement | null>(null);
@@ -373,10 +379,15 @@ export function ObjectViewer() {
                                         placeholder="Your JSON object/array"
                                         onChange={(event) => {
                                             setOriginalObjectAsText(event.target.value);
+                                            setJsonObjectModified(true);
                                         }}
                                     />
                                     {originalObjectAsText.length} characters
-                                    <button type="button" onClick={() => updateOriginalObject()}>
+                                    <button
+                                        type="button"
+                                        onClick={() => updateOriginalObject()}
+                                        disabled={!jsonObjectModified}
+                                    >
                                         Recalculate
                                     </button>
                                     <div className="parsing-error">
@@ -494,11 +505,15 @@ export function ObjectViewer() {
                         </section>
 
                         <section id="filters">
-                            <details open className={`${filtersActivated() && "filters-active"}`}>
+                            <details open className={`${filtersActivated && "filters-active"}`}>
                                 <summary>Filters</summary>
 
                                 <div className="button-row">
-                                    <button type="reset" onClick={resetFilters}>
+                                    <button
+                                        type="reset"
+                                        onClick={resetFilters}
+                                        disabled={!filtersActivated}
+                                    >
                                         Reset
                                     </button>
                                 </div>
