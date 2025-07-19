@@ -13,8 +13,6 @@ import {
     improveColor,
     isDescendant,
     now,
-    prettifySha256,
-    saveHistoryToStorage,
 } from "~/util";
 import "./object-viewer.css";
 import { type ChangeEvent, type SyntheticEvent, useEffect, useRef, useState } from "react";
@@ -29,7 +27,7 @@ import { Timestamp } from "~/components/timestamp";
 import { ColorIndicator } from "../components/color-indicator";
 import { SettingsCheckbox } from "../components/settings-checkbox";
 import { StatisticsRow } from "../components/statistics-row";
-import { useHistoryContext } from "./HistoryContext";
+import { prettifySha256, saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -332,10 +330,7 @@ export function ObjectViewer() {
             (historyItem2: HistoryItem) => historyItem.id === historyItem2.id
         );
 
-        const rearrangedHistory = [historyItem, ...savedHistory.toSpliced(index, 1)];
-
-        setSavedHistory(rearrangedHistory);
-        localStorage.setItem("__NNM_Object_Viewer_History__", JSON.stringify(rearrangedHistory));
+        saveHistoryToStorage(historyItem.object, savedHistory, setSavedHistory);
     }
 
     function clearHistory() {
