@@ -1,6 +1,7 @@
 import type { DisplayRow } from "~/types";
 import "../object-viewer/object-viewer.css";
 import { Timestamp } from "~/components/timestamp";
+import { AnchoredInfoBox } from "./anchored-info-box";
 
 export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) {
     const textContainsExtraSpaces =
@@ -29,15 +30,16 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
                 </span>
             )}
             {displayRow.propertyTypeEnhanced === "string" && (
-                <span
-                    className={`string ${textContainsExtraSpaces && "extra-spaces"}`}
-                    title={
-                        textContainsExtraSpaces
-                            ? `NB! Text contains extra spaces (in ${textContainsExtraSpaces}), which may cause problems!`
-                            : undefined
-                    }
-                >
-                    {`${displayRow.propertyValue}`}
+                <span className={`string ${textContainsExtraSpaces && "extra-spaces"}`}>
+                    {textContainsExtraSpaces ? (
+                        <AnchoredInfoBox
+                            label={`${displayRow.propertyValue}`}
+                            textContent={`NB! Text contains extra spaces (in ${textContainsExtraSpaces}),\nwhich may cause problems!`}
+                            type="warning"
+                        />
+                    ) : (
+                        `${displayRow.propertyValue}`
+                    )}
                 </span>
             )}
             {displayRow.propertyTypeEnhanced === "Integer" && (

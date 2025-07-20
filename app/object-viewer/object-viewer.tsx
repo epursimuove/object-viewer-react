@@ -29,6 +29,7 @@ import { SettingsCheckbox } from "../components/settings-checkbox";
 import { StatisticsRow } from "../components/statistics-row";
 import { prettifySha256, saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { FilterSection } from "./filter-section";
+import { AnchoredInfoBox } from "~/components/anchored-info-box";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -520,7 +521,6 @@ export function ObjectViewer() {
                     </form>
                 </details>
             </aside>
-
             <details open>
                 <summary>
                     <h2>
@@ -533,7 +533,6 @@ export function ObjectViewer() {
 
                 <div className="object-viewer">{objectViewerRows}</div>
             </details>
-
             <details>
                 <summary>
                     <h2>Original object</h2>
@@ -541,7 +540,6 @@ export function ObjectViewer() {
 
                 <pre>{JSON.stringify(originalObject, null, 4)}</pre>
             </details>
-
             <details>
                 <summary>
                     <h2>Original object converted to object tree</h2>
@@ -549,7 +547,6 @@ export function ObjectViewer() {
 
                 <pre>{JSON.stringify(objectTree, null, 4)}</pre>
             </details>
-
             <details>
                 <summary>
                     <h2>Object tree converted to DisplayRow[]</h2>

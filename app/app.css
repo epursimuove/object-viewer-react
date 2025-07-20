@@ -151,3 +151,42 @@ time {
 .parsing-error {
     color: red;
 }
+
+.anchored-info-box {
+    & .info-box-anchor {
+        anchor-name: --info-box-anchor-fallback;
+        cursor: help;
+    }
+
+    & .info-box {
+        display: none;
+        position-anchor: --info-box-anchor-fallback;
+        position: fixed;
+        position-area: start center;
+        margin-block-end: 5px;
+
+        color: black;
+        font-weight: normal;
+        white-space: pre;
+
+        border: 1px solid gray;
+        border-radius: 8px;
+        padding: 0.5rem;
+
+        &.type-info {
+            background-color: rgb(230, 255, 230);
+        }
+
+        &.type-warning {
+            background-color: rgb(255, 245, 230);
+        }
+
+        &.type-error {
+            background-color: rgb(255, 230, 230);
+        }
+    }
+
+    .info-box-anchor:hover + .info-box {
+        display: unset;
+    }
+}

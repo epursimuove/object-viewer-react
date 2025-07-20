@@ -4,6 +4,7 @@ import { useUserConfigurationContext } from "~/object-viewer/UserConfigurationCo
 import type { SyntheticEvent } from "react";
 import { ObjectPropertyValue } from "~/components/object-property-value";
 import { ColorIndicator } from "./color-indicator";
+import { AnchoredInfoBox } from "./anchored-info-box";
 
 export function ObjectViewerRow({
     displayRow,
@@ -60,10 +61,10 @@ export function ObjectViewerRow({
         arithmeticAggregation: ArithmeticAggregation
     ): string => {
         return [
-            `Sum: ${arithmeticAggregation.sum}`,
-            `Min: ${arithmeticAggregation.min}`,
-            `Max: ${arithmeticAggregation.max}`,
-            `Mean: ${arithmeticAggregation.mean}`,
+            `Sum:    ${arithmeticAggregation.sum}`,
+            `Min:    ${arithmeticAggregation.min}`,
+            `Max:    ${arithmeticAggregation.max}`,
+            `Mean:   ${arithmeticAggregation.mean}`,
             `Median: ${arithmeticAggregation.median}`,
         ].join("\n");
     };
@@ -91,13 +92,15 @@ export function ObjectViewerRow({
                 className={`object-property-type ${showPropertyType ? "" : "hidden"} ${
                     originalAndEnhancedDiffer && "original-and-enhanced-differ"
                 }`}
-                title={
-                    originalAndEnhancedDiffer
-                        ? `Actual type is '${displayRow.propertyTypeOriginal}'`
-                        : undefined
-                }
             >
-                {displayRow.propertyTypeEnhanced}
+                {originalAndEnhancedDiffer ? (
+                    <AnchoredInfoBox
+                        label={displayRow.propertyTypeEnhanced}
+                        textContent={`Actual type is '${displayRow.propertyTypeOriginal}'`}
+                    />
+                ) : (
+                    displayRow.propertyTypeEnhanced
+                )}
                 {isObject && displayRow.propertyValue !== null
                     ? `(${displayRow.numberOfChildren})`
                     : ""}
@@ -115,17 +118,20 @@ export function ObjectViewerRow({
                     <ObjectPropertyValue displayRow={displayRow} />
                 </div>
             ) : (
-                <div
-                    className="convenient-identifier"
-                    title={
-                        displayRow.arithmeticAggregation &&
-                        prettifyArithmeticAggregation(displayRow.arithmeticAggregation)
-                    }
-                >
+                <div className="convenient-identifier">
                     {showIdentifyingValues &&
                         displayRow.convenientIdentifierWhenCollapsed &&
                         (displayRow.propertyTypeEnhanced === "array" ? (
-                            <>{displayRow.convenientIdentifierWhenCollapsed}</>
+                            displayRow.arithmeticAggregation ? (
+                                <AnchoredInfoBox
+                                    label={displayRow.convenientIdentifierWhenCollapsed}
+                                    textContent={prettifyArithmeticAggregation(
+                                        displayRow.arithmeticAggregation
+                                    )}
+                                />
+                            ) : (
+                                <>{displayRow.convenientIdentifierWhenCollapsed}</>
+                            )
                         ) : (
                             <>&lt;{displayRow.convenientIdentifierWhenCollapsed}&gt;</>
                         ))}

@@ -71,7 +71,7 @@ export const exampleObject: {} = {
             arrayWithStrings: ["first", "second"],
             arrayWithIntegers: [-1, 0, 1],
             arrayWithIntegers2: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-            arrayWithNumbers: [3.1415, 2.78, 9.81],
+            arrayWithNumbers: [3.1415927, 2.718, 9.81],
         },
         "1.4 - 'Nada' values": {
             _README:
@@ -90,6 +90,8 @@ export const exampleObject: {} = {
             thisIsFunction: (a: number, b: number) => a + b, // Function is not valid JSON value, will be ignored.
         },
         "1.7 - Sets and Maps": {
+            _README:
+                "Using a Set or Map object will result in an empty JSON object, since that is the default representation for Sets and Maps in JSON.",
             thisIsASet: new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
             "thisIsAnotherSet<SET>": new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
             thisIsAMap: new Map([

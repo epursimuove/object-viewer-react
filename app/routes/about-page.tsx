@@ -121,11 +121,10 @@ export default function AboutPage() {
             <h3>Arithmetic aggregation</h3>
 
             <p>
-                When you have arrays of type <code>number[]</code> or <code>Integer[]</code>{" "}
-                convenient values (<em>sum</em>, <em>min</em>, <em>max</em>, <em>mean</em> and{" "}
-                <em>median</em>) are calculated for you. These values are found in the title
-                attribute and are displayed when hovered over <code>number[]</code> or{" "}
-                <code>Integer[]</code>.
+                For arrays of type <code>number[]</code> or <code>Integer[]</code>, convenient
+                values (<em>sum</em>, <em>min</em>, <em>max</em>, <em>mean</em> and <em>median</em>)
+                are calculated automatically for you. These values are displayed in a popup, when
+                you hover over the <code>number[]</code> or <code>Integer[]</code> labels.
             </p>
 
             <h3>History of objects</h3>
