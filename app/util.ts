@@ -19,6 +19,8 @@ const getNow = (): Temporal.Instant => Temporal.Now.instant();
 
 export const now: Temporal.Instant = getNow();
 
+export const systemTimeZone: string = Temporal.Now.timeZoneId();
+
 export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
 
 export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\.\d+)?)?)Z$/;
@@ -26,6 +28,9 @@ export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\
 const regExpLocalDate: RegExp = /^\d\d\d\d-\d\d-\d\d$/;
 
 const regExpLocalTime: RegExp = /^\d\d:\d\d(:\d\d)?$/;
+
+const regExpTimeZone: RegExp =
+    /^((Etc\/)?UTC)|((Africa|America|Antarctica|Atlantic|Asia|Australia|Europe|Indian|Pacific)\/[A-Z][A-Za-z_-]+)$/;
 
 const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
@@ -63,6 +68,11 @@ const isLocalDate = (s: string): boolean => {
 const isLocalTime = (s: string): boolean => {
     const isLocalTime: boolean = regExpLocalTime.test(s);
     return isLocalTime;
+};
+
+const isTimeZone = (s: string): boolean => {
+    const isTimeZone: boolean = regExpTimeZone.test(s);
+    return isTimeZone;
 };
 
 const isURL = (s: string): boolean => {
@@ -719,6 +729,8 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
             ? "LocalDate"
             : propertyTypeOriginal === "string" && isLocalTime(propertyValue as string)
             ? "LocalTime"
+            : propertyTypeOriginal === "string" && isTimeZone(propertyValue as string)
+            ? "TimeZone"
             : propertyTypeOriginal === "string" && potentialCountryCode(propertyValue as string)
             ? "CountryCode"
             : propertyTypeOriginal === "string" && potentialLocale(propertyValue as string)
@@ -785,7 +797,8 @@ const buildMetaData = (
     if (
         propertyTypeEnhanced === "Timestamp" ||
         propertyTypeEnhanced === "LocalDate" ||
-        propertyTypeEnhanced === "LocalTime"
+        propertyTypeEnhanced === "LocalTime" ||
+        propertyTypeEnhanced === "TimeZone"
     ) {
         if (propertyTypeEnhanced === "Timestamp") {
             const timestamp: Temporal.Instant = Temporal.Instant.from(propertyValue as string);
@@ -817,6 +830,18 @@ const buildMetaData = (
             });
 
             return `${prettifiedDuration(roundedDuration)}`;
+        } else if (propertyTypeEnhanced === "TimeZone") {
+            const zonedDateTime: Temporal.ZonedDateTime = now.toZonedDateTimeISO(
+                propertyValue as string
+            );
+            const localDateTime: Temporal.PlainDateTime = zonedDateTime.toPlainDateTime();
+
+            const { dayOfWeek, day, month } = localDateTime;
+            const localTimeString: string = localDateTime.toPlainTime().toString().slice(0, 5);
+
+            return `${weekDays[dayOfWeek - 1]} ${day} ${
+                monthNames[month - 1]
+            } ${localTimeString} [${zonedDateTime.offset}]`;
         }
     }
 
@@ -833,6 +858,23 @@ const buildMetaData = (
         }
     }
 };
+
+const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const splitIntoColorParts = (
     colorCodeHexRGB: string

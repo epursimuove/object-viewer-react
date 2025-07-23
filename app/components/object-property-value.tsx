@@ -18,6 +18,7 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
                 displayRow.propertyTypeEnhanced !== "Timestamp" &&
                 displayRow.propertyTypeEnhanced !== "LocalDate" &&
                 displayRow.propertyTypeEnhanced !== "LocalTime" &&
+                displayRow.propertyTypeEnhanced !== "TimeZone" &&
                 !displayRow.isNada && (
                     <>
                         {displayRow.propertyValue ? "" : "¿¿"}
@@ -59,6 +60,9 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
             )}
             {displayRow.propertyTypeEnhanced === "LocalTime" && (
                 <span className="local-time">{`${displayRow.propertyValue}`}</span>
+            )}
+            {displayRow.propertyTypeEnhanced === "TimeZone" && (
+                <span className="time-zone">{`${displayRow.propertyValue}`}</span>
             )}
         </>
     );

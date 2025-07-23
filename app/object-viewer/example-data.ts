@@ -1,4 +1,4 @@
-import { now } from "../util";
+import { now, systemTimeZone } from "../util";
 
 // let counter = 1;
 
@@ -19,6 +19,7 @@ export const exampleObject: {} = {
                     localDate: "1970-01-01",
                     localTime: "08:22",
                     timestamp: "2000-01-01T00:00Z",
+                    timeZone: "America/New_York",
                     countryCode: "SE",
                     locale: "en_GB",
                     email: "john@doe.com",
@@ -28,10 +29,12 @@ export const exampleObject: {} = {
                     semVer: "1.2.3",
                     phone: "+460701234567",
                     "1.1.1.1.1 - Date and time": {
-                        _README: "We can differentiate timestamps, local dates and local times.",
+                        _README:
+                            "We can differentiate timestamps, local dates, local times and time zones.",
                         timestamps: ["2015-12-24T14:00:00Z", "2030-12-24T14:00:00Z"],
                         localDates: ["2024-12-24", "2038-05-06"],
                         localTimes: ["14:00:00", "21:45:30"],
+                        timeZones: ["UTC", systemTimeZone],
                     },
                 },
             },
@@ -386,6 +389,23 @@ export const exampleObject: {} = {
                         .slice(0, 10),
                 ],
                 localTimes: ["08:25:30", "21:40:00", "14:05"],
+                timeZones: [
+                    "UTC",
+                    "Etc/UTC",
+                    "Europe/London",
+                    "Europe/Stockholm",
+                    "Asia/Tokyo",
+                    "Pacific/Kiritimati",
+                    "Australia/Adelaide",
+                    "Australia/Lord_Howe",
+                    "Asia/Kolkata",
+                    "Asia/Kathmandu",
+                    "America/Los_Angeles",
+                    "America/Anchorage",
+                    "America/Santiago",
+                    "Africa/Tunis",
+                    "Africa/Nairobi",
+                ],
             },
         },
         "2.6 - Misc": {

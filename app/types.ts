@@ -27,6 +27,7 @@ export type PropertyTypeEnhanced =
     | "Timestamp"
     | "LocalDate"
     | "LocalTime"
+    | "TimeZone"
     | "CountryCode"
     | "Locale"
     | "EmailAddress"

@@ -165,7 +165,7 @@ html {
                 }
             }
 
-            & :is(.timestamp, .local-date, .local-time) {
+            & :is(.timestamp, .local-date, .local-time, .time-zone) {
                 color: green;
             }
 
