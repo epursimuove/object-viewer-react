@@ -26,6 +26,7 @@ export const exampleObject: {} = {
                     url: "https://foo.com",
                     color: "#ff00ff",
                     color2: "rgb(0, 255, 255)",
+                    color3: "white",
                     semVer: "1.2.3",
                     phone: "+460701234567",
                     "1.1.1.1.1 - Date and time": {
@@ -464,6 +465,9 @@ export const exampleObject: {} = {
                 "rgb(255, 255, 0)",
                 "rgb(50, 150, 250)",
                 "rgb(250, 150, 50)",
+                "red",
+                "green",
+                "blue",
             ],
             semanticVersioning: ["9.8.7", "15.16.17", "0.101.9999"],
             theUser: {

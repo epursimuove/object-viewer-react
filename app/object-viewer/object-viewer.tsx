@@ -13,6 +13,7 @@ import {
     improveColor,
     isDescendant,
     now,
+    prettifyJSON,
 } from "~/util";
 import "./object-viewer.css";
 import { type ChangeEvent, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -47,7 +48,7 @@ export function ObjectViewer() {
     logInfoPretty("STARTING", true);
 
     const [originalObjectAsText, setOriginalObjectAsText] = useState<string>(
-        JSON.stringify(exampleObject, null, 4)
+        prettifyJSON(exampleObject)
     );
 
     const [originalObject, setOriginalObject] = useState<Record<string, PropertyValue>>({});
@@ -317,7 +318,7 @@ export function ObjectViewer() {
 
     function retrieveObjectFromHistory(historyItem: HistoryItem) {
         debug(`Retrieve object from history`);
-        setOriginalObjectAsText(JSON.stringify(historyItem.object, null, 4));
+        setOriginalObjectAsText(prettifyJSON(historyItem.object));
 
         setOriginalObject(historyItem.object);
         resetFilters();
@@ -538,21 +539,21 @@ export function ObjectViewer() {
                     <h2>Original object</h2>
                 </summary>
 
-                <pre>{JSON.stringify(originalObject, null, 4)}</pre>
+                <pre>{prettifyJSON(originalObject)}</pre>
             </details>
             <details>
                 <summary>
                     <h2>Original object converted to object tree</h2>
                 </summary>
 
-                <pre>{JSON.stringify(objectTree, null, 4)}</pre>
+                <pre>{prettifyJSON(objectTree)}</pre>
             </details>
             <details>
                 <summary>
                     <h2>Object tree converted to DisplayRow[]</h2>
                 </summary>
 
-                <pre>{JSON.stringify(displayRows, null, 4)}</pre>
+                <pre>{prettifyJSON(displayRows)}</pre>
             </details>
         </main>
     );

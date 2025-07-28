@@ -82,7 +82,8 @@ const isURL = (s: string): boolean => {
 };
 
 const isColorRGB = (s: string): boolean => {
-    const isColorRGB: boolean = regExpHexColorRGB.test(s) || regExpRGBColorRGB.test(s);
+    const isColorRGB: boolean =
+        regExpHexColorRGB.test(s) || regExpRGBColorRGB.test(s) || basicColorNames.includes(s);
     return isColorRGB;
 };
 
@@ -990,3 +991,24 @@ const getImprovedColorPart = (hex: string): string => {
     }
     return "ff";
 };
+
+export const prettifyJSON = (value: any): string => JSON.stringify(value, null, 4);
+
+const basicColorNames: string[] = [
+    "black",
+    "silver",
+    "gray",
+    "white",
+    "maroon",
+    "red",
+    "purple",
+    "fuchsia",
+    "green",
+    "lime",
+    "olive",
+    "yellow",
+    "navy",
+    "blue",
+    "teal",
+    "aqua",
+];

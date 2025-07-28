@@ -20,10 +20,10 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
                 displayRow.propertyTypeEnhanced !== "LocalTime" &&
                 displayRow.propertyTypeEnhanced !== "TimeZone" &&
                 !displayRow.isNada && (
-                    <>
+                    <span className="enhanced-from-string">
                         {displayRow.propertyValue ? "" : "¿¿"}
                         {`${displayRow.propertyValue}`}
-                    </>
+                    </span>
                 )}
             {displayRow.propertyTypeOriginal === "boolean" && (
                 <span className={`boolean ${displayRow.propertyValue ? "true" : "false"}`}>

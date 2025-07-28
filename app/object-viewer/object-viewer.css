@@ -166,6 +166,10 @@ html {
             }
 
             & :is(.timestamp, .local-date, .local-time, .time-zone) {
+                color: brown;
+            }
+
+            & :is(.enhanced-from-string) {
                 color: green;
             }
 
