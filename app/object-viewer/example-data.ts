@@ -406,6 +406,7 @@ export const exampleObject: {} = {
                     "America/Santiago",
                     "Africa/Tunis",
                     "Africa/Nairobi",
+                    "Africa/Unknown",
                 ],
             },
         },
@@ -438,6 +439,7 @@ export const exampleObject: {} = {
                 "localhost:1234",
                 "localhost:1234/project",
                 "https://foobar.com/more/and/more",
+                "https://theexamplecompany.com/containing/long/url/structure/that/is/deeply/nested",
             ],
             locales: [
                 "en_US",

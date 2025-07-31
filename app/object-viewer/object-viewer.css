@@ -89,9 +89,9 @@ html {
             min-width: 12rem;
             color: purple;
 
-            & .derived-array-index {
-                font-size: 0.85rem;
-                color: rgb(180, 180, 180);
+            & .array-index {
+                /* font-size: 0.85rem; */
+                color: var(--color-divider);
             }
 
             /* :not(.leaf) > & { */
@@ -115,12 +115,7 @@ html {
 
             & .string {
                 white-space: pre-wrap;
-
-                &.extra-spaces {
-                    color: red;
-                    font-weight: bold;
-                    cursor: help;
-                }
+                overflow-wrap: break-word;
             }
 
             & .boolean {
@@ -171,6 +166,14 @@ html {
 
             & :is(.enhanced-from-string) {
                 color: green;
+                white-space: pre-wrap;
+                overflow-wrap: break-word;
+            }
+
+            & :is(.extra-spaces, .strange-time-zone) {
+                color: red;
+                font-weight: bold;
+                cursor: help;
             }
 
             & .nada-value {

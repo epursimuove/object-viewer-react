@@ -107,7 +107,15 @@ export function ObjectViewerRow({
                 {isArray ? `[${displayRow.numberOfChildren}]` : ""}
             </div>
 
-            <div className={`object-property-name`}>{displayRow.propertyName}</div>
+            <div className={`object-property-name`}>
+                {displayRow.isArrayIndex && <span className="array-index">[</span>}
+                <AnchoredInfoBox
+                    label={displayRow.propertyName}
+                    // textContent={`JSON path:\n${displayRow.path}\nArrayIndex?: ${displayRow.isArrayIndex}`}
+                    textContent={`JSON path:\n${displayRow.path}`}
+                />
+                {displayRow.isArrayIndex && <span className="array-index">]</span>}
+            </div>
 
             {isLeaf ? (
                 <div className="object-property-value">

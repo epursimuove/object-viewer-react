@@ -118,6 +118,7 @@ const templateRootObjectNode: ObjectNode = {
     level: 0,
     depthBelow: -1,
     numberOfDescendants: -1,
+    path: "$",
     isExpanded: false,
     isVisible: false,
     length: -8888,
@@ -138,6 +139,7 @@ const templateEmptyObjectNode: ObjectNode = {
     depthBelow: -111,
     numberOfDescendants: -111,
     parentId: "/Not defined yet/",
+    path: "/Not defined yet/",
     propertyMetaData: "/Object node template/",
     propertyName: "/Object node template/",
     propertyTypeEnhanced: "object",
@@ -182,7 +184,7 @@ export function convertObjectToTree(originalObject: Record<string, PropertyValue
             originalObject as PropertyValue[]
         );
 
-        const foo: ObjectNode = convertObjectToTreeHelper(arrayAsObject, root);
+        const foo: ObjectNode = convertObjectToTreeHelper(arrayAsObject, root, true);
     } else {
         const foo: ObjectNode = convertObjectToTreeHelper(originalObject, root);
     }
@@ -228,7 +230,8 @@ const resetRowNumberCounter = (): void => {
 
 export function convertObjectToTreeHelper(
     originalObject: Record<string, PropertyValue>,
-    currentObjectNode: ObjectNode
+    currentObjectNode: ObjectNode,
+    isArrayIndex: boolean = false
 ): ObjectNode {
     info(`Converting property "${currentObjectNode.propertyName}" to object tree`);
     const currentId = id;
@@ -262,11 +265,13 @@ export function convertObjectToTreeHelper(
                 isVisible: false,
                 level: currentObjectNode.level + 1,
                 parentId: `${currentObjectNode.id}`,
+                path: buildPath(currentObjectNode.path, propertyName, isArrayIndex),
                 propertyMetaData: buildMetaData(propertyTypeEnhanced, propertyValue),
                 propertyName,
                 propertyTypeEnhanced,
                 propertyTypeOriginal,
                 propertyValue,
+                isArrayIndex,
             };
 
             currentObjectNode.containedProperties[propertyName] = leaf;
@@ -280,6 +285,8 @@ export function convertObjectToTreeHelper(
                     objectNode.level = currentObjectNode.level + 1;
                     objectNode.id = `${currentObjectNode.id}.${nextId()}`;
                     objectNode.parentId = `${currentObjectNode.id}`;
+                    objectNode.path = buildPath(currentObjectNode.path, propertyName, isArrayIndex);
+                    objectNode.isArrayIndex = isArrayIndex;
 
                     const subObject: ObjectNode = convertObjectToTreeHelper(
                         propertyValue as Record<string, PropertyValue>,
@@ -298,13 +305,16 @@ export function convertObjectToTreeHelper(
                 arrayNode.level = currentObjectNode.level + 1;
                 arrayNode.id = `${currentObjectNode.id}.${nextId()}`;
                 arrayNode.parentId = `${currentObjectNode.id}`;
+                arrayNode.path = buildPath(currentObjectNode.path, propertyName, isArrayIndex);
+                arrayNode.isArrayIndex = isArrayIndex;
 
                 const propertyValueAsObject: Record<string, PropertyValue> =
                     convertArrayToObject<PropertyValue>(propertyValue as PropertyValue[]);
 
                 const subItems: ObjectNode = convertObjectToTreeHelper(
                     propertyValueAsObject,
-                    arrayNode
+                    arrayNode,
+                    true
                 );
 
                 currentObjectNode.containedProperties[propertyName] = subItems;
@@ -597,9 +607,11 @@ export function convertTreeToDisplayRows(objectRoot: ObjectNode): DisplayRow[] {
         numberOfChildren: -1,
         id: objectRoot.id,
         parentId: objectRoot.parentId,
+        path: objectRoot.path,
         rowType: objectRoot.nodeType,
         isNada: false,
         arithmeticAggregation: objectRoot.arithmeticAggregation,
+        isArrayIndex: objectRoot.isArrayIndex,
     };
 
     const children: Record<string, ObjectTree> = objectRoot.containedProperties;
@@ -650,8 +662,10 @@ export function convertTreeToDisplayRowsHelper(
         numberOfChildren: 0,
         id: currentObjectNode.id,
         parentId: currentObjectNode.parentId,
+        path: currentObjectNode.path,
         rowType: currentObjectNode.nodeType,
         isNada: false,
+        isArrayIndex: currentObjectNode.isArrayIndex,
     };
 
     if (currentObjectNode.nodeType === "leaf") {
@@ -832,17 +846,27 @@ const buildMetaData = (
 
             return `${prettifiedDuration(roundedDuration)}`;
         } else if (propertyTypeEnhanced === "TimeZone") {
-            const zonedDateTime: Temporal.ZonedDateTime = now.toZonedDateTimeISO(
-                propertyValue as string
-            );
-            const localDateTime: Temporal.PlainDateTime = zonedDateTime.toPlainDateTime();
+            try {
+                const zonedDateTime: Temporal.ZonedDateTime = now.toZonedDateTimeISO(
+                    propertyValue as string
+                );
+                const localDateTime: Temporal.PlainDateTime = zonedDateTime.toPlainDateTime();
 
-            const { dayOfWeek, day, month } = localDateTime;
-            const localTimeString: string = localDateTime.toPlainTime().toString().slice(0, 5);
+                const { dayOfWeek, day, month } = localDateTime;
+                const localTimeString: string = localDateTime.toPlainTime().toString().slice(0, 5);
 
-            return `${weekDays[dayOfWeek - 1]} ${day} ${
-                monthNames[month - 1]
-            } ${localTimeString} [${zonedDateTime.offset}]`;
+                return `${weekDays[dayOfWeek - 1]} ${day} ${
+                    monthNames[month - 1]
+                } ${localTimeString} [${zonedDateTime.offset}]`;
+            } catch (error) {
+                if (error instanceof RangeError) {
+                    return `RangeError: ${error.message}`;
+                } else if (error instanceof Error) {
+                    return `Error: ${error.message}`;
+                } else {
+                    return `Unknown Error: ${error}`;
+                }
+            }
         }
     }
 
@@ -934,7 +958,7 @@ const convertArrayToObject = <T>(array: T[]): Record<string, T> => {
     const object: Record<string, T> = {};
 
     for (let i = 0; i < array.length; i++) {
-        object[`[${i}]`] = array[i];
+        object[i] = array[i];
     }
 
     return object;
@@ -990,6 +1014,16 @@ const getImprovedColorPart = (hex: string): string => {
         return "00";
     }
     return "ff";
+};
+
+const buildPath = (currentPath: string, propertyName: string, isArrayIndex: boolean): string => {
+    if (isArrayIndex) {
+        return `${currentPath}[${propertyName}]`;
+    } else if (propertyName.includes(" ")) {
+        return `${currentPath}["${propertyName}"]`;
+    } else {
+        return `${currentPath}.${propertyName}`;
+    }
 };
 
 export const prettifyJSON = (value: any): string => JSON.stringify(value, null, 4);

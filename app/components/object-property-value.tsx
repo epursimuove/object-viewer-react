@@ -8,6 +8,10 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
         displayRow.propertyTypeEnhanced === "string" &&
         containsExtraSpaces(displayRow.propertyValue as string);
 
+    const strangeTimeZone =
+        displayRow.propertyTypeEnhanced === "TimeZone" &&
+        displayRow.propertyMetaData?.includes("Error");
+
     return (
         <>
             {displayRow.rowType === "leaf" &&
@@ -62,7 +66,17 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
                 <span className="local-time">{`${displayRow.propertyValue}`}</span>
             )}
             {displayRow.propertyTypeEnhanced === "TimeZone" && (
-                <span className="time-zone">{`${displayRow.propertyValue}`}</span>
+                <span className={`time-zone ${strangeTimeZone && "strange-time-zone"}`}>
+                    {strangeTimeZone ? (
+                        <AnchoredInfoBox
+                            label={`${displayRow.propertyValue}`}
+                            textContent={`NB! Looks like a proper time zone,\nbut no match was found!`}
+                            type="warning"
+                        />
+                    ) : (
+                        `${displayRow.propertyValue}`
+                    )}
+                </span>
             )}
         </>
     );

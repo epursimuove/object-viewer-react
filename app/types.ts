@@ -49,6 +49,7 @@ export interface TreeBase {
     nodeType: "leaf" | "object" | "array";
     id: string;
     parentId?: string;
+    path: string;
     level: number;
 
     isVisible: boolean;
@@ -57,6 +58,8 @@ export interface TreeBase {
     propertyTypeOriginal: PropertyTypeOriginal;
     propertyTypeEnhanced: PropertyTypeEnhanced;
     propertyMetaData?: string;
+
+    isArrayIndex?: boolean;
 }
 
 export interface NodeBase {
@@ -96,8 +99,10 @@ export interface DisplayRow {
     isVisible: boolean;
     id: string;
     parentId?: string;
+    path: string;
     isNada: boolean;
     arithmeticAggregation?: ArithmeticAggregation;
+    isArrayIndex?: boolean;
 }
 
 export interface UserConfigurationContextType {
