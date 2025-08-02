@@ -314,7 +314,12 @@ export function ObjectViewer() {
         }
     }, []);
 
-    const rowsPercentage: number = Math.ceil((numberOfVisibleRows / totalNumberOfRows) * 100);
+    const calculateRowsPercentage = (): number => {
+        const percentage: number = (numberOfVisibleRows / totalNumberOfRows) * 100;
+        return percentage > 50 ? Math.floor(percentage) : Math.ceil(percentage);
+    };
+
+    const rowsPercentage: number = calculateRowsPercentage();
 
     function retrieveObjectFromHistory(historyItem: HistoryItem) {
         debug(`Retrieve object from history`);
