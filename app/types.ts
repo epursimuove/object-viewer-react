@@ -41,7 +41,9 @@ export type PropertyTypeEnhanced =
     | "SemVer"
     | "PhoneNumber"
     | "BooleanFalse"
-    | "BooleanTrue";
+    | "BooleanTrue"
+    | "IPv4"
+    | "IPv6";
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 

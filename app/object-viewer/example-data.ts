@@ -29,6 +29,8 @@ export const exampleObject: {} = {
                     color3: "white",
                     semVer: "1.2.3",
                     phone: "+460701234567",
+                    ipv4: "127.0.0.1",
+                    ipv6: "1234::1",
                     "1.1.1.1.1 - Date and time": {
                         _README:
                             "We can differentiate timestamps, local dates, local times and time zones.",
@@ -472,6 +474,16 @@ export const exampleObject: {} = {
                 "blue",
             ],
             semanticVersioning: ["9.8.7", "15.16.17", "0.101.9999"],
+            ipNumbers: [
+                "192.0.5.234",
+                "127.0.0.1",
+                "ABCD:EF01::",
+                "::",
+                "::1",
+                "1234:5678:90ab:cdef:1234:5678:90ab:cdef",
+                "1:2:3:4:5:6:7:8",
+                "1:2::8",
+            ],
             theUser: {
                 username: "angus",
             },
@@ -492,6 +504,8 @@ export const exampleObject: {} = {
                 UUID: true,
                 Uuid: true,
                 uuid: false,
+                "first name": "David",
+                "last name": "Jones",
             },
             evilPropertiesObject2: {
                 name: {

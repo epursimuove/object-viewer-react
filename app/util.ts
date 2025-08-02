@@ -53,6 +53,11 @@ const regExpRGBColorRGB: RegExp = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/;
 
 const regExpSemanticVersioning: RegExp = /^\d+\.\d+\.\d+$/;
 
+const regExpIPv4: RegExp = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
+const regExpExpandedIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4}){7})$/;
+const regExpPartialCanonicalIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4})*)?$/;
+
 const regExpPhoneNumber: RegExp = /^\+\d{2}\d{2,3}\d{7}$/; // Swedish mobile number.
 
 const isTimestamp = (s: string): boolean => {
@@ -109,6 +114,20 @@ const potentialEmailAddress = (s: string): boolean => {
 const isArrayIndex = (s: string): boolean => {
     const isArrayIndex: boolean = regExpArrayIndexString.test(s);
     return isArrayIndex;
+};
+
+const isIPv4Address = (s: string): boolean => regExpIPv4.test(s);
+
+const canonicalFormatSeparatorIPv6 = "::";
+
+const isIPv6Address = (s: string): boolean => {
+    if (s.includes(canonicalFormatSeparatorIPv6)) {
+        const [before, after] = s.split(canonicalFormatSeparatorIPv6);
+
+        return regExpPartialCanonicalIPv6.test(before) && regExpPartialCanonicalIPv6.test(after);
+    } else {
+        return regExpExpandedIPv6.test(s);
+    }
 };
 
 const templateRootObjectNode: ObjectNode = {
@@ -760,6 +779,10 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
             ? "ColorRGB"
             : propertyTypeOriginal === "string" && isSemanticVersioning(propertyValue as string)
             ? "SemVer"
+            : propertyTypeOriginal === "string" && isIPv4Address(propertyValue as string)
+            ? "IPv4"
+            : propertyTypeOriginal === "string" && isIPv6Address(propertyValue as string)
+            ? "IPv6"
             : propertyTypeOriginal === "string" && isPhoneNumber(propertyValue as string)
             ? "PhoneNumber"
             : propertyTypeOriginal;
@@ -791,7 +814,11 @@ const buildMetaData = (
     propertyTypeEnhanced: PropertyTypeEnhanced,
     propertyValue: PropertyValue
 ): string | undefined => {
-    if (["string", "EmailAddress", "URL", "PhoneNumber", "SemVer"].includes(propertyTypeEnhanced)) {
+    if (
+        ["string", "EmailAddress", "URL", "PhoneNumber", "SemVer", "IPv4", "IPv6"].includes(
+            propertyTypeEnhanced
+        )
+    ) {
         return `${(propertyValue as string).length} characters`;
     }
 
