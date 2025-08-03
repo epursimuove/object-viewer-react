@@ -146,6 +146,7 @@ export interface HistoryItem {
 }
 
 export interface ArithmeticAggregation {
+    length?: number;
     min?: number;
     max?: number;
     mean?: number;

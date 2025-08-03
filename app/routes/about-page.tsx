@@ -17,11 +17,11 @@ export default function AboutPage() {
             <h1>About</h1>
 
             <p>
-                <em>NNM Object Viewer</em> is a convenient tool that displays a{" "}
+                <em>NNM Object Viewer</em> is a convenient tool that displays{" "}
                 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">
                     JSON
                 </a>{" "}
-                object as an object tree. The tool handles objects and arrays.
+                data as an object tree. The tool handles objects and arrays.
             </p>
 
             <p>
@@ -58,16 +58,17 @@ export default function AboutPage() {
                 <li>Properties are sorted ascending (for each level).</li>
 
                 <li>
-                    When clicking on an object node row, the underlying subtree is toggled. Per
+                    When clicking on an object node row, the underlying subtree is toggled. By
                     default, <em>all</em> the sublevels are displayed when expanded and hidden when
                     collapsed. By shift-clicking you can expand only the <em>first</em> sublevel.
                 </li>
 
                 <li>
                     Makes educated guesses and assumptions about the (enhanced) types, i.e.
-                    CountryCode, LocalDate, Timestamp, Integer, etc, even if the guesses may be
-                    wrong sometimes. In this way we get much better information about the property
-                    values (most of the time). Guesses are made for string values and number values.
+                    CountryCode, LocalDate, Timestamp, Integer, EmailAddress, URL, Locale, etc, even
+                    if the guesses may be wrong sometimes. In this way we get much better
+                    information about the property values (most of the time). Guesses are made for
+                    string values and number values.
                     <ul>
                         <li>Numbers - we can differentiate floating point numbers and integers.</li>
                         <li>Strings - for strings we can guess a lot from the format.</li>

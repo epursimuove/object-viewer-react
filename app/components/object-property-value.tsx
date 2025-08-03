@@ -38,8 +38,9 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
                 <span className={`string ${textContainsExtraSpaces && "extra-spaces"}`}>
                     {textContainsExtraSpaces ? (
                         <AnchoredInfoBox
-                            label={`${displayRow.propertyValue}`}
-                            textContent={`NB! Text contains extra spaces (in ${textContainsExtraSpaces}),\nwhich may cause problems!`}
+                            labelAnchor={`${displayRow.propertyValue}`}
+                            tag="NB!"
+                            textContent={`Text contains extra spaces (in ${textContainsExtraSpaces}), which may cause problems!`}
                             type="warning"
                         />
                     ) : (
@@ -69,10 +70,12 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
                 <span className={`time-zone ${strangeTimeZone && "strange-time-zone"}`}>
                     {strangeTimeZone ? (
                         <AnchoredInfoBox
-                            label={`${displayRow.propertyValue}`}
-                            textContent={`NB! Looks like a proper time zone,\nbut no match was found!`}
+                            labelAnchor={`${displayRow.propertyValue}`}
+                            tag="NB!"
                             type="warning"
-                        />
+                        >
+                            Looks like a proper time zone, but no match was found!
+                        </AnchoredInfoBox>
                     ) : (
                         `${displayRow.propertyValue}`
                     )}

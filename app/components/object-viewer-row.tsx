@@ -61,6 +61,7 @@ export function ObjectViewerRow({
         arithmeticAggregation: ArithmeticAggregation
     ): string => {
         return [
+            `Length: ${arithmeticAggregation.length}`,
             `Sum:    ${arithmeticAggregation.sum}`,
             `Min:    ${arithmeticAggregation.min}`,
             `Max:    ${arithmeticAggregation.max}`,
@@ -95,7 +96,7 @@ export function ObjectViewerRow({
             >
                 {originalAndEnhancedDiffer ? (
                     <AnchoredInfoBox
-                        label={displayRow.propertyTypeEnhanced}
+                        labelAnchor={displayRow.propertyTypeEnhanced}
                         textContent={`Actual type is '${displayRow.propertyTypeOriginal}'`}
                     />
                 ) : (
@@ -110,10 +111,13 @@ export function ObjectViewerRow({
             <div className={`object-property-name`}>
                 {displayRow.isArrayIndex && <span className="array-index">[</span>}
                 <AnchoredInfoBox
-                    label={displayRow.propertyName}
+                    labelAnchor={displayRow.propertyName}
+                    tag="JSON path"
                     // textContent={`JSON path:\n${displayRow.path}\nArrayIndex?: ${displayRow.isArrayIndex}`}
-                    textContent={`JSON path:\n${displayRow.path}`}
-                />
+                    textContent={`${displayRow.path}`}
+                >
+                    <div>{displayRow.path}</div>
+                </AnchoredInfoBox>
                 {displayRow.isArrayIndex && <span className="array-index">]</span>}
             </div>
 
@@ -132,7 +136,8 @@ export function ObjectViewerRow({
                         (displayRow.propertyTypeEnhanced === "array" ? (
                             displayRow.arithmeticAggregation ? (
                                 <AnchoredInfoBox
-                                    label={displayRow.convenientIdentifierWhenCollapsed}
+                                    labelAnchor={displayRow.convenientIdentifierWhenCollapsed}
+                                    tag="Aggregation"
                                     textContent={prettifyArithmeticAggregation(
                                         displayRow.arithmeticAggregation
                                     )}

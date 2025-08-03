@@ -162,16 +162,20 @@ time {
         display: none;
         position-anchor: --info-box-anchor-fallback;
         position: fixed;
-        position-area: start center;
+        position-area: start span-end;
         margin-block-end: 5px;
 
         color: black;
         font-weight: normal;
-        white-space: pre;
+        white-space: pre-wrap;
+        /* overflow-wrap: break-word; */
 
         border: 1px solid gray;
         border-radius: 8px;
         padding: 0.5rem;
+
+        max-width: 40rem;
+        z-index: 1;
 
         &.type-info {
             background-color: rgb(230, 255, 230);
@@ -184,9 +188,23 @@ time {
         &.type-error {
             background-color: rgb(255, 230, 230);
         }
+
+        & .info-box-tag {
+            text-align: end;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--color-lighter);
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 2rem;
+        }
     }
 
     .info-box-anchor:hover + .info-box {
-        display: unset;
+        /* display: unset; */
+        display: flex;
+        flex-direction: column;
     }
 }

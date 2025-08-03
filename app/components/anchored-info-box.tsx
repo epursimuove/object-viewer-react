@@ -1,26 +1,37 @@
+import type { ReactNode } from "react";
+
 let counter = 0;
 
 export function AnchoredInfoBox({
-    label,
+    labelAnchor,
     textContent,
+    children,
     type = "info",
+    tag,
 }: {
-    label: string;
-    textContent: string;
+    labelAnchor: string;
+    textContent?: string;
+    children?: ReactNode;
     type?: "info" | "warning" | "error";
+    tag?: string;
 }) {
     counter++;
     return (
         <span className="anchored-info-box">
             <span className="info-box-anchor" style={{ anchorName: `--anchor-${counter}` }}>
-                {label}
+                {labelAnchor}
             </span>
 
             <div
                 className={`info-box type-${type}`}
                 style={{ positionAnchor: `--anchor-${counter}` }}
             >
-                {textContent}
+                <div className="info-box-tag">
+                    <div>{tag}</div>
+                    {/* <div>{type}</div> */}
+                </div>
+
+                <div>{children ? children : textContent}</div>
             </div>
         </span>
     );

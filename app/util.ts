@@ -587,7 +587,7 @@ const calculateAggregations = (numbers: number[]): ArithmeticAggregation => {
     const mean: number = maxNumberOfDecimals(sum / numberOfItems);
     const median: number = calculateMedian(sortedValues);
 
-    return { min, max, mean, median, sum };
+    return { length: numberOfItems, min, max, mean, median, sum };
 };
 
 const calculateMedian = (numbers: number[]): number => {
