@@ -284,6 +284,7 @@ export const exampleObject: {} = {
                 width: 300,
                 height: 150,
             },
+            numbers: [-12345, -1234, -123, -12, -1, 0, 1, 12, 123, 1234, 12345],
         },
         "2.3 - Texts": {
             longerText:

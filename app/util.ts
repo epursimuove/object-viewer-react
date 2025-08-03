@@ -945,6 +945,14 @@ const splitIntoColorParts = (
 const convertDecimalToHex = (decimal: string): string =>
     parseInt(decimal, 10).toString(16).toUpperCase().padStart(2, "0");
 
+export const getNumberOfIntegerDigits = (n: number) => {
+    // Purely math, no strings in this solution.
+    const numberOfIntegerDigits: number =
+        n === 0 ? 1 : Math.floor(Math.log10(Math.floor(Math.abs(n)))) + 1;
+
+    return numberOfIntegerDigits;
+};
+
 const convertToHexRGB = (colorCodeRGB: string): string => {
     const rgbParts: string[] = colorCodeRGB.slice(4).split(",");
     const red: string = convertDecimalToHex(rgbParts[0]);
