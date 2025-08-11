@@ -43,7 +43,9 @@ export type PropertyTypeEnhanced =
     | "BooleanFalse"
     | "BooleanTrue"
     | "IPv4"
-    | "IPv6";
+    | "IPv6"
+    | "HTTPMethod"
+    | "HTTPStatus";
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 

@@ -106,7 +106,9 @@ export function ObjectViewerRow({
                     : undefined
             }
         >
-            <div className={`row-number`}>{displayRow.rowNumber}</div>
+            <div id={`row-number-${displayRow.rowNumber}`} className={`row-number`}>
+                {displayRow.rowNumber}
+            </div>
 
             <div
                 className={`row-item-padding indentation-level-${displayRow.indentationLevel} ${

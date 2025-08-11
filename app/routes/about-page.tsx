@@ -141,6 +141,32 @@ export default function AboutPage() {
                 colors are 64 (8&times;8).
             </p>
 
+            <h3>Marking and goto lines</h3>
+
+            <p>
+                You can easily mark lines and scroll to them. If several lines are defined, the
+                scrolling is to the first line. Some examples of the syntax that is supported:
+            </p>
+
+            <ul>
+                <li>
+                    <code>10</code>, mark and scroll to line 10.
+                </li>
+                <li>
+                    <code>10-</code>, mark lines from 10 to end and scroll to line 10.
+                </li>
+                <li>
+                    <code>-10</code>, mark lines from 1 to 10 and scroll to line 1.
+                </li>
+                <li>
+                    <code>10 20 30</code>, mark lines 10, 20, and 30 and scroll to line 10.
+                </li>
+                <li>
+                    <code>10-20 30-40</code>, mark lines 10 to 20 and lines 30 to 40 and scroll to
+                    line 10.
+                </li>
+            </ul>
+
             <h3>Tips</h3>
 
             <p>

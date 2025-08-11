@@ -31,6 +31,8 @@ export const exampleObject: {} = {
                     phone: "+460701234567",
                     ipv4: "127.0.0.1",
                     ipv6: "1234::1",
+                    httpMethod: "POST",
+                    httpStatus: 200,
                     "1.1.1.1.1 - Date and time": {
                         _README:
                             "We can differentiate timestamps, local dates, local times and time zones.",
@@ -491,6 +493,18 @@ export const exampleObject: {} = {
             phoneNumbers: ["+46701112223", "+460709876543"],
             numbers: [0, 0, 0, 0],
             booleans: [false, false, true],
+            httpMethods: [
+                "CONNECT",
+                "DELETE",
+                "GET",
+                "HEAD",
+                "OPTIONS",
+                "PATCH",
+                "POST",
+                "PUT",
+                "TRACE",
+            ],
+            httpStatusCodes: [100, 200, 201, 301, 400, 401, 404, 500],
         },
         "2.7 - Gotchas": {
             evilPropertiesObject: {

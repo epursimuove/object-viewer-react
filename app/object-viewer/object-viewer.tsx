@@ -81,6 +81,10 @@ export function ObjectViewer() {
 
     const [jsonObjectModified, setJsonObjectModified] = useState<boolean>(false);
 
+    const [gotoLine, setGotoLine] = useState<string>("");
+    const [gotoLineModified, setGotoLineModified] = useState<boolean>(false);
+    const gotoLineModifiedCallback = useRef<null | (() => void)>(null);
+
     const objectTree: ObjectNode = convertObjectToTree(originalObject);
 
     info("originalObject", originalObject);
@@ -156,7 +160,105 @@ export function ObjectViewer() {
         }
     }
 
-    function expandAll(event: SyntheticEvent) {
+    useEffect(() => {
+        info(`gotoLine modified`, gotoLine);
+
+        if (gotoLineModifiedCallback.current) {
+            trace("Calling callback");
+            gotoLineModifiedCallback.current();
+            gotoLineModifiedCallback.current = null;
+            setGotoLineModified(false);
+        }
+    }, [gotoLineModified]);
+
+    interface LineNumbers {
+        min?: number;
+        max?: number;
+    }
+
+    const regExpGotoLines: RegExp = /^[\d\- ]*$/;
+
+    const getLineNumbers = (userInputLineNumbers: string): LineNumbers[] => {
+        const result: LineNumbers[] = [];
+
+        if (userInputLineNumbers.length > 0 && regExpGotoLines.test(userInputLineNumbers)) {
+            const parts: string[] = userInputLineNumbers.split(" ");
+
+            for (const part of parts) {
+                if (part.startsWith("-")) {
+                    result.push({ max: parseInt(part.slice(1)) });
+                } else if (part.endsWith("-")) {
+                    result.push({ min: parseInt(part.slice(0, -1)) });
+                } else if (part.includes("-")) {
+                    const [minString, maxString] = part.split("-");
+                    result.push({ min: parseInt(minString), max: parseInt(maxString) });
+                } else {
+                    const minAndMax = parseInt(part);
+                    result.push({ min: minAndMax, max: minAndMax });
+                }
+            }
+        }
+
+        return result;
+    };
+
+    const markAndGotoLines = (lineNumbers: LineNumbers[]): void => {
+        let scrolledIntoView = false;
+
+        for (const { min, max } of lineNumbers) {
+            for (
+                let lineNumber = min || 1;
+                lineNumber <= (max || totalNumberOfRows);
+                lineNumber++
+            ) {
+                const rowElement = document.getElementById(
+                    `row-number-${lineNumber}`
+                )?.parentElement;
+
+                if (
+                    rowElement &&
+                    rowElement.classList.contains("row-item-wrapper") &&
+                    0 < lineNumber &&
+                    lineNumber <= totalNumberOfRows
+                ) {
+                    rowElement?.classList.add("active-goto-line");
+
+                    if (!scrolledIntoView) {
+                        rowElement?.scrollIntoView({ behavior: "smooth", block: "center" });
+                        scrolledIntoView = true;
+                    }
+                }
+            }
+        }
+    };
+
+    function scrollLineIntoView(potentialLineNumbers: string) {
+        info(`Goto lines ${potentialLineNumbers}`);
+
+        document
+            .querySelectorAll(".active-goto-line")
+            ?.forEach((element) => element.classList.remove("active-goto-line"));
+
+        const lineNumbers: LineNumbers[] = getLineNumbers(potentialLineNumbers);
+
+        if (lineNumbers.length > 0) {
+            expandAll();
+
+            gotoLineModifiedCallback.current = () => {
+                markAndGotoLines(lineNumbers);
+            };
+
+            setGotoLineModified(true);
+        }
+    }
+
+    function handleScrollIntoView(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.key === "Enter") {
+            scrollLineIntoView(gotoLine);
+        }
+    }
+
+    function expandAll(event?: SyntheticEvent) {
         // event.preventDefault();
         debug("Expanding all");
 
@@ -188,10 +290,10 @@ export function ObjectViewer() {
                     displayRow.rowType === "leaf"
                         ? ""
                         : displayRow.indentationLevel === 0
-                        ? "-"
-                        : displayRow.hasChildren
-                        ? "+"
-                        : "∅",
+                          ? "-"
+                          : displayRow.hasChildren
+                            ? "+"
+                            : "∅",
             };
         });
 
@@ -231,10 +333,10 @@ export function ObjectViewer() {
                             displayRow.rowType === "leaf"
                                 ? ""
                                 : !displayRow.hasChildren
-                                ? "∅"
-                                : isExpanded
-                                ? "-"
-                                : "+",
+                                  ? "∅"
+                                  : isExpanded
+                                    ? "-"
+                                    : "+",
                     };
                 }
                 return {
@@ -505,6 +607,27 @@ export function ObjectViewer() {
 
                         <section id="filters">
                             <FilterSection displayRows={displayRows} />
+                        </section>
+
+                        <section id="goto-line">
+                            <details open>
+                                <summary>Mark/goto line(s)</summary>
+
+                                <div>
+                                    <label htmlFor="gotoLine">Line(s)</label>
+                                    <input
+                                        type="text"
+                                        name="gotoLine"
+                                        id="gotoLine"
+                                        size={20}
+                                        value={gotoLine}
+                                        onChange={(event) => {
+                                            setGotoLine(event.target.value);
+                                        }}
+                                        onKeyUp={handleScrollIntoView}
+                                    />
+                                </div>
+                            </details>
                         </section>
 
                         <section id="statistics">
