@@ -1,0 +1,88 @@
+import { Temporal } from "@js-temporal/polyfill";
+
+const getNow = (): Temporal.Instant => Temporal.Now.instant();
+
+export const now: Temporal.Instant = getNow();
+
+export const systemTimeZone: string = Temporal.Now.timeZoneId();
+
+export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\.\d+)?)?)Z$/;
+
+export const regExpLocalDate: RegExp = /^\d\d\d\d-\d\d-\d\d$/;
+
+export const regExpLocalTime: RegExp = /^\d\d:\d\d(:\d\d)?$/;
+
+export const regExpTimeZone: RegExp =
+    /^((Etc\/)?UTC)|((Africa|America|Antarctica|Atlantic|Asia|Australia|Europe|Indian|Pacific)\/[A-Z][A-Za-z_-]+)$/;
+
+export const isTimestamp = (s: string): boolean => {
+    const isTimestamp: boolean = regExpTimestamp.test(s);
+    return isTimestamp;
+};
+
+export const isLocalDate = (s: string): boolean => {
+    const isLocalDate: boolean = regExpLocalDate.test(s);
+    return isLocalDate;
+};
+
+export const isLocalTime = (s: string): boolean => {
+    const isLocalTime: boolean = regExpLocalTime.test(s);
+    return isLocalTime;
+};
+
+export const isTimeZone = (s: string): boolean => {
+    const isTimeZone: boolean = regExpTimeZone.test(s);
+    return isTimeZone;
+};
+
+export const isEpoch = (n: number): boolean =>
+    (1000000000 <= n && n <= 3000000000) || (1000000000000 <= n && n <= 3000000000000);
+
+export const padTimestampToMilliseconds = (timestamp: Temporal.Instant): string =>
+    timestamp.toString().padEnd(24);
+
+export const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+export const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+export const prettifiedDuration = (duration: Temporal.Duration): string => {
+    let durationPart: string = "??????";
+    let inThePast: boolean = true;
+
+    if (duration.years !== 0) {
+        durationPart = `${Math.abs(duration.years)} years`;
+        inThePast = duration.years > 0;
+    } else if (duration.months !== 0) {
+        durationPart = `${Math.abs(duration.months)} months`;
+        inThePast = duration.months > 0;
+    } else if (duration.days !== 0) {
+        durationPart = `${Math.abs(duration.days)} days`;
+        inThePast = duration.days > 0;
+    } else if (duration.hours !== 0) {
+        durationPart = `${Math.abs(duration.hours)} hours`;
+        inThePast = duration.hours > 0;
+    } else if (duration.minutes !== 0) {
+        durationPart = `${Math.abs(duration.minutes)} minutes`;
+        inThePast = duration.minutes > 0;
+    } else if (duration.seconds !== 0) {
+        durationPart = `${Math.abs(duration.seconds)} seconds`;
+        inThePast = duration.seconds > 0;
+    } else {
+        return "Just now";
+    }
+
+    return inThePast ? `More than ${durationPart} ago` : `In about ${durationPart}`;
+};

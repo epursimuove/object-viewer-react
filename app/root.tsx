@@ -12,7 +12,7 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { version as appVersion } from "../package-lock.json";
 import { UserConfigurationProvider } from "~/object-viewer/UserConfigurationContext";
-import { BASE_NAME_URL_PREFIX } from "~/util";
+import { BASE_NAME_URL_PREFIX } from "~/util/util";
 import { HistoryContextProvider } from "./object-viewer/HistoryContext";
 
 // export const links: Route.LinksFunction = () => [

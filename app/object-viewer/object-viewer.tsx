@@ -12,9 +12,9 @@ import {
     convertTreeToDisplayRows,
     improveColor,
     isDescendant,
-    now,
     prettifyJSON,
-} from "~/util";
+} from "~/util/util";
+import { now } from "~/util/dateAndTime";
 import "./object-viewer.css";
 import { type ChangeEvent, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { version as appVersion } from "../../package-lock.json";

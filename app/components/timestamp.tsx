@@ -1,26 +1,14 @@
-import {regExpTimestamp} from "~/util";
+import { regExpTimestamp } from "~/util/dateAndTime";
 
-export function Timestamp(
-    {
-        timestamp
-    }: {timestamp: string}) {
-
+export function Timestamp({ timestamp }: { timestamp: string }) {
     const timestampParts: TimestampParts = divideTimestamp(timestamp);
 
     return (
         <time className="timestamp" dateTime={timestamp}>
-            <span>
-                {`${timestampParts.datePart}`}
-            </span>
-            <span>
-                T
-            </span>
-            <span>
-                {`${timestampParts.timePart}`}
-            </span>
-            <span>
-                Z
-            </span>
+            <span>{`${timestampParts.datePart}`}</span>
+            <span>T</span>
+            <span>{`${timestampParts.timePart}`}</span>
+            <span>Z</span>
         </time>
     );
 }
@@ -31,8 +19,7 @@ interface TimestampParts {
 }
 
 const divideTimestamp = (timestamp: string): TimestampParts => {
-
-    const matches: RegExpMatchArray | null = timestamp.match(regExpTimestamp)
+    const matches: RegExpMatchArray | null = timestamp.match(regExpTimestamp);
 
     if (matches) {
         return {

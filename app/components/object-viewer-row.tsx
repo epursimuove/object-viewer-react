@@ -5,7 +5,7 @@ import type { SyntheticEvent } from "react";
 import { ObjectPropertyValue } from "~/components/object-property-value";
 import { ColorIndicator } from "./color-indicator";
 import { AnchoredInfoBox } from "./anchored-info-box";
-import { getNumberOfIntegerDigits } from "~/util";
+import { getNumberOfIntegerDigits } from "~/util/util";
 
 export function ObjectViewerRow({
     displayRow,

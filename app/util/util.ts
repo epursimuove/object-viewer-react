@@ -12,25 +12,23 @@ import type {
 } from "~/types";
 import { Temporal } from "@js-temporal/polyfill";
 import { useLog } from "~/log-manager/LogManager";
+import { httpMethods, httpStatusCodes } from "./http";
+import {
+    isEpoch,
+    isLocalDate,
+    isLocalTime,
+    isTimestamp,
+    isTimeZone,
+    monthNames,
+    now,
+    padTimestampToMilliseconds,
+    prettifiedDuration,
+    weekDays,
+} from "./dateAndTime";
 
 const { debug, error, info, trace, warning } = useLog("util.ts");
 
-const getNow = (): Temporal.Instant => Temporal.Now.instant();
-
-export const now: Temporal.Instant = getNow();
-
-export const systemTimeZone: string = Temporal.Now.timeZoneId();
-
 export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
-
-export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\.\d+)?)?)Z$/;
-
-const regExpLocalDate: RegExp = /^\d\d\d\d-\d\d-\d\d$/;
-
-const regExpLocalTime: RegExp = /^\d\d:\d\d(:\d\d)?$/;
-
-const regExpTimeZone: RegExp =
-    /^((Etc\/)?UTC)|((Africa|America|Antarctica|Atlantic|Asia|Australia|Europe|Indian|Pacific)\/[A-Z][A-Za-z_-]+)$/;
 
 const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
@@ -59,110 +57,6 @@ const regExpExpandedIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4}){7})$
 const regExpPartialCanonicalIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4})*)?$/;
 
 const regExpPhoneNumber: RegExp = /^\+\d{2}\d{2,3}\d{7}$/; // Swedish mobile number.
-
-const httpMethods: string[] = [
-    "CONNECT",
-    "DELETE",
-    "GET",
-    "HEAD",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-    "TRACE",
-];
-
-const httpStatusCodes: Map<number, string> = new Map<number, string>([
-    // 1xx: Informational
-    [100, "Continue - server received headers, proceed with body"],
-    [101, "Switching Protocols - protocol change accepted"],
-    [102, "Processing (WebDAV) - request is still being handled"],
-    [103, "Early Hints - headers sent before final response"],
-
-    // 2xx: Success
-    [200, "OK - request succeeded"],
-    [201, "Created - resource successfully created"],
-    [202, "Accepted - request accepted but not completed"],
-    [203, "Non-Authoritative Information - modified proxy response"],
-    [204, "No Content - successful, no response body"],
-    [205, "Reset Content - reset document view"],
-    [206, "Partial Content - delivery of partial resource"],
-    [207, "Multi-Status (WebDAV) - multiple status values"],
-    [208, "Already Reported (WebDAV) - previously listed"],
-    [226, "IM Used - delta encoding applied to resource"],
-
-    // 3xx: Redirection
-    [300, "Multiple Choices - multiple representations available"],
-    [301, "Moved Permanently - permanent redirect to new URL"],
-    [302, "Found (temporary) - use GET at new Location"],
-    [303, "See Other - redirect using GET"],
-    [304, "Not Modified - cache still valid"],
-    [305, "Use Proxy - deprecated"],
-    [306, "Switch Proxy - no longer used"],
-    [307, "Temporary Redirect - preserve HTTP method"],
-    [308, "Permanent Redirect - preserve method on redirect"],
-
-    // 4xx: Client errors
-    [400, "Bad Request - malformed request syntax"],
-    [401, "Unauthorized - authentication required"],
-    [402, "Payment Required - reserved for future use"],
-    [403, "Forbidden - authenticated but access denied"],
-    [404, "Not Found - resource not found"],
-    [405, "Method Not Allowed - method not supported"],
-    [406, "Not Acceptable - cannot satisfy Accept headers"],
-    [407, "Proxy Authentication Required - proxy login needed"],
-    [408, "Request Timeout - client took too long"],
-    [409, "Conflict - request conflicts with current state"],
-    [410, "Gone - resource permanently removed"],
-    [411, "Length Required - Content-Length header missing"],
-    [412, "Precondition Failed - conditional headers not met"],
-    [413, "Payload Too Large - entity too large"],
-    [414, "URI Too Long - request URI too long"],
-    [415, "Unsupported Media Type - format not supported"],
-    [416, "Range Not Satisfiable - invalid range request"],
-    [417, "Expectation Failed - Expect header unmet"],
-    [421, "Misdirected Request - wrong server handling"],
-    [422, "Unprocessable Entity - semantic errors (WebDAV)"],
-    [423, "Locked - resource is locked"],
-    [424, "Failed Dependency - dependent request failed"],
-    [425, "Too Early - request replay risk"],
-    [426, "Upgrade Required - must switch protocols, e.g. HTTPS"],
-    [428, "Precondition Required - safe update conditions required"],
-    [429, "Too Many Requests - rate limiting"],
-
-    // 5xx: Server errors
-    [500, "Internal Server Error - generic server failure"],
-    [501, "Not Implemented - server lacks support"],
-    [502, "Bad Gateway - invalid upstream response"],
-    [503, "Service Unavailable - overloaded or down"],
-    [504, "Gateway Timeout - upstream server timed out"],
-    [505, "HTTP Version Not Supported - protocol version not supported"],
-    [506, "Variant Also Negotiates - misconfigured content negotiation"],
-    [507, "Insufficient Storage - cannot store representation"],
-    [508, "Loop Detected (WebDAV) - infinite processing loop"],
-    [510, "Not Extended - missing required extensions"],
-    [511, "Network Authentication Required - login to gain network access"],
-]);
-
-const isTimestamp = (s: string): boolean => {
-    const isTimestamp: boolean = regExpTimestamp.test(s);
-    return isTimestamp;
-};
-
-const isLocalDate = (s: string): boolean => {
-    const isLocalDate: boolean = regExpLocalDate.test(s);
-    return isLocalDate;
-};
-
-const isLocalTime = (s: string): boolean => {
-    const isLocalTime: boolean = regExpLocalTime.test(s);
-    return isLocalTime;
-};
-
-const isTimeZone = (s: string): boolean => {
-    const isTimeZone: boolean = regExpTimeZone.test(s);
-    return isTimeZone;
-};
 
 const isURL = (s: string): boolean => {
     const isURL: boolean =
@@ -217,9 +111,6 @@ const isIPv6Address = (s: string): boolean => {
 const isHTTPMethod = (s: string): boolean => httpMethods.includes(s);
 
 const isHTTPStatus = (n: number): boolean => Array.from(httpStatusCodes.keys()).includes(n);
-
-const isEpoch = (n: number): boolean =>
-    (1000000000 <= n && n <= 3000000000) || (1000000000000 <= n && n <= 3000000000000);
 
 const templateRootObjectNode: ObjectNode = {
     nodeType: "object",
@@ -921,9 +812,6 @@ function getLanguageName(languageCode: string): string {
     return languageNames.of(languageCode) || "?";
 }
 
-const padTimestampToMilliseconds = (timestamp: Temporal.Instant): string =>
-    timestamp.toString().padEnd(24);
-
 const buildMetaData = (
     propertyTypeEnhanced: PropertyTypeEnhanced,
     propertyValue: PropertyValue
@@ -1057,23 +945,6 @@ const buildMetaData = (
     }
 };
 
-const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-];
-
-const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
 const splitIntoColorParts = (
     colorCodeHexRGB: string
 ): { red: number; green: number; blue: number } => {
@@ -1106,35 +977,6 @@ const convertToHexRGB = (colorCodeRGB: string): string => {
     const blue: string = convertDecimalToHex(rgbParts[2]);
 
     return `${red}${green}${blue}`;
-};
-
-const prettifiedDuration = (duration: Temporal.Duration): string => {
-    let durationPart: string = "??????";
-    let inThePast: boolean = true;
-
-    if (duration.years !== 0) {
-        durationPart = `${Math.abs(duration.years)} years`;
-        inThePast = duration.years > 0;
-    } else if (duration.months !== 0) {
-        durationPart = `${Math.abs(duration.months)} months`;
-        inThePast = duration.months > 0;
-    } else if (duration.days !== 0) {
-        durationPart = `${Math.abs(duration.days)} days`;
-        inThePast = duration.days > 0;
-    } else if (duration.hours !== 0) {
-        durationPart = `${Math.abs(duration.hours)} hours`;
-        inThePast = duration.hours > 0;
-    } else if (duration.minutes !== 0) {
-        durationPart = `${Math.abs(duration.minutes)} minutes`;
-        inThePast = duration.minutes > 0;
-    } else if (duration.seconds !== 0) {
-        durationPart = `${Math.abs(duration.seconds)} seconds`;
-        inThePast = duration.seconds > 0;
-    } else {
-        return "Just now";
-    }
-
-    return inThePast ? `More than ${durationPart} ago` : `In about ${durationPart}`;
 };
 
 const convertArrayToObject = <T>(array: T[]): Record<string, T> => {
