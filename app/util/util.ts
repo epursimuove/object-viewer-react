@@ -10,7 +10,14 @@ import type {
     PropertyValue,
 } from "~/types";
 import { useLog } from "~/log-manager/LogManager";
-import { httpMethods, httpStatusCodes } from "./http";
+import {
+    httpStatusCodes,
+    isHTTPMethod,
+    isHTTPStatus,
+    isIPv4Address,
+    isIPv6Address,
+    isURL,
+} from "./http";
 import {
     isEpoch,
     isLocalDate,
@@ -22,6 +29,7 @@ import {
     assembleTimeZoneInformation,
     durationRelativeToNowForEpoch,
 } from "./dateAndTime";
+import { calculateAggregations, convertDecimalToHex } from "./math";
 
 const { debug, error, info, trace, warning } = useLog("util.ts");
 
@@ -34,12 +42,6 @@ const regExpLocale: RegExp = /^[a-z]{2}[_-][A-Z]{2}$/;
 const regExpEmailAddress: RegExp =
     /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,}$/;
 
-const regExpSecureURL: RegExp = /^https:\/\/[^ ]+$/;
-
-const regExpInsecureURL: RegExp = /^http:\/\/[^ ]+$/;
-
-const regExpLocalhostURL: RegExp = /^localhost:[\d]{1,5}[^ ]*$/;
-
 const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
 const regExpHexColorRGB: RegExp = /^#[0-9a-fA-F]{6}$/;
@@ -48,18 +50,7 @@ const regExpRGBColorRGB: RegExp = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/;
 
 const regExpSemanticVersioning: RegExp = /^\d+\.\d+\.\d+$/;
 
-const regExpIPv4: RegExp = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-
-const regExpExpandedIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4}){7})$/;
-const regExpPartialCanonicalIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4})*)?$/;
-
 const regExpPhoneNumber: RegExp = /^\+\d{2}\d{2,3}\d{7}$/; // Swedish mobile number.
-
-const isURL = (s: string): boolean => {
-    const isURL: boolean =
-        regExpSecureURL.test(s) || regExpInsecureURL.test(s) || regExpLocalhostURL.test(s);
-    return isURL;
-};
 
 const isColorRGB = (s: string): boolean => {
     const isColorRGB: boolean =
@@ -90,24 +81,6 @@ const isArrayIndex = (s: string): boolean => {
     const isArrayIndex: boolean = regExpArrayIndexString.test(s);
     return isArrayIndex;
 };
-
-const isIPv4Address = (s: string): boolean => regExpIPv4.test(s);
-
-const canonicalFormatSeparatorIPv6 = "::";
-
-const isIPv6Address = (s: string): boolean => {
-    if (s.includes(canonicalFormatSeparatorIPv6)) {
-        const [before, after] = s.split(canonicalFormatSeparatorIPv6);
-
-        return regExpPartialCanonicalIPv6.test(before) && regExpPartialCanonicalIPv6.test(after);
-    } else {
-        return regExpExpandedIPv6.test(s);
-    }
-};
-
-const isHTTPMethod = (s: string): boolean => httpMethods.includes(s);
-
-const isHTTPStatus = (n: number): boolean => Array.from(httpStatusCodes.keys()).includes(n);
 
 const templateRootObjectNode: ObjectNode = {
     nodeType: "object",
@@ -550,36 +523,6 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
     }
 }
 
-const maxNumberOfDecimals = (n: number, numberOfDecimals = 2): number =>
-    Math.round(n * Math.pow(10, numberOfDecimals)) / Math.pow(10, numberOfDecimals);
-
-const calculateAggregations = (numbers: number[]): ArithmeticAggregation => {
-    const numberOfItems: number = numbers.length;
-    if (numberOfItems === 0) {
-        return {};
-    }
-
-    const sortedValues: number[] = numbers.toSorted((a, b) => a - b);
-    const min: number = sortedValues.at(0)!;
-    const max: number = sortedValues.at(-1)!;
-    const sum: number = sortedValues.reduce((previous, current) => previous + current, 0);
-    const mean: number = maxNumberOfDecimals(sum / numberOfItems);
-    const median: number = calculateMedian(sortedValues);
-
-    return { length: numberOfItems, min, max, mean, median, sum };
-};
-
-const calculateMedian = (numbers: number[]): number => {
-    const numberOfItems: number = numbers.length;
-    const middleIndex = Math.floor(numberOfItems / 2);
-
-    const sortedArray: number[] = numbers.toSorted((a, b) => a - b);
-
-    return numberOfItems % 2 === 0
-        ? (sortedArray[middleIndex] + sortedArray[middleIndex - 1]) / 2
-        : sortedArray[middleIndex];
-};
-
 export function convertTreeToDisplayRows(objectRoot: ObjectNode): DisplayRow[] {
     info(`Converting object tree to display rows`);
 
@@ -890,17 +833,6 @@ const splitIntoColorParts = (
         green: parseInt(greenHex, 16),
         blue: parseInt(blueHex, 16),
     };
-};
-
-const convertDecimalToHex = (decimal: string): string =>
-    parseInt(decimal, 10).toString(16).toUpperCase().padStart(2, "0");
-
-export const getNumberOfIntegerDigits = (n: number) => {
-    // Purely math, no strings in this solution.
-    const numberOfIntegerDigits: number =
-        n === 0 ? 1 : Math.floor(Math.log10(Math.floor(Math.abs(n)))) + 1;
-
-    return numberOfIntegerDigits;
 };
 
 const convertToHexRGB = (colorCodeRGB: string): string => {

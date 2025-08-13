@@ -81,3 +81,39 @@ export const httpStatusCodes: Map<number, string> = new Map<number, string>([
     [510, "Not Extended - missing required extensions"],
     [511, "Network Authentication Required - login to gain network access"],
 ]);
+
+export const regExpIPv4: RegExp = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
+export const regExpExpandedIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4}){7})$/;
+
+export const regExpPartialCanonicalIPv6: RegExp = /^(([0-9A-Fa-f]{1,4})(:[0-9A-Fa-f]{1,4})*)?$/;
+
+export const isHTTPMethod = (s: string): boolean => httpMethods.includes(s);
+
+export const isHTTPStatus = (n: number): boolean => Array.from(httpStatusCodes.keys()).includes(n);
+
+export const regExpSecureURL: RegExp = /^https:\/\/[^ ]+$/;
+
+export const regExpInsecureURL: RegExp = /^http:\/\/[^ ]+$/;
+
+export const regExpLocalhostURL: RegExp = /^localhost:[\d]{1,5}[^ ]*$/;
+
+export const isURL = (s: string): boolean => {
+    const isURL: boolean =
+        regExpSecureURL.test(s) || regExpInsecureURL.test(s) || regExpLocalhostURL.test(s);
+    return isURL;
+};
+
+export const isIPv4Address = (s: string): boolean => regExpIPv4.test(s);
+
+const canonicalFormatSeparatorIPv6 = "::";
+
+export const isIPv6Address = (s: string): boolean => {
+    if (s.includes(canonicalFormatSeparatorIPv6)) {
+        const [before, after] = s.split(canonicalFormatSeparatorIPv6);
+
+        return regExpPartialCanonicalIPv6.test(before) && regExpPartialCanonicalIPv6.test(after);
+    } else {
+        return regExpExpandedIPv6.test(s);
+    }
+};
