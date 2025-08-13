@@ -45,7 +45,8 @@ export type PropertyTypeEnhanced =
     | "IPv4"
     | "IPv6"
     | "HTTPMethod"
-    | "HTTPStatus";
+    | "HTTPStatus"
+    | "Epoch";
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 

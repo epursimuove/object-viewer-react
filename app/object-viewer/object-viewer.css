@@ -203,6 +203,7 @@ html {
             color: forestgreen;
             font-style: italic;
             font-size: 0.9rem;
+            white-space: pre-wrap;
 
             /*&.suspicious {*/
             /*    color: red;*/

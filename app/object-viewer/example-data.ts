@@ -33,6 +33,8 @@ export const exampleObject: {} = {
                     ipv6: "1234::1",
                     httpMethod: "POST",
                     httpStatus: 200,
+                    epochSeconds: 1234567890,
+                    epochMilliSeconds: 1234567890987,
                     "1.1.1.1.1 - Date and time": {
                         _README:
                             "We can differentiate timestamps, local dates, local times and time zones.",
@@ -412,6 +414,13 @@ export const exampleObject: {} = {
                     "Africa/Tunis",
                     "Africa/Nairobi",
                     "Africa/Unknown",
+                ],
+                epochValues: [
+                    now.epochMilliseconds,
+                    now.epochMilliseconds / 1000,
+                    Math.floor(now.epochMilliseconds / 1000),
+                    1000000000,
+                    3000000000,
                 ],
             },
         },

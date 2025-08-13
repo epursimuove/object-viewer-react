@@ -218,6 +218,9 @@ const isHTTPMethod = (s: string): boolean => httpMethods.includes(s);
 
 const isHTTPStatus = (n: number): boolean => Array.from(httpStatusCodes.keys()).includes(n);
 
+const isEpoch = (n: number): boolean =>
+    (1000000000 <= n && n <= 3000000000) || (1000000000000 <= n && n <= 3000000000000);
+
 const templateRootObjectNode: ObjectNode = {
     nodeType: "object",
     convenientIdentifierWhenCollapsed: "/Root of tree/",
@@ -836,48 +839,64 @@ const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnha
         propertyTypeOriginal === "object" && Array.isArray(propertyValue)
             ? "array"
             : propertyTypeOriginal === "object" && propertyValue === null
-            ? "NullValue"
-            : propertyTypeOriginal === "number" && propertyValue === 0
-            ? "Zero"
-            : propertyTypeOriginal === "number" && isHTTPStatus(propertyValue as number)
-            ? "HTTPStatus"
-            : propertyTypeOriginal === "number" && Number.isInteger(propertyValue)
-            ? "Integer"
-            : propertyTypeOriginal === "boolean" && propertyValue
-            ? "BooleanTrue"
-            : propertyTypeOriginal === "boolean" && !propertyValue
-            ? "BooleanFalse"
-            : propertyTypeOriginal === "string" && isTimestamp(propertyValue as string)
-            ? "Timestamp"
-            : propertyTypeOriginal === "string" && isLocalDate(propertyValue as string)
-            ? "LocalDate"
-            : propertyTypeOriginal === "string" && isLocalTime(propertyValue as string)
-            ? "LocalTime"
-            : propertyTypeOriginal === "string" && isTimeZone(propertyValue as string)
-            ? "TimeZone"
-            : propertyTypeOriginal === "string" && potentialCountryCode(propertyValue as string)
-            ? "CountryCode"
-            : propertyTypeOriginal === "string" && potentialLocale(propertyValue as string)
-            ? "Locale"
-            : propertyTypeOriginal === "string" && potentialEmailAddress(propertyValue as string)
-            ? "EmailAddress"
-            : propertyTypeOriginal === "string" && propertyValue === ""
-            ? "EmptyString"
-            : propertyTypeOriginal === "string" && isURL(propertyValue as string)
-            ? "URL"
-            : propertyTypeOriginal === "string" && isColorRGB(propertyValue as string)
-            ? "ColorRGB"
-            : propertyTypeOriginal === "string" && isSemanticVersioning(propertyValue as string)
-            ? "SemVer"
-            : propertyTypeOriginal === "string" && isIPv4Address(propertyValue as string)
-            ? "IPv4"
-            : propertyTypeOriginal === "string" && isIPv6Address(propertyValue as string)
-            ? "IPv6"
-            : propertyTypeOriginal === "string" && isPhoneNumber(propertyValue as string)
-            ? "PhoneNumber"
-            : propertyTypeOriginal === "string" && isHTTPMethod(propertyValue as string)
-            ? "HTTPMethod"
-            : propertyTypeOriginal;
+              ? "NullValue"
+              : propertyTypeOriginal === "number" && propertyValue === 0
+                ? "Zero"
+                : propertyTypeOriginal === "number" && isHTTPStatus(propertyValue as number)
+                  ? "HTTPStatus"
+                  : propertyTypeOriginal === "number" && isEpoch(propertyValue as number)
+                    ? "Epoch"
+                    : propertyTypeOriginal === "number" && Number.isInteger(propertyValue)
+                      ? "Integer"
+                      : propertyTypeOriginal === "boolean" && propertyValue
+                        ? "BooleanTrue"
+                        : propertyTypeOriginal === "boolean" && !propertyValue
+                          ? "BooleanFalse"
+                          : propertyTypeOriginal === "string" &&
+                              isTimestamp(propertyValue as string)
+                            ? "Timestamp"
+                            : propertyTypeOriginal === "string" &&
+                                isLocalDate(propertyValue as string)
+                              ? "LocalDate"
+                              : propertyTypeOriginal === "string" &&
+                                  isLocalTime(propertyValue as string)
+                                ? "LocalTime"
+                                : propertyTypeOriginal === "string" &&
+                                    isTimeZone(propertyValue as string)
+                                  ? "TimeZone"
+                                  : propertyTypeOriginal === "string" &&
+                                      potentialCountryCode(propertyValue as string)
+                                    ? "CountryCode"
+                                    : propertyTypeOriginal === "string" &&
+                                        potentialLocale(propertyValue as string)
+                                      ? "Locale"
+                                      : propertyTypeOriginal === "string" &&
+                                          potentialEmailAddress(propertyValue as string)
+                                        ? "EmailAddress"
+                                        : propertyTypeOriginal === "string" && propertyValue === ""
+                                          ? "EmptyString"
+                                          : propertyTypeOriginal === "string" &&
+                                              isURL(propertyValue as string)
+                                            ? "URL"
+                                            : propertyTypeOriginal === "string" &&
+                                                isColorRGB(propertyValue as string)
+                                              ? "ColorRGB"
+                                              : propertyTypeOriginal === "string" &&
+                                                  isSemanticVersioning(propertyValue as string)
+                                                ? "SemVer"
+                                                : propertyTypeOriginal === "string" &&
+                                                    isIPv4Address(propertyValue as string)
+                                                  ? "IPv4"
+                                                  : propertyTypeOriginal === "string" &&
+                                                      isIPv6Address(propertyValue as string)
+                                                    ? "IPv6"
+                                                    : propertyTypeOriginal === "string" &&
+                                                        isPhoneNumber(propertyValue as string)
+                                                      ? "PhoneNumber"
+                                                      : propertyTypeOriginal === "string" &&
+                                                          isHTTPMethod(propertyValue as string)
+                                                        ? "HTTPMethod"
+                                                        : propertyTypeOriginal;
     // TODO More options
 
     return propertyTypEnhanced;
@@ -901,6 +920,9 @@ function getRegionName(countryCode: string): string {
 function getLanguageName(languageCode: string): string {
     return languageNames.of(languageCode) || "?";
 }
+
+const padTimestampToMilliseconds = (timestamp: Temporal.Instant): string =>
+    timestamp.toString().padEnd(24);
 
 const buildMetaData = (
     propertyTypeEnhanced: PropertyTypeEnhanced,
@@ -996,6 +1018,27 @@ const buildMetaData = (
         }
     }
 
+    if (propertyTypeEnhanced === "Epoch") {
+        const epochValue: number = propertyValue as number;
+        const epochMilliSeconds = epochValue >= 1000000000000 ? epochValue : epochValue * 1000;
+
+        const timestamp: Temporal.Instant =
+            Temporal.Instant.fromEpochMilliseconds(epochMilliSeconds);
+
+        const duration: Temporal.Duration = now.since(timestamp);
+
+        const roundedDuration: Temporal.Duration = duration.round({
+            largestUnit: "years",
+            // roundingMode: "ceil",
+            // Use the ISO calendar; you can convert to another calendar using
+            // withCalendar()
+            relativeTo: now.toZonedDateTimeISO("UTC"),
+        });
+
+        trace(`TIMESTAMP ${timestamp} and NOW ${now} => ${duration}`);
+        return `${padTimestampToMilliseconds(timestamp)} - ${prettifiedDuration(roundedDuration)}`;
+    }
+
     if (propertyTypeEnhanced === "ColorRGB") {
         const colorCode: string = propertyValue as string;
         if (colorCode.startsWith("#")) {
@@ -1087,6 +1130,8 @@ const prettifiedDuration = (duration: Temporal.Duration): string => {
     } else if (duration.seconds !== 0) {
         durationPart = `${Math.abs(duration.seconds)} seconds`;
         inThePast = duration.seconds > 0;
+    } else {
+        return "Just now";
     }
 
     return inThePast ? `More than ${durationPart} ago` : `In about ${durationPart}`;
