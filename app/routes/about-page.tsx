@@ -31,6 +31,14 @@ export default function AboutPage() {
 
             <h2>Documentation</h2>
 
+            <p>
+                Basic documentation and examples can also be found in the{" "}
+                <strong>default JSON object</strong>, which is displayed when entering/reloading
+                site.
+            </p>
+
+            <h3>Basics</h3>
+
             <ul>
                 <li>
                     Two types of rows are handled:
@@ -68,8 +76,8 @@ export default function AboutPage() {
                     CountryCode, LocalDate, Timestamp, Integer, EmailAddress, URL, Locale, etc, even
                     if the guesses may be wrong sometimes. In this way we get much better
                     information about the property values (most of the time). Guesses are made for
-                    string values and number values. You see examples of these assumptions in the
-                    default JSON object, which is displayed when entering/reloading site.
+                    string values and number values. Many examples of these assumptions are
+                    displayed in the <em>default JSON object</em>.
                     <ul>
                         <li>
                             Numbers - we can differentiate floating point numbers and integers. We
@@ -101,7 +109,7 @@ export default function AboutPage() {
                             Epoch values can be either in seconds or milliseconds. The range for
                             seconds is <code>[1000000000, 3000000000]</code> and the range for
                             milliseconds is <code>[1000000000000, 3000000000000]</code>. The ranges
-                            roughly correspond to epoch values in the years 2001 to 2064.
+                            roughly correspond to epoch values from September 2001 to January 2065.
                         </li>
 
                         <li>
@@ -184,6 +192,20 @@ export default function AboutPage() {
                 A good way to see an overview of the tree structure, by getting rid of the "noise"
                 from the leaves, is to "Expand all" rows and uncheck the "Show leaves".
             </p>
+
+            <h2>Disclaimer</h2>
+
+            <p>
+                As always, delivered as is, with the best of intentions, but no guarantees and no
+                liabilities for errors.
+            </p>
+
+            <p>
+                Best experience for me in August 2025 has been in <em>Google Chrome</em> in{" "}
+                <em>macOS</em> and <em>Firefox</em> in <em>Android</em>.
+            </p>
+
+            <p></p>
 
             <h2>
                 Current version <var>{appVersion}</var>
