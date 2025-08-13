@@ -68,9 +68,13 @@ export default function AboutPage() {
                     CountryCode, LocalDate, Timestamp, Integer, EmailAddress, URL, Locale, etc, even
                     if the guesses may be wrong sometimes. In this way we get much better
                     information about the property values (most of the time). Guesses are made for
-                    string values and number values.
+                    string values and number values. You see examples of these assumptions in the
+                    default JSON object, which is displayed when entering/reloading site.
                     <ul>
-                        <li>Numbers - we can differentiate floating point numbers and integers.</li>
+                        <li>
+                            Numbers - we can differentiate floating point numbers and integers. We
+                            also assume that numbers in a "good range" represent epoch values.
+                        </li>
                         <li>Strings - for strings we can guess a lot from the format.</li>
                     </ul>
                 </li>
@@ -94,10 +98,17 @@ export default function AboutPage() {
                         </li>
 
                         <li>
-                            NB! The timestamp values are compared to the time when the object tree
-                            was <em>recalculated</em>, so these comparisons are not dynamically
-                            updated. You see the "now" value that is used in the <em>Statistics</em>{" "}
-                            section in the toolbar.
+                            Epoch values can be either in seconds or milliseconds. The range for
+                            seconds is <code>[1000000000, 3000000000]</code> and the range for
+                            milliseconds is <code>[1000000000000, 3000000000000]</code>. The ranges
+                            roughly correspond to epoch values in the years 2001 to 2064.
+                        </li>
+
+                        <li>
+                            NB! The timestamp and epoch values are compared to the time when the
+                            object tree was <em>recalculated</em>, so these comparisons are not
+                            dynamically updated. You see the "now" value that is used in the{" "}
+                            <em>Statistics</em> section in the toolbar.
                         </li>
 
                         <li>
