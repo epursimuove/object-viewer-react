@@ -90,13 +90,7 @@ export const prettifiedDuration = (duration: Temporal.Duration): string => {
     return inThePast ? `More than ${durationPart} ago` : `In about ${durationPart}`;
 };
 
-export function durationRelativeToNowForTimestamp(
-    timestampString: string | Temporal.Instant
-): string {
-    //const timestamp: Temporal.Instant = Temporal.Instant.from(propertyValue as string);
-
-    const duration: Temporal.Duration = now.since(timestampString);
-
+function getRoundedDuration(duration: Temporal.Duration): Temporal.Duration {
     const roundedDuration: Temporal.Duration = duration.round({
         largestUnit: "years",
         // roundingMode: "ceil",
@@ -105,7 +99,15 @@ export function durationRelativeToNowForTimestamp(
         relativeTo: now.toZonedDateTimeISO("UTC"),
     });
 
-    return `${prettifiedDuration(roundedDuration)}`;
+    return roundedDuration;
+}
+
+export function durationRelativeToNowForTimestamp(timestampString: string): string {
+    const timestamp: Temporal.Instant = Temporal.Instant.from(timestampString);
+
+    const duration: Temporal.Duration = now.since(timestamp);
+
+    return `${prettifiedDuration(getRoundedDuration(duration))}`;
 }
 
 export function durationRelativeToNowForLocalDate(localDateString: string): string {
@@ -115,15 +117,7 @@ export function durationRelativeToNowForLocalDate(localDateString: string): stri
         .toZonedDateTimeISO("UTC")
         .since(localDate.toZonedDateTime("UTC"));
 
-    const roundedDuration: Temporal.Duration = duration.round({
-        largestUnit: "years",
-        // roundingMode: "ceil",
-        // Use the ISO calendar; you can convert to another calendar using
-        // withCalendar()
-        relativeTo: now.toZonedDateTimeISO("UTC"),
-    });
-
-    return `${prettifiedDuration(roundedDuration)}`;
+    return `${prettifiedDuration(getRoundedDuration(duration))}`;
 }
 
 export function durationRelativeToNowForEpoch(epochValue: number): string {
@@ -133,16 +127,8 @@ export function durationRelativeToNowForEpoch(epochValue: number): string {
 
     const duration: Temporal.Duration = now.since(timestamp);
 
-    const roundedDuration: Temporal.Duration = duration.round({
-        largestUnit: "years",
-        // roundingMode: "ceil",
-        // Use the ISO calendar; you can convert to another calendar using
-        // withCalendar()
-        relativeTo: now.toZonedDateTimeISO("UTC"),
-    });
-
     trace(`TIMESTAMP ${timestamp} and NOW ${now} => ${duration}`);
-    return `${padTimestampToMilliseconds(timestamp)} - ${prettifiedDuration(roundedDuration)}`;
+    return `${padTimestampToMilliseconds(timestamp)} - ${prettifiedDuration(getRoundedDuration(duration))}`;
 }
 
 export function assembleTimeZoneInformation(timeZoneString: string): string {
