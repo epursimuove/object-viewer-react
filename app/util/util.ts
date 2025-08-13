@@ -1,7 +1,6 @@
 import type {
     ArithmeticAggregation,
     DisplayRow,
-    HistoryItem,
     NodeBase,
     ObjectNode,
     ObjectTree,
@@ -10,7 +9,6 @@ import type {
     PropertyTypeOriginal,
     PropertyValue,
 } from "~/types";
-import { Temporal } from "@js-temporal/polyfill";
 import { useLog } from "~/log-manager/LogManager";
 import { httpMethods, httpStatusCodes } from "./http";
 import {
@@ -19,11 +17,10 @@ import {
     isLocalTime,
     isTimestamp,
     isTimeZone,
-    monthNames,
-    now,
-    padTimestampToMilliseconds,
-    prettifiedDuration,
-    weekDays,
+    durationRelativeToNowForLocalDate,
+    durationRelativeToNowForTimestamp,
+    assembleTimeZoneInformation,
+    durationRelativeToNowForEpoch,
 } from "./dateAndTime";
 
 const { debug, error, info, trace, warning } = useLog("util.ts");
@@ -849,82 +846,18 @@ const buildMetaData = (
         propertyTypeEnhanced === "Timestamp" ||
         propertyTypeEnhanced === "LocalDate" ||
         propertyTypeEnhanced === "LocalTime" ||
-        propertyTypeEnhanced === "TimeZone"
+        propertyTypeEnhanced === "TimeZone" ||
+        propertyTypeEnhanced === "Epoch"
     ) {
         if (propertyTypeEnhanced === "Timestamp") {
-            const timestamp: Temporal.Instant = Temporal.Instant.from(propertyValue as string);
-
-            const duration: Temporal.Duration = now.since(timestamp);
-
-            const roundedDuration: Temporal.Duration = duration.round({
-                largestUnit: "years",
-                // roundingMode: "ceil",
-                // Use the ISO calendar; you can convert to another calendar using
-                // withCalendar()
-                relativeTo: now.toZonedDateTimeISO("UTC"),
-            });
-
-            return `${prettifiedDuration(roundedDuration)}`;
+            return durationRelativeToNowForTimestamp(propertyValue as string);
         } else if (propertyTypeEnhanced === "LocalDate") {
-            const localDate: Temporal.PlainDate = Temporal.PlainDate.from(propertyValue as string);
-
-            const duration: Temporal.Duration = now
-                .toZonedDateTimeISO("UTC")
-                .since(localDate.toZonedDateTime("UTC"));
-
-            const roundedDuration: Temporal.Duration = duration.round({
-                largestUnit: "years",
-                // roundingMode: "ceil",
-                // Use the ISO calendar; you can convert to another calendar using
-                // withCalendar()
-                relativeTo: now.toZonedDateTimeISO("UTC"),
-            });
-
-            return `${prettifiedDuration(roundedDuration)}`;
+            return durationRelativeToNowForLocalDate(propertyValue as string);
         } else if (propertyTypeEnhanced === "TimeZone") {
-            try {
-                const zonedDateTime: Temporal.ZonedDateTime = now.toZonedDateTimeISO(
-                    propertyValue as string
-                );
-                const localDateTime: Temporal.PlainDateTime = zonedDateTime.toPlainDateTime();
-
-                const { dayOfWeek, day, month } = localDateTime;
-                const localTimeString: string = localDateTime.toPlainTime().toString().slice(0, 5);
-
-                return `${weekDays[dayOfWeek - 1]} ${day} ${
-                    monthNames[month - 1]
-                } ${localTimeString} [${zonedDateTime.offset}]`;
-            } catch (error) {
-                if (error instanceof RangeError) {
-                    return `RangeError: ${error.message}`;
-                } else if (error instanceof Error) {
-                    return `Error: ${error.message}`;
-                } else {
-                    return `Unknown Error: ${error}`;
-                }
-            }
+            return assembleTimeZoneInformation(propertyValue as string);
+        } else if (propertyTypeEnhanced === "Epoch") {
+            return durationRelativeToNowForEpoch(propertyValue as number);
         }
-    }
-
-    if (propertyTypeEnhanced === "Epoch") {
-        const epochValue: number = propertyValue as number;
-        const epochMilliSeconds = epochValue >= 1000000000000 ? epochValue : epochValue * 1000;
-
-        const timestamp: Temporal.Instant =
-            Temporal.Instant.fromEpochMilliseconds(epochMilliSeconds);
-
-        const duration: Temporal.Duration = now.since(timestamp);
-
-        const roundedDuration: Temporal.Duration = duration.round({
-            largestUnit: "years",
-            // roundingMode: "ceil",
-            // Use the ISO calendar; you can convert to another calendar using
-            // withCalendar()
-            relativeTo: now.toZonedDateTimeISO("UTC"),
-        });
-
-        trace(`TIMESTAMP ${timestamp} and NOW ${now} => ${duration}`);
-        return `${padTimestampToMilliseconds(timestamp)} - ${prettifiedDuration(roundedDuration)}`;
     }
 
     if (propertyTypeEnhanced === "ColorRGB") {
