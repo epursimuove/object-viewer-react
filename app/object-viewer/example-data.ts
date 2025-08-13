@@ -51,10 +51,11 @@ export const exampleObject: {} = {
             },
             "1.1.3 - Numbers": {
                 _README:
-                    "Numbers are represented by the 'number' type, but we enhance by indicating if it is an integer or a floating point number.",
+                    "Numbers are represented by the 'number' type, but we enhance by indicating if it is an integer, a floating point number or an epoch value.",
                 "1.1.3.1 - Enhanced property types from numbers": {
                     integer: 42,
                     zero: 0,
+                    epoch: 1000000000,
                 },
 
                 "1.1.3.2 - Integers": {
@@ -66,6 +67,10 @@ export const exampleObject: {} = {
                     negative: -123.456,
                     zero: 0.0,
                     positive: 456.789,
+                },
+                "1.1.3.4 - Epoch values": {
+                    epochInSeconds: 1755103899,
+                    epochInMilliseconds: 1671897600000,
                 },
             },
         },
