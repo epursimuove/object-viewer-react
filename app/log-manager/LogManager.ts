@@ -31,6 +31,7 @@ const loggerNames = [
     "HistoryContext.tsx",
     "object-viewer.tsx",
     "tool-bar.tsx",
+    "tree.ts",
     "util.ts",
 ] as const;
 type LoggerName = (typeof loggerNames)[number];
@@ -42,6 +43,7 @@ class LogManager {
         "HistoryContext.tsx": { level: LogLevel.OFF },
         "object-viewer.tsx": { level: LogLevel.OFF },
         "tool-bar.tsx": { level: LogLevel.OFF },
+        "tree.ts": { level: LogLevel.OFF },
         "util.ts": { level: LogLevel.OFF },
     };
 

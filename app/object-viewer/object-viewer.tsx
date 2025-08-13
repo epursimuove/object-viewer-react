@@ -7,13 +7,7 @@ import type {
     PropertyTypeEnhanced,
     PropertyValue,
 } from "~/types";
-import {
-    convertObjectToTree,
-    convertTreeToDisplayRows,
-    improveColor,
-    isDescendant,
-    prettifyJSON,
-} from "~/util/util";
+import { improveColor, prettifyJSON } from "~/util/util";
 import { now } from "~/util/dateAndTime";
 import "./object-viewer.css";
 import { type ChangeEvent, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -31,6 +25,7 @@ import { StatisticsRow } from "../components/statistics-row";
 import { prettifySha256, saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { FilterSection } from "./filter-section";
 import { AnchoredInfoBox } from "~/components/anchored-info-box";
+import { convertObjectToTree, convertTreeToDisplayRows, isDescendant } from "~/util/tree";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
