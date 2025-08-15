@@ -42,6 +42,10 @@ main {
             background-color: white;
         }
     }
+
+    &#about-page {
+        max-width: 1000px;
+    }
 }
 
 footer {

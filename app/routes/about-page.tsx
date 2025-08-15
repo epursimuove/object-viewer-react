@@ -1,5 +1,6 @@
 import { version as appVersion, packages } from "../../package-lock.json";
 import type { Route } from "../../.react-router/types/app/routes/+types/about-page";
+import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -13,7 +14,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function AboutPage() {
     return (
-        <main>
+        <main id="about-page">
             <h1>About</h1>
 
             <p>
@@ -164,7 +165,8 @@ export default function AboutPage() {
 
             <p>
                 You can easily mark lines and scroll to them. If several lines are defined, the
-                scrolling is to the first line. Some examples of the syntax that is supported:
+                scrolling is to the first line. The <em>Enter</em> key triggers. Some examples of
+                the syntax that is supported:
             </p>
 
             <ul>
@@ -184,6 +186,9 @@ export default function AboutPage() {
                     <code>10-20 30-40</code>, mark lines 10 to 20 and lines 30 to 40 and scroll to
                     line 10.
                 </li>
+                <li>
+                    <code>-</code>, mark <em>all</em> lines and scroll to line 1.
+                </li>
             </ul>
 
             <h3>Tips</h3>
@@ -192,6 +197,34 @@ export default function AboutPage() {
                 A good way to see an overview of the tree structure, by getting rid of the "noise"
                 from the leaves, is to "Expand all" rows and uncheck the "Show leaves".
             </p>
+
+            <h3>Property types</h3>
+
+            <p>
+                From an original property type, you can often assume an enhanced property type from
+                the actual property value. These enhanced property types can contain valuable
+                information.
+            </p>
+
+            <h4>Original property types</h4>
+
+            <p>These are the {originalPropertyTypes.length} original property types:</p>
+
+            <ol>
+                {originalPropertyTypes.map((originalPropertyType) => (
+                    <li key={originalPropertyType}>{originalPropertyType}</li>
+                ))}
+            </ol>
+
+            <h4>Enhanced property types</h4>
+
+            <p>These are the {enhancedPropertyTypes.length} enhanced property types:</p>
+
+            <ol>
+                {enhancedPropertyTypes.map((enhancedPropertyType) => (
+                    <li key={enhancedPropertyType}>{enhancedPropertyType}</li>
+                ))}
+            </ol>
 
             <h2>Disclaimer</h2>
 

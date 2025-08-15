@@ -606,10 +606,12 @@ export function ObjectViewer() {
 
                         <section id="goto-line">
                             <details open>
-                                <summary>Mark/goto line(s)</summary>
+                                <summary>Lines</summary>
 
                                 <div>
-                                    <label htmlFor="gotoLine">Line(s)</label>
+                                    <label htmlFor="gotoLine">
+                                        Mark line(s) and scroll to line
+                                    </label>
                                     <input
                                         type="text"
                                         name="gotoLine"

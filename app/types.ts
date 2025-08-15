@@ -2,51 +2,49 @@ import type { Temporal } from "@js-temporal/polyfill";
 
 export type PropertyName = string;
 
-export type PropertyTypeOriginal =
-    | "string"
-    | "number"
-    | "boolean"
-    | "object"
-    | "array" // TODO Is this really original???
-    | "bigint"
-    | "symbol"
-    | "function"
-    | "undefined";
+export const originalPropertyTypes = [
+    "array", // TODO Is this really original???
+    "bigint",
+    "boolean",
+    "function",
+    "number",
+    "object",
+    "string",
+    "symbol",
+    "undefined",
+] as const;
 
-// TODO Is is possible to extend from PropertyTypeOriginal?!?
-export type PropertyTypeEnhanced =
-    | "string"
-    | "number"
-    | "boolean"
-    | "object"
-    | "array"
-    | "bigint"
-    | "symbol"
-    | "function"
-    | "undefined"
-    | "Timestamp"
-    | "LocalDate"
-    | "LocalTime"
-    | "TimeZone"
-    | "CountryCode"
-    | "Locale"
-    | "EmailAddress"
-    | "NullValue"
-    | "UndefinedValue"
-    | "EmptyString"
-    | "Integer"
-    | "URL"
-    | "Zero"
-    | "ColorRGB"
-    | "SemVer"
-    | "PhoneNumber"
-    | "BooleanFalse"
-    | "BooleanTrue"
-    | "IPv4"
-    | "IPv6"
-    | "HTTPMethod"
-    | "HTTPStatus"
-    | "Epoch";
+export const enhancedPropertyTypes = [
+    "BooleanFalse",
+    "BooleanTrue",
+    "ColorRGB",
+    "CountryCode",
+    "EmailAddress",
+    "EmptyString",
+    "Epoch",
+    "HTTPMethod",
+    "HTTPStatus",
+    "Integer",
+    "IPv4",
+    "IPv6",
+    "LocalDate",
+    "Locale",
+    "LocalTime",
+    "NullValue",
+    "PhoneNumber",
+    "SemVer",
+    "Timestamp",
+    "TimeZone",
+    "UndefinedValue",
+    "URL",
+    "Zero",
+] as const;
+
+const allPropertyTypes = [...originalPropertyTypes, ...enhancedPropertyTypes] as const;
+
+export type PropertyTypeOriginal = (typeof originalPropertyTypes)[number];
+
+export type PropertyTypeEnhanced = (typeof allPropertyTypes)[number];
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 
