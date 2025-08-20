@@ -19,13 +19,13 @@ import {
 } from "~/object-viewer/UserConfigurationContext";
 import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/components/timestamp";
-import { ColorIndicator } from "../components/color-indicator";
 import { SettingsCheckbox } from "../components/settings-checkbox";
 import { StatisticsRow } from "../components/statistics-row";
-import { prettifySha256, saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
+import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { FilterSection } from "./filter-section";
 import { AnchoredInfoBox } from "~/components/anchored-info-box";
 import { convertObjectToTree, convertTreeToDisplayRows, isDescendant } from "~/util/tree";
+import { HistorySection } from "./history-section";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -418,27 +418,12 @@ export function ObjectViewer() {
 
     const rowsPercentage: number = calculateRowsPercentage();
 
-    function retrieveObjectFromHistory(historyItem: HistoryItem) {
-        debug(`Retrieve object from history`);
+    function handleRetrievalFromHistory(historyItem: HistoryItem) {
+        debug("Retrieve from history", historyItem.id);
         setOriginalObjectAsText(prettifyJSON(historyItem.object));
 
         setOriginalObject(historyItem.object);
         resetFilters();
-        rearrangeHistory(historyItem);
-    }
-
-    function rearrangeHistory(historyItem: HistoryItem) {
-        const index: number = savedHistory.findIndex(
-            (historyItem2: HistoryItem) => historyItem.id === historyItem2.id
-        );
-
-        saveHistoryToStorage(historyItem.object, savedHistory, setSavedHistory);
-    }
-
-    function clearHistory() {
-        debug(`Clearing history`);
-
-        clearSavedHistory();
     }
 
     logInfoPretty("DONE", false);
@@ -494,46 +479,9 @@ export function ObjectViewer() {
                         </section>
 
                         <section id="history">
-                            <details open>
-                                <summary>History</summary>
-
-                                <div>
-                                    {/* {loadHistoryFromStorage().length} items */}
-                                    {savedHistory.map((historyItem: HistoryItem, index: number) => (
-                                        <div
-                                            key={historyItem.id}
-                                            className="history-item-row"
-                                            onClick={() => retrieveObjectFromHistory(historyItem)}
-                                            title={`Used ${historyItem.timestampFirstView
-                                                .toString()
-                                                .slice(0, 10)} - ${historyItem.timestampLastView
-                                                .toString()
-                                                .slice(0, 10)}`}
-                                        >
-                                            <span className="index">{index + 1}</span>
-
-                                            <span className="id">
-                                                {prettifySha256(historyItem.id).toUpperCase()}
-                                            </span>
-
-                                            <ColorIndicator
-                                                primaryColor={`#${improveColor(
-                                                    prettifySha256(historyItem.id, 6)
-                                                )}`}
-                                                secondaryColor={`#${improveColor(
-                                                    prettifySha256(historyItem.id, 12).slice(0, 6)
-                                                )}`}
-                                            />
-                                        </div>
-                                    ))}
-
-                                    {savedHistory.length > 0 && (
-                                        <button type="button" onClick={clearHistory}>
-                                            Clear history
-                                        </button>
-                                    )}
-                                </div>
-                            </details>
+                            <HistorySection
+                                handleRetrievalFromHistory={handleRetrievalFromHistory}
+                            />
                         </section>
 
                         <section id="user-settings">
