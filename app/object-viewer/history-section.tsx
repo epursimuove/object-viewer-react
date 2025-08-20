@@ -16,10 +16,6 @@ export function HistorySection({
     function retrieveObjectFromHistory(historyItem: HistoryItem) {
         debug(`Retrieve object from history`);
         handleRetrievalFromHistory(historyItem);
-        // setOriginalObjectAsText(prettifyJSON(historyItem.object));
-
-        // setOriginalObject(historyItem.object);
-        // resetFilters();
         rearrangeHistory(historyItem);
     }
 
