@@ -18,13 +18,13 @@ import {
 } from "~/object-viewer/UserConfigurationContext";
 import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/components/timestamp";
-import { SettingsCheckbox } from "../components/settings-checkbox";
 import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { FilterSection } from "./filter-section";
 import { AnchoredInfoBox } from "~/components/anchored-info-box";
 import { convertObjectToTree, convertTreeToDisplayRows, isDescendant } from "~/util/tree";
 import { HistorySection } from "./history-section";
 import { StatisticsSection } from "./statistics-section";
+import { SettingsSection } from "./settings-section";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -48,24 +48,10 @@ export function ObjectViewer() {
     const [originalObject, setOriginalObject] = useState<Record<string, PropertyValue>>({});
 
     const {
-        indentObjectTree,
-        showPropertyType,
         showNadaValues,
-        showMetaDataForLeaves,
-        showMetaDataForNodes,
         showLeaves,
-        showIdentifyingValues,
         filterOnProperty,
         filterOnPropertyTypeEnhanced,
-        setIndentObjectTree,
-        setShowPropertyType,
-        setShowMetaDataForLeaves,
-        setShowMetaDataForNodes,
-        setShowNadaValues,
-        setShowLeaves,
-        setShowIdentifyingValues,
-        setFilterOnProperty,
-        setFilterOnPropertyTypeEnhanced,
         resetFilters,
     } = useUserConfigurationContext();
 
@@ -464,67 +450,7 @@ export function ObjectViewer() {
                         </section>
 
                         <section id="user-settings">
-                            <details open>
-                                <summary>Settings</summary>
-
-                                <SettingsCheckbox
-                                    label="Indent object tree"
-                                    currentState={indentObjectTree}
-                                    stateUpdater={setIndentObjectTree}
-                                    htmlIdentifier="indentationActivated"
-                                />
-
-                                <SettingsCheckbox
-                                    label="Show (enhanced) property type"
-                                    currentState={showPropertyType}
-                                    stateUpdater={setShowPropertyType}
-                                    htmlIdentifier="showPropertyType"
-                                />
-
-                                <SettingsCheckbox
-                                    label="Show meta data for leaves"
-                                    currentState={showMetaDataForLeaves}
-                                    stateUpdater={setShowMetaDataForLeaves}
-                                    htmlIdentifier="showMetaDataForLeaves"
-                                />
-
-                                <SettingsCheckbox
-                                    label="Show meta data for nodes"
-                                    currentState={showMetaDataForNodes}
-                                    stateUpdater={setShowMetaDataForNodes}
-                                    htmlIdentifier="showMetaDataForNodes"
-                                />
-
-                                <SettingsCheckbox
-                                    label="Show identifying values"
-                                    currentState={showIdentifyingValues}
-                                    stateUpdater={setShowIdentifyingValues}
-                                    htmlIdentifier="showIdentifyingValues"
-                                />
-
-                                <SettingsCheckbox
-                                    label="Show 'nada' (falsy) values"
-                                    currentState={showNadaValues}
-                                    stateUpdater={setShowNadaValues}
-                                    htmlIdentifier="showNadaValues"
-                                />
-
-                                <SettingsCheckbox
-                                    label="Show leaves (i.e. primitive values)"
-                                    currentState={showLeaves}
-                                    stateUpdater={setShowLeaves}
-                                    htmlIdentifier="showLeaves"
-                                />
-
-                                <div className="button-row">
-                                    <button type="button" onClick={expandAll}>
-                                        Expand all
-                                    </button>
-                                    <button type="button" onClick={collapseAll}>
-                                        Collapse (almost) all
-                                    </button>
-                                </div>
-                            </details>
+                            <SettingsSection expandAll={expandAll} collapseAll={collapseAll} />
                         </section>
 
                         <section id="filters">
