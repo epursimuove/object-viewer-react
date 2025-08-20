@@ -7,8 +7,7 @@ import type {
     PropertyTypeEnhanced,
     PropertyValue,
 } from "~/types";
-import { improveColor, prettifyJSON } from "~/util/util";
-import { now } from "~/util/dateAndTime";
+import { prettifyJSON } from "~/util/util";
 import "./object-viewer.css";
 import { type ChangeEvent, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { version as appVersion } from "../../package-lock.json";
@@ -20,12 +19,12 @@ import {
 import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/components/timestamp";
 import { SettingsCheckbox } from "../components/settings-checkbox";
-import { StatisticsRow } from "../components/statistics-row";
 import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { FilterSection } from "./filter-section";
 import { AnchoredInfoBox } from "~/components/anchored-info-box";
 import { convertObjectToTree, convertTreeToDisplayRows, isDescendant } from "~/util/tree";
 import { HistorySection } from "./history-section";
+import { StatisticsSection } from "./statistics-section";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -109,26 +108,6 @@ export function ObjectViewer() {
     }, []); // Runs once on mounted.
 
     const totalNumberOfRows: number = displayRows.length;
-
-    const totalNumberOfLeaves: number = displayRows.filter(
-        (displayRow: DisplayRow) => displayRow.rowType === "leaf"
-    ).length;
-
-    const totalNumberOfObjects: number = displayRows.filter(
-        (displayRow: DisplayRow) => displayRow.rowType === "object"
-    ).length;
-
-    const totalNumberOfArrays: number = displayRows.filter(
-        (displayRow: DisplayRow) => displayRow.rowType === "array"
-    ).length;
-
-    const deepestLevel: number = displayRows
-        .map((displayRow: DisplayRow) => displayRow.indentationLevel)
-        .reduce(
-            (acc: number, currentIndentationLevel: number): number =>
-                Math.max(acc, currentIndentationLevel),
-            0
-        );
 
     function updateOriginalObject(saveHistory = true) {
         info("Updating original object");
@@ -576,21 +555,10 @@ export function ObjectViewer() {
                         </section>
 
                         <section id="statistics">
-                            <details open>
-                                <summary>Statistics</summary>
-
-                                <StatisticsRow label="Rows" value={totalNumberOfRows} emphasize />
-                                <StatisticsRow
-                                    label="Visible"
-                                    value={numberOfVisibleRows}
-                                    emphasize
-                                />
-                                <StatisticsRow label="Leaves" value={totalNumberOfLeaves} />
-                                <StatisticsRow label="Objects" value={totalNumberOfObjects} />
-                                <StatisticsRow label="Arrays" value={totalNumberOfArrays} />
-                                <StatisticsRow label="Depth" value={deepestLevel} />
-                                <StatisticsRow label="'Now'" value={now} />
-                            </details>
+                            <StatisticsSection
+                                displayRows={displayRows}
+                                numberOfVisibleRows={numberOfVisibleRows}
+                            />
                         </section>
                     </form>
                 </details>
