@@ -18,7 +18,6 @@ import {
 } from "~/object-viewer/UserConfigurationContext";
 import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/components/timestamp";
-import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { FilterSection } from "./filter-section";
 import { AnchoredInfoBox } from "~/components/anchored-info-box";
 import { convertObjectToTree, convertTreeToDisplayRows, isDescendant } from "~/util/tree";
@@ -26,6 +25,7 @@ import { HistorySection } from "./history-section";
 import { StatisticsSection } from "./statistics-section";
 import { SettingsSection } from "./settings-section";
 import { LinesSection } from "./lines-section";
+import { JsonObjectSection } from "./json-object-section";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -56,12 +56,6 @@ export function ObjectViewer() {
         resetFilters,
     } = useUserConfigurationContext();
 
-    const { savedHistory, setSavedHistory, clearSavedHistory } = useHistoryContext();
-
-    const [parsingError, setParsingError] = useState<SyntaxError | null>();
-
-    const [jsonObjectModified, setJsonObjectModified] = useState<boolean>(false);
-
     const objectTree: ObjectNode = convertObjectToTree(originalObject);
 
     info("originalObject", originalObject);
@@ -91,31 +85,6 @@ export function ObjectViewer() {
     }, []); // Runs once on mounted.
 
     const totalNumberOfRows: number = displayRows.length;
-
-    function updateOriginalObject(saveHistory = true) {
-        info("Updating original object");
-
-        setParsingError(null);
-
-        try {
-            const nextOriginalObject: Record<string, PropertyValue> =
-                JSON.parse(originalObjectAsText);
-            debug("nextOriginalObject", nextOriginalObject);
-
-            setOriginalObject(nextOriginalObject);
-            resetFilters();
-
-            if (saveHistory) {
-                saveHistoryToStorage(nextOriginalObject, savedHistory, setSavedHistory);
-            }
-
-            setJsonObjectModified(false);
-        } catch (err) {
-            error("error", err);
-            console.error("error", typeof err, (err as SyntaxError).name);
-            setParsingError(err as SyntaxError);
-        }
-    }
 
     function expandAll(event?: SyntheticEvent) {
         // event.preventDefault();
@@ -252,29 +221,6 @@ export function ObjectViewer() {
             return isVisible;
         }).length;
 
-    const jsonObjectSection = useRef<HTMLDetailsElement | null>(null);
-    const jsonObjectTextArea = useRef<HTMLTextAreaElement | null>(null);
-
-    useEffect(() => {
-        const jsonObjectSectionDetailsElement = jsonObjectSection.current;
-        const jsonObjectTextAreaElement = jsonObjectTextArea.current;
-
-        if (jsonObjectSectionDetailsElement && jsonObjectTextAreaElement) {
-            const handleToggle = () => {
-                if (jsonObjectSectionDetailsElement.open) {
-                    jsonObjectTextAreaElement.focus();
-                }
-            };
-
-            jsonObjectSectionDetailsElement.addEventListener("toggle", handleToggle);
-
-            // Cleanup on component unmount.
-            return () => {
-                jsonObjectSectionDetailsElement.removeEventListener("toggle", handleToggle);
-            };
-        }
-    }, []);
-
     const calculateRowsPercentage = (): number => {
         const percentage: number = (numberOfVisibleRows / totalNumberOfRows) * 100;
         return percentage > 50 ? Math.floor(percentage) : Math.ceil(percentage);
@@ -309,37 +255,12 @@ export function ObjectViewer() {
 
                     <form>
                         <section>
-                            <details ref={jsonObjectSection} open>
-                                <summary>JSON object</summary>
-
-                                <div className={"json-object"}>
-                                    <label htmlFor="originalObject">JSON object/array</label>
-                                    <textarea
-                                        ref={jsonObjectTextArea}
-                                        name="originalObject"
-                                        id="originalObject"
-                                        rows={15}
-                                        cols={25}
-                                        value={originalObjectAsText}
-                                        placeholder="Your JSON object/array"
-                                        onChange={(event) => {
-                                            setOriginalObjectAsText(event.target.value);
-                                            setJsonObjectModified(true);
-                                        }}
-                                    />
-                                    {originalObjectAsText.length} characters
-                                    <button
-                                        type="button"
-                                        onClick={() => updateOriginalObject()}
-                                        disabled={!jsonObjectModified}
-                                    >
-                                        Recalculate
-                                    </button>
-                                    <div className="parsing-error">
-                                        {parsingError && `${parsingError}`}
-                                    </div>
-                                </div>
-                            </details>
+                            <JsonObjectSection
+                                originalObjectAsText={originalObjectAsText}
+                                setOriginalObject={setOriginalObject}
+                                setOriginalObjectAsText={setOriginalObjectAsText}
+                                resetFilters={resetFilters}
+                            />
                         </section>
 
                         <section id="history">
