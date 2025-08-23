@@ -33,7 +33,7 @@ export default function AboutPage() {
             <h2>Documentation</h2>
 
             <p>
-                Basic documentation and examples can also be found in the{" "}
+                Basic documentation and many examples can also be found in the{" "}
                 <strong>default JSON object</strong>, which is displayed when entering/reloading
                 site.
             </p>
@@ -82,9 +82,14 @@ export default function AboutPage() {
                     <ul>
                         <li>
                             Numbers - we can differentiate floating point numbers and integers. We
-                            also assume that numbers in a "good range" represent epoch values.
+                            also assume that numbers in a "good range" represent epoch values or
+                            HTTP status codes.
                         </li>
-                        <li>Strings - for strings we can guess a lot from the format.</li>
+                        <li>
+                            Strings - for strings we can guess <em>a lot</em> from the format of the
+                            property values. Most of the enhanced property types are guessed from
+                            strings.
+                        </li>
                     </ul>
                 </li>
 
@@ -99,11 +104,11 @@ export default function AboutPage() {
                     <ul>
                         <li>
                             The <a href="https://anders.nemonisimors.com/currentTime">UTC</a> time
-                            zone is used for timestamps. No, there will probably not be any support
-                            for <a href="https://anders.nemonisimors.com/timestamps">timestamps</a>{" "}
-                            in other{" "}
-                            <a href="https://anders.nemonisimors.com/timeZones">time zones</a> in
-                            the future.
+                            zone is (the only one) used for timestamps. No, there will probably not
+                            be any support for{" "}
+                            <a href="https://anders.nemonisimors.com/timestamps">timestamps</a> in
+                            other <a href="https://anders.nemonisimors.com/timeZones">time zones</a>{" "}
+                            in the future.
                         </li>
 
                         <li>
@@ -121,10 +126,12 @@ export default function AboutPage() {
                         </li>
 
                         <li>
-                            NB! The local date values are also "compared" to "now", to give you a
-                            ballpark guess. But don't take these comparisons too seriously, since
-                            they are not precise (and really are bad practice)! Local dates are
-                            compared against UTC (since we need some fixed point in time).
+                            NB! The <em>local date</em> values are also "compared" to "now", to give
+                            you a ballpark guess. But don't take these comparisons too seriously,
+                            since they are not precise (and really are bad practice)! Local dates
+                            are compared against{" "}
+                            <a href="https://anders.nemonisimors.com/currentTime">UTC</a> (since we
+                            need some fixed point in time).
                         </li>
                     </ul>
                 </li>

@@ -27,6 +27,7 @@ const globalLogLevel: LogLevel | undefined = LogLevel.TRACE; // TODO
 
 const loggerNames = [
     "dateAndTime.ts",
+    "lines-section.tsx",
     "LogManager",
     "HistoryContext.tsx",
     "history-section.tsx",
@@ -40,6 +41,7 @@ type LoggerName = (typeof loggerNames)[number];
 class LogManager {
     static configuration: Record<LoggerName, LogConfiguration> = {
         "dateAndTime.ts": { level: LogLevel.OFF },
+        "lines-section.tsx": { level: LogLevel.OFF },
         LogManager: { level: LogLevel.INFO },
         "HistoryContext.tsx": { level: LogLevel.OFF },
         "history-section.tsx": { level: LogLevel.OFF },

@@ -9,7 +9,7 @@ import type {
 } from "~/types";
 import { prettifyJSON } from "~/util/util";
 import "./object-viewer.css";
-import { type ChangeEvent, type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { version as appVersion } from "../../package-lock.json";
 import { ObjectViewerRow } from "~/components/object-viewer-row";
 import {
@@ -25,6 +25,7 @@ import { convertObjectToTree, convertTreeToDisplayRows, isDescendant } from "~/u
 import { HistorySection } from "./history-section";
 import { StatisticsSection } from "./statistics-section";
 import { SettingsSection } from "./settings-section";
+import { LinesSection } from "./lines-section";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -60,10 +61,6 @@ export function ObjectViewer() {
     const [parsingError, setParsingError] = useState<SyntaxError | null>();
 
     const [jsonObjectModified, setJsonObjectModified] = useState<boolean>(false);
-
-    const [gotoLine, setGotoLine] = useState<string>("");
-    const [gotoLineModified, setGotoLineModified] = useState<boolean>(false);
-    const gotoLineModifiedCallback = useRef<null | (() => void)>(null);
 
     const objectTree: ObjectNode = convertObjectToTree(originalObject);
 
@@ -117,104 +114,6 @@ export function ObjectViewer() {
             error("error", err);
             console.error("error", typeof err, (err as SyntaxError).name);
             setParsingError(err as SyntaxError);
-        }
-    }
-
-    useEffect(() => {
-        info(`gotoLine modified`, gotoLine);
-
-        if (gotoLineModifiedCallback.current) {
-            trace("Calling callback");
-            gotoLineModifiedCallback.current();
-            gotoLineModifiedCallback.current = null;
-            setGotoLineModified(false);
-        }
-    }, [gotoLineModified]);
-
-    interface LineNumbers {
-        min?: number;
-        max?: number;
-    }
-
-    const regExpGotoLines: RegExp = /^[\d\- ]*$/;
-
-    const getLineNumbers = (userInputLineNumbers: string): LineNumbers[] => {
-        const result: LineNumbers[] = [];
-
-        if (userInputLineNumbers.length > 0 && regExpGotoLines.test(userInputLineNumbers)) {
-            const parts: string[] = userInputLineNumbers.split(" ");
-
-            for (const part of parts) {
-                if (part.startsWith("-")) {
-                    result.push({ max: parseInt(part.slice(1)) });
-                } else if (part.endsWith("-")) {
-                    result.push({ min: parseInt(part.slice(0, -1)) });
-                } else if (part.includes("-")) {
-                    const [minString, maxString] = part.split("-");
-                    result.push({ min: parseInt(minString), max: parseInt(maxString) });
-                } else {
-                    const minAndMax = parseInt(part);
-                    result.push({ min: minAndMax, max: minAndMax });
-                }
-            }
-        }
-
-        return result;
-    };
-
-    const markAndGotoLines = (lineNumbers: LineNumbers[]): void => {
-        let scrolledIntoView = false;
-
-        for (const { min, max } of lineNumbers) {
-            for (
-                let lineNumber = min || 1;
-                lineNumber <= (max || totalNumberOfRows);
-                lineNumber++
-            ) {
-                const rowElement = document.getElementById(
-                    `row-number-${lineNumber}`
-                )?.parentElement;
-
-                if (
-                    rowElement &&
-                    rowElement.classList.contains("row-item-wrapper") &&
-                    0 < lineNumber &&
-                    lineNumber <= totalNumberOfRows
-                ) {
-                    rowElement?.classList.add("active-goto-line");
-
-                    if (!scrolledIntoView) {
-                        rowElement?.scrollIntoView({ behavior: "smooth", block: "center" });
-                        scrolledIntoView = true;
-                    }
-                }
-            }
-        }
-    };
-
-    function scrollLineIntoView(potentialLineNumbers: string) {
-        info(`Goto lines ${potentialLineNumbers}`);
-
-        document
-            .querySelectorAll(".active-goto-line")
-            ?.forEach((element) => element.classList.remove("active-goto-line"));
-
-        const lineNumbers: LineNumbers[] = getLineNumbers(potentialLineNumbers);
-
-        if (lineNumbers.length > 0) {
-            expandAll();
-
-            gotoLineModifiedCallback.current = () => {
-                markAndGotoLines(lineNumbers);
-            };
-
-            setGotoLineModified(true);
-        }
-    }
-
-    function handleScrollIntoView(event: React.KeyboardEvent<HTMLInputElement>) {
-        if (event.key === "Enter") {
-            scrollLineIntoView(gotoLine);
         }
     }
 
@@ -458,26 +357,10 @@ export function ObjectViewer() {
                         </section>
 
                         <section id="goto-line">
-                            <details open>
-                                <summary>Lines</summary>
-
-                                <div>
-                                    <label htmlFor="gotoLine">
-                                        Mark line(s) and scroll to line
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="gotoLine"
-                                        id="gotoLine"
-                                        size={20}
-                                        value={gotoLine}
-                                        onChange={(event) => {
-                                            setGotoLine(event.target.value);
-                                        }}
-                                        onKeyUp={handleScrollIntoView}
-                                    />
-                                </div>
-                            </details>
+                            <LinesSection
+                                totalNumberOfRows={totalNumberOfRows}
+                                expandAll={expandAll}
+                            />
                         </section>
 
                         <section id="statistics">
