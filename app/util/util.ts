@@ -47,6 +47,10 @@ const regExpSemanticVersioning: RegExp = /^\d+\.\d+\.\d+$/;
 
 const regExpPhoneNumber: RegExp = /^\+\d{2}\d{2,3}\d{7}$/; // Swedish mobile number.
 
+const regExpAbsolutePath: RegExp = /^\/([\/a-zA-Z0-9_-]+)*$/;
+
+const regExpRelativePath: RegExp = /^((\.){1,2}\/)+([\/a-zA-Z0-9_-]+)*$/;
+
 const isColorRGB = (s: string): boolean => {
     const isColorRGB: boolean =
         regExpHexColorRGB.test(s) || regExpRGBColorRGB.test(s) || basicColorNames.includes(s);
@@ -75,6 +79,16 @@ const potentialEmailAddress = (s: string): boolean => {
 const isArrayIndex = (s: string): boolean => {
     const isArrayIndex: boolean = regExpArrayIndexString.test(s);
     return isArrayIndex;
+};
+
+const isAbsolutePath = (s: string): boolean => {
+    const isAbsolutePath: boolean = regExpAbsolutePath.test(s);
+    return isAbsolutePath;
+};
+
+const isRelativePath = (s: string): boolean => {
+    const isRelativePath: boolean = regExpRelativePath.test(s);
+    return isRelativePath;
 };
 
 export const logPropertyNamesArray = (array: string[], label: string) => {
@@ -169,7 +183,15 @@ export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyT
                                                       : propertyTypeOriginal === "string" &&
                                                           isHTTPMethod(propertyValue as string)
                                                         ? "HTTPMethod"
-                                                        : propertyTypeOriginal;
+                                                        : propertyTypeOriginal === "string" &&
+                                                            isAbsolutePath(propertyValue as string)
+                                                          ? "AbsolutePath"
+                                                          : propertyTypeOriginal === "string" &&
+                                                              isRelativePath(
+                                                                  propertyValue as string
+                                                              )
+                                                            ? "RelativePath"
+                                                            : propertyTypeOriginal;
     // TODO More options
 
     return propertyTypEnhanced;
@@ -208,6 +230,8 @@ export const buildMetaData = (
             "IPv4",
             "IPv6",
             "HTTPMethod",
+            "AbsolutePath",
+            "RelativePath",
         ].includes(propertyTypeEnhanced)
     ) {
         return `${(propertyValue as string).length} characters`;

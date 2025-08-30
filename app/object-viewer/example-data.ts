@@ -35,6 +35,8 @@ export const exampleObject: {} = {
                     httpStatus: 200,
                     epochSeconds: 1234567890,
                     epochMilliSeconds: 1234567890987,
+                    absolutePath: "/my/directory",
+                    relativePath: "./my/directory",
                     "1.1.1.1.1 - Date and time": {
                         _README:
                             "We can differentiate timestamps, local dates, local times and time zones.",
@@ -519,6 +521,18 @@ export const exampleObject: {} = {
                 "TRACE",
             ],
             httpStatusCodes: [100, 200, 201, 301, 400, 401, 404, 500],
+            absolutePaths: ["/foo", "/foo/", "/foo/bar", "/"],
+            relativePaths: [
+                "./foo",
+                "../foo",
+                "./foo/",
+                "../foo/",
+                "./foo/bar",
+                "../foo/bar",
+                "./",
+                "../",
+                "../../../foo/bar",
+            ],
         },
         "2.7 - Gotchas": {
             evilPropertiesObject: {

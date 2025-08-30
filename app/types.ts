@@ -15,6 +15,7 @@ export const originalPropertyTypes = [
 ] as const;
 
 export const enhancedPropertyTypes = [
+    "AbsolutePath",
     "BooleanFalse",
     "BooleanTrue",
     "ColorRGB",
@@ -32,6 +33,7 @@ export const enhancedPropertyTypes = [
     "LocalTime",
     "NullValue",
     "PhoneNumber",
+    "RelativePath",
     "SemVer",
     "Timestamp",
     "TimeZone",
