@@ -2,6 +2,7 @@ import type { DisplayRow } from "~/types";
 import "../object-viewer/object-viewer.css";
 import { Timestamp } from "~/components/timestamp";
 import { AnchoredInfoBox } from "./anchored-info-box";
+import { containsExtraSpaces } from "~/util/util";
 
 export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) {
     const textContainsExtraSpaces =
@@ -84,40 +85,3 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
         </>
     );
 }
-
-const containsExtraSpaces = (
-    text: string
-):
-    | null
-    | "start"
-    | "middle"
-    | "end"
-    | "start-middle"
-    | "start-end"
-    | "middle-end"
-    | "start-middle-end" => {
-    let result: string[] = [];
-
-    if (text.startsWith(" ")) {
-        result.push("start");
-    }
-    if (text.includes("  ")) {
-        result.push("middle");
-    }
-    if (text.endsWith(" ")) {
-        result.push("end");
-    }
-
-    if (result.length > 0) {
-        return result.join("-") as
-            | "start"
-            | "middle"
-            | "end"
-            | "start-middle"
-            | "start-end"
-            | "middle-end"
-            | "start-middle-end";
-    }
-
-    return null;
-};

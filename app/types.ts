@@ -48,6 +48,15 @@ export type PropertyTypeEnhanced = (typeof allPropertyTypes)[number];
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 
+export type ExtraSpaces =
+    | "start"
+    | "middle"
+    | "end"
+    | "start-middle"
+    | "start-end"
+    | "middle-end"
+    | "start-middle-end";
+
 export interface TreeBase {
     nodeType: "leaf" | "object" | "array";
     id: string;

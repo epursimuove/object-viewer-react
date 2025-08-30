@@ -6,6 +6,7 @@ import { ObjectPropertyValue } from "~/components/object-property-value";
 import { ColorIndicator } from "./color-indicator";
 import { AnchoredInfoBox } from "./anchored-info-box";
 import { getNumberOfIntegerDigits } from "~/util/math";
+import { containsExtraSpaces } from "~/util/util";
 
 export function ObjectViewerRow({
     displayRow,
@@ -97,6 +98,8 @@ export function ObjectViewerRow({
         ].join("\n");
     };
 
+    const propertyNameContainsExtraSpaces = containsExtraSpaces(displayRow.propertyName);
+
     return (
         <div
             className={rowItemCssClasses}
@@ -139,6 +142,7 @@ export function ObjectViewerRow({
 
             <div className={`object-property-name`}>
                 {displayRow.isArrayIndex && <span className="array-index">[</span>}
+
                 <AnchoredInfoBox
                     labelAnchor={displayRow.propertyName}
                     tag="JSON path"
@@ -147,6 +151,21 @@ export function ObjectViewerRow({
                 >
                     <div>{displayRow.path}</div>
                 </AnchoredInfoBox>
+
+                {propertyNameContainsExtraSpaces && (
+                    <>
+                        {" "}
+                        <span className={`string extra-spaces`}>
+                            <AnchoredInfoBox
+                                labelAnchor={`😱`}
+                                tag="NB!"
+                                textContent={`Property name "${displayRow.propertyName}" contains extra spaces (in ${propertyNameContainsExtraSpaces}), which may cause problems!`}
+                                type="warning"
+                            />
+                        </span>
+                    </>
+                )}
+
                 {displayRow.isArrayIndex && <span className="array-index">]</span>}
             </div>
 

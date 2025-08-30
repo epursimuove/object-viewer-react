@@ -109,6 +109,12 @@ html {
             /* :not(.leaf) > & { */
             font-weight: bold;
             /* } */
+
+            & :is(.extra-spaces) {
+                color: red;
+                font-weight: bold;
+                cursor: help;
+            }
         }
 
         .color-indicator-wrapper {

@@ -98,13 +98,13 @@ export const exampleObject: {} = {
             nadaNull: null,
             nadaUndefinedWillBeIgnored: undefined,
         },
-        "1.6 - Ignored values": {
+        "1.5 - Ignored values": {
             thisIsUndefinedWillBeIgnored: undefined, // undefined is not valid JSON value, will be ignored.
             // thisIsBigInt: 1n, // BigInt not supported out-of-the-box by JSON.
             thisIsSymbol: Symbol("test"), // Symbol is not valid JSON value, will be ignored.
             thisIsFunction: (a: number, b: number) => a + b, // Function is not valid JSON value, will be ignored.
         },
-        "1.7 - Sets and Maps": {
+        "1.6 - Sets and Maps": {
             _README:
                 "Using a Set or Map object will result in an empty JSON object, since that is the default representation for Sets and Maps in JSON.",
             thisIsASet: new Set(["a", "b", "c", "d", "e"]), // A Set is as default represented as empty object.
@@ -123,7 +123,7 @@ export const exampleObject: {} = {
             ]),
         },
 
-        "1.8 - Convenient identifiers": {
+        "1.7 - Convenient identifiers": {
             _README:
                 "For many objects we can collect information from the properties and display convenient identifiers for those objects.",
             ids: [
@@ -167,7 +167,7 @@ export const exampleObject: {} = {
             ],
         },
 
-        "1.9 - Misc": {},
+        "1.8 - Misc": {},
     },
     "2 - Examples": {
         "2.1 - Person": {
@@ -545,6 +545,11 @@ export const exampleObject: {} = {
             evilPropertiesObject3: {
                 false: true,
                 true: false,
+            },
+            evilPropertiesObject4: {
+                foo: "bar",
+                " foo": "bar",
+                "foo ": "bar",
             },
         },
     },

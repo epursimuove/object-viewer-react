@@ -1,4 +1,9 @@
-import type { PropertyTypeEnhanced, PropertyTypeOriginal, PropertyValue } from "~/types";
+import type {
+    ExtraSpaces,
+    PropertyTypeEnhanced,
+    PropertyTypeOriginal,
+    PropertyValue,
+} from "~/types";
 import { useLog } from "~/log-manager/LogManager";
 import {
     httpStatusCodes,
@@ -350,3 +355,23 @@ const basicColorNames: string[] = [
     "teal",
     "aqua",
 ];
+
+export const containsExtraSpaces = (text: string): null | ExtraSpaces => {
+    let result: string[] = [];
+
+    if (text.startsWith(" ")) {
+        result.push("start");
+    }
+    if (text.includes("  ")) {
+        result.push("middle");
+    }
+    if (text.endsWith(" ")) {
+        result.push("end");
+    }
+
+    if (result.length > 0) {
+        return result.join("-") as ExtraSpaces;
+    }
+
+    return null;
+};
