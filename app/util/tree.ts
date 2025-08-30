@@ -515,8 +515,8 @@ export function convertTreeToDisplayRowsHelper(
             (currentObjectNode.propertyTypeOriginal === "string" && propertyValue === "") ||
             (currentObjectNode.propertyTypeOriginal === "number" && propertyValue === 0) ||
             (currentObjectNode.propertyTypeOriginal === "boolean" && !propertyValue) ||
-            currentObjectNode.propertyTypeEnhanced === "NullValue" ||
-            currentObjectNode.propertyTypeEnhanced === "UndefinedValue";
+            currentObjectNode.propertyTypeEnhanced === "NullValue"; /*||
+            currentObjectNode.propertyTypeEnhanced === "UndefinedValue"*/
 
         hardcodedNode.isNada = isNada;
     }

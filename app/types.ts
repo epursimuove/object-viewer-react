@@ -35,7 +35,7 @@ export const enhancedPropertyTypes = [
     "SemVer",
     "Timestamp",
     "TimeZone",
-    "UndefinedValue",
+    //"UndefinedValue",
     "URL",
     "Zero",
 ] as const;
