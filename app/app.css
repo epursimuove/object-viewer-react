@@ -112,6 +112,10 @@ form {
     }
 }
 
+textarea {
+    width: 100%;
+}
+
 time {
     display: inline-flex;
     flex-direction: row;

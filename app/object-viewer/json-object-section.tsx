@@ -80,8 +80,7 @@ export function JsonObjectSection({
                     ref={jsonObjectTextArea}
                     name="originalObject"
                     id="originalObject"
-                    rows={15}
-                    cols={25}
+                    rows={5}
                     value={originalObjectAsText}
                     placeholder="Your JSON object/array"
                     onChange={(event) => {
