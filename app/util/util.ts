@@ -399,3 +399,11 @@ export const containsExtraSpaces = (text: string): null | ExtraSpaces => {
 
     return null;
 };
+
+export const numberOfDigits = (n: number): number => {
+    if (!Number.isInteger(n) || n < 0) {
+        throw new Error(`Invalid number: ${n}`);
+    }
+
+    return Math.ceil(Math.log10(n + 1));
+};

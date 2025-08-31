@@ -216,3 +216,12 @@ time {
         flex-direction: column;
     }
 }
+
+select {
+    &#filterOnPropertyTypeEnhanced {
+        & option {
+            font-family: Menlo, "Courier New", monospace;
+            white-space: pre-line;
+        }
+    }
+}

@@ -1,6 +1,7 @@
-import { useMemo, type ChangeEvent } from "react";
+import { Fragment, useMemo, type ChangeEvent, type JSX } from "react";
 import { useUserConfigurationContext } from "./UserConfigurationContext";
 import type { DisplayRow, PropertyTypeEnhanced } from "~/types";
+import { numberOfDigits } from "~/util/util";
 
 export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
     const {
@@ -25,6 +26,58 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
         () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0,
         [filterOnProperty, filterOnPropertyTypeEnhanced]
     );
+
+    interface Frequency {
+        count: number;
+        delta?: number;
+    }
+
+    const delta = (
+        maxLength: number,
+        enhancedPropertyType: PropertyTypeEnhanced,
+        n: number
+    ): number => {
+        const digits = numberOfDigits(n);
+        const length = enhancedPropertyType.length;
+        const maxNumberOfDigits = 5;
+
+        return maxLength - length + (maxNumberOfDigits - digits);
+    };
+
+    const frequencyMap: Map<PropertyTypeEnhanced, Frequency> = useMemo(() => {
+        const frequencyMap: Map<PropertyTypeEnhanced, Frequency> = new Map<
+            PropertyTypeEnhanced,
+            Frequency
+        >();
+
+        const allPropertyTypes: PropertyTypeEnhanced[] = displayRows.map(
+            (displayRow) => displayRow.propertyTypeEnhanced
+        );
+
+        for (const enhancedPropertyType of allPropertyTypes) {
+            frequencyMap.set(enhancedPropertyType, {
+                count: (frequencyMap.get(enhancedPropertyType)?.count || 0) + 1,
+            });
+        }
+
+        const maxLength = Array.from(frequencyMap.keys()).reduce(
+            (max, enhancedTypeString) => Math.max(max, enhancedTypeString.length),
+            0
+        );
+
+        frequencyMap.forEach(
+            (frequency, enhancedPropertyType) =>
+                (frequency.delta = delta(maxLength, enhancedPropertyType, frequency.count))
+        );
+
+        return frequencyMap;
+    }, [displayRows]);
+
+    const createNoBreakingSpaces = (frequency?: Frequency): JSX.Element[] => {
+        return Array.from({ length: frequency?.delta || 0 }, (_, i) => i + 1).map((m) => (
+            <Fragment key={m}>&nbsp;</Fragment>
+        ));
+    };
 
     return (
         <details open className={`${filtersActivated && "filters-active"}`}>
@@ -75,6 +128,8 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
                     {actualPropertyTypeEnhancedValues.map((type) => (
                         <option key={type} value={type}>
                             {type}
+                            {createNoBreakingSpaces(frequencyMap.get(type))}
+                            {frequencyMap.get(type)?.count || "?"}
                         </option>
                     ))}
                 </select>
