@@ -1,4 +1,5 @@
 import type { ChangeEvent } from "react";
+import { OnOffToggle } from "./on-off-toggle";
 
 export function SettingsCheckbox({
     label,
@@ -13,7 +14,10 @@ export function SettingsCheckbox({
 }) {
     return (
         <div>
+            <OnOffToggle enabled={currentState} onClickHandler={stateUpdater} />
+
             <input
+                hidden
                 type="checkbox"
                 name={htmlIdentifier}
                 id={htmlIdentifier}

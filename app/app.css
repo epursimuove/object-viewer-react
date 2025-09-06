@@ -156,6 +156,53 @@ time {
     }
 }
 
+.on-off-toggle {
+    --border-radius: 16px;
+    cursor: pointer;
+
+    display: inline-block;
+    min-width: 2rem;
+    height: 0.6lh;
+    border: 1px solid var(--color-lighter);
+
+    color: red;
+    background-color: rgb(230, 230, 230);
+
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+
+    position: relative;
+    left: -5px;
+    top: 4px;
+
+    & .toggle-position {
+        display: inline-block;
+        min-width: 1.2rem;
+        height: 0.6lh;
+        border: 1px solid var(--color-lighter);
+
+        position: relative;
+        top: -1px;
+
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
+
+    &.on .toggle-position {
+        background-color: rgb(50, 200, 50);
+        left: +6px;
+    }
+
+    &.off .toggle-position {
+        background-color: white;
+        left: -5px;
+    }
+}
+
 .parsing-error {
     color: red;
 }
