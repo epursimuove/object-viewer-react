@@ -27,7 +27,9 @@ export default function AboutPage() {
 
             <p>
                 You automatically get helpful information about the actual data, which will help you
-                analysing the content and comparing it to other objects.
+                analyse, examine and understand the content and compare it to other objects. The{" "}
+                <em>NNM Object Viewer</em> can be of great help when fixing errors. You will most
+                certainly save a lot of time, when having to work with JSON data.
             </p>
 
             <h2>Documentation</h2>
@@ -142,8 +144,23 @@ export default function AboutPage() {
             <p>
                 Strings containing extra whitespaces often result in errors. So when a string value
                 contains whitespaces in the beginning or end, or if there are multiple consecutive
-                whitespaces in the middle, the string value is marked as suspicious. The value is
-                red, and by hovering the value, you get information about why it is suspicious.
+                whitespaces in the middle, the string value is marked as suspicious.
+            </p>
+
+            <h4>Property values</h4>
+
+            <p>
+                The property value is red, and by hovering the value, you get information about why
+                it is suspicious.
+            </p>
+
+            <h4>Property names</h4>
+
+            <p>
+                If a property name contains extra whitespaces, that is probably even worse than
+                property values containing extra whitespaces. Property names are marked with a 😱,
+                if they contain extra whitespaces. By hovering the 😱, you get information about why
+                it is suspicious.
             </p>
 
             <h3>Arithmetic aggregation</h3>
@@ -166,6 +183,16 @@ export default function AboutPage() {
                 The history items are tagged with convenient color markers, so they can easily be
                 distinguished. Eight different colors are used, so the combinations of the two
                 colors are 64 (8&times;8).
+            </p>
+
+            <h3>Filtering</h3>
+
+            <p>You can filter on property name or property value.</p>
+
+            <p>
+                You can also filter on the enhanced property type(s). The multi-select list also
+                displays the frequency of each enhanced property type. You can sort the multi-select
+                list alphabetically or by frequency.
             </p>
 
             <h3>Marking and goto lines</h3>
@@ -197,6 +224,10 @@ export default function AboutPage() {
                     <code>-</code>, mark <em>all</em> lines and scroll to line 1.
                 </li>
             </ul>
+
+            <h3>JSON path</h3>
+
+            <p>By hovering the property names, you get a popup describing the JSON path.</p>
 
             <h3>Tips</h3>
 

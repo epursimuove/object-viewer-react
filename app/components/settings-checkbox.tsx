@@ -13,7 +13,7 @@ export function SettingsCheckbox({
     htmlIdentifier: string;
 }) {
     return (
-        <div className="settings-checkbox">
+        <section className="settings-checkbox">
             <OnOffToggle enabled={currentState} onClickHandler={stateUpdater} />
 
             <input
@@ -28,6 +28,6 @@ export function SettingsCheckbox({
             />
 
             <label htmlFor={htmlIdentifier}>{label}</label>
-        </div>
+        </section>
     );
 }

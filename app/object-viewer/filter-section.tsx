@@ -1,7 +1,8 @@
-import { Fragment, useMemo, type ChangeEvent, type JSX } from "react";
+import { Fragment, useMemo, useState, type ChangeEvent, type JSX } from "react";
 import { useUserConfigurationContext } from "./UserConfigurationContext";
 import type { DisplayRow, PropertyTypeEnhanced } from "~/types";
 import { numberOfDigits } from "~/util/util";
+import { SettingsCheckbox } from "~/components/settings-checkbox";
 
 export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
     const {
@@ -12,25 +13,7 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
         resetFilters,
     } = useUserConfigurationContext();
 
-    const actualPropertyTypeEnhancedValues: PropertyTypeEnhanced[] = useMemo(
-        () =>
-            Array.from(
-                new Set(
-                    displayRows.map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced)
-                )
-            ).toSorted((a, b) => a.localeCompare(b)),
-        [displayRows]
-    );
-
-    const filtersActivated = useMemo(
-        () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0,
-        [filterOnProperty, filterOnPropertyTypeEnhanced]
-    );
-
-    interface Frequency {
-        count: number;
-        delta?: number;
-    }
+    const [sortOnFrequency, setSortOnFrequency] = useState<boolean>(false);
 
     const delta = (
         maxLength: number,
@@ -72,6 +55,34 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
 
         return frequencyMap;
     }, [displayRows]);
+
+    const sortAlphabeticallyAscending = (
+        a: PropertyTypeEnhanced,
+        b: PropertyTypeEnhanced
+    ): number => a.localeCompare(b);
+
+    const sortOnFrequencyDescending = (a: PropertyTypeEnhanced, b: PropertyTypeEnhanced): number =>
+        (frequencyMap.get(b)?.count || 0) - (frequencyMap.get(a)?.count || 0);
+
+    const actualPropertyTypeEnhancedValues: PropertyTypeEnhanced[] = useMemo(
+        () =>
+            Array.from(
+                new Set(
+                    displayRows.map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced)
+                )
+            ).toSorted(sortOnFrequency ? sortOnFrequencyDescending : sortAlphabeticallyAscending),
+        [displayRows, sortOnFrequency]
+    );
+
+    const filtersActivated = useMemo(
+        () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0,
+        [filterOnProperty, filterOnPropertyTypeEnhanced]
+    );
+
+    interface Frequency {
+        count: number;
+        delta?: number;
+    }
 
     const createNoBreakingSpaces = (frequency?: Frequency): JSX.Element[] => {
         return Array.from({ length: frequency?.delta || 0 }, (_, i) => i + 1).map((m) => (
@@ -133,6 +144,15 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
                         </option>
                     ))}
                 </select>
+            </div>
+
+            <div>
+                <SettingsCheckbox
+                    label="Sort on frequency"
+                    currentState={sortOnFrequency}
+                    stateUpdater={setSortOnFrequency}
+                    htmlIdentifier="sortOnFrequency"
+                />
             </div>
         </details>
     );

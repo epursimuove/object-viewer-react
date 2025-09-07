@@ -168,7 +168,7 @@ time {
     cursor: pointer;
 
     display: inline-block;
-    min-width: 2rem;
+    width: 2rem;
     height: var(--toggle-height);
     border: 1px solid var(--color-lighter);
 
@@ -185,7 +185,7 @@ time {
 
     & .toggle-position {
         display: inline-block;
-        min-width: 1.2rem;
+        width: 1.2rem;
         height: var(--toggle-height);
         border: 1px solid var(--color-lighter);
 
