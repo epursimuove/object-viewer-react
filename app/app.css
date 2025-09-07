@@ -156,17 +156,24 @@ time {
     }
 }
 
+.settings-checkbox {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
 .on-off-toggle {
     --border-radius: 16px;
+    --toggle-height: 0.4lh;
     cursor: pointer;
 
     display: inline-block;
     min-width: 2rem;
-    height: 0.6lh;
+    height: var(--toggle-height);
     border: 1px solid var(--color-lighter);
 
     color: red;
-    background-color: rgb(230, 230, 230);
+    background-color: rgb(245, 245, 245);
 
     border-top-left-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
@@ -174,13 +181,12 @@ time {
     border-bottom-right-radius: var(--border-radius);
 
     position: relative;
-    left: -5px;
-    top: 4px;
+    top: 5px;
 
     & .toggle-position {
         display: inline-block;
         min-width: 1.2rem;
-        height: 0.6lh;
+        height: var(--toggle-height);
         border: 1px solid var(--color-lighter);
 
         position: relative;
@@ -193,8 +199,13 @@ time {
     }
 
     &.on .toggle-position {
-        background-color: rgb(50, 200, 50);
+        /* background-color: rgb(50, 200, 50); */
+        background-color: white;
         left: +6px;
+    }
+
+    &.on:has(.toggle-position) {
+        background-color: rgb(50, 200, 50);
     }
 
     &.off .toggle-position {

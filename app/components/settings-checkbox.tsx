@@ -13,7 +13,7 @@ export function SettingsCheckbox({
     htmlIdentifier: string;
 }) {
     return (
-        <div>
+        <div className="settings-checkbox">
             <OnOffToggle enabled={currentState} onClickHandler={stateUpdater} />
 
             <input
