@@ -53,7 +53,7 @@ export default function AboutPage() {
                             Or a <em>nested recursive object structure</em>, which can be either an{" "}
                             <em>object</em> or an <em>array</em>. These two recursive structures,
                             called <em>object nodes</em>, are treated similar. An array can be seen
-                            as an object with the indexes as property names.
+                            as an object with the indexes (0, 1, 2, ...) as property names.
                         </li>
                         {/* <ul>
                             <li>
@@ -75,7 +75,7 @@ export default function AboutPage() {
                 </li>
 
                 <li>
-                    Makes educated guesses and assumptions about the (enhanced) types, i.e.
+                    Makes educated guesses and assumptions about the (enhanced) property types, i.e.
                     CountryCode, LocalDate, Timestamp, Integer, EmailAddress, URL, Locale, etc, even
                     if the guesses may be wrong sometimes. In this way we get much better
                     information about the property values (most of the time). Guesses are made for
@@ -96,9 +96,10 @@ export default function AboutPage() {
                 </li>
 
                 <li>
-                    When objects are collapsed, we try to assemble <em>identifying values</em> from
-                    the contained properties, so the objects can be easily distinguished. Property
-                    names used for these identifying values are "id", "name", etc.
+                    For objects, we try to assemble <em>identifying values</em> from the contained
+                    properties, so the objects can be easily distinguished. Property names used for
+                    these identifying values are for example "id", "name", "x", "y", "z", "width",
+                    "height" and "depth".
                 </li>
 
                 <li>
@@ -233,7 +234,9 @@ export default function AboutPage() {
 
             <p>
                 A good way to see an overview of the tree structure, by getting rid of the "noise"
-                from the leaves, is to "Expand all" rows and uncheck the "Show leaves".
+                from the leaves, is to "Expand all" rows and uncheck the "Show leaves". (You can
+                achieve the same by filtering on <code>object</code> and <code>array</code> enhanced
+                property types.)
             </p>
 
             <h3>Property types</h3>
@@ -250,9 +253,17 @@ export default function AboutPage() {
 
             <ol>
                 {originalPropertyTypes.map((originalPropertyType) => (
-                    <li key={originalPropertyType}>{originalPropertyType}</li>
+                    <li key={originalPropertyType}>
+                        <code>{originalPropertyType}</code>
+                    </li>
                 ))}
             </ol>
+
+            <p>
+                The <code>bigint</code>, <code>function</code>, <code>symbol</code> and{" "}
+                <code>undefined</code> types are not used, since they by default are not handled by
+                JSON.
+            </p>
 
             <h4>Enhanced property types</h4>
 
@@ -260,7 +271,9 @@ export default function AboutPage() {
 
             <ol>
                 {enhancedPropertyTypes.map((enhancedPropertyType) => (
-                    <li key={enhancedPropertyType}>{enhancedPropertyType}</li>
+                    <li key={enhancedPropertyType}>
+                        <code>{enhancedPropertyType}</code>
+                    </li>
                 ))}
             </ol>
 

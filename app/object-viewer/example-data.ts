@@ -27,7 +27,7 @@ export const exampleObject: {} = {
                     color: "#ff00ff",
                     color2: "rgb(0, 255, 255)",
                     color3: "white",
-                    semVer: "1.2.3",
+                    semanticVersioning: "1.2.3",
                     phone: "+460701234567",
                     ipv4: "127.0.0.1",
                     ipv6: "1234::1",

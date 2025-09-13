@@ -129,6 +129,10 @@ time {
     }
 }
 
+code {
+    color: brown;
+}
+
 .color-indicator-wrapper {
     --border-radius: 8px;
 
@@ -199,13 +203,14 @@ time {
     }
 
     &.on .toggle-position {
-        /* background-color: rgb(50, 200, 50); */
-        background-color: white;
+        background-color: rgb(50, 200, 50);
+        /* background-color: white; */
         left: +6px;
     }
 
     &.on:has(.toggle-position) {
-        background-color: rgb(50, 200, 50);
+        /* background-color: rgb(50, 200, 50); */
+        background-color: rgb(230, 255, 230);
     }
 
     &.off .toggle-position {
