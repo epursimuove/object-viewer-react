@@ -33,6 +33,7 @@ export const enhancedPropertyTypes = [
     "LocalTime",
     "NullValue",
     "PhoneNumber",
+    "RegExp",
     "RelativePath",
     "SemVer",
     "Timestamp",

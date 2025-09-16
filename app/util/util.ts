@@ -51,6 +51,11 @@ const regExpAbsolutePath: RegExp = /^\/([\/a-zA-Z0-9_-]+)*$/;
 
 const regExpRelativePath: RegExp = /^((\.){1,2}\/)+([\/a-zA-Z0-9_-]+)*$/;
 
+// const regExpRegularExpression: RegExp = /^\/([\/\(\)\{\}\[\]\+\*\?a-zA-Z0-9_-]+)\/[dgimsuvy]{0,8}$/;
+// const regExpRegularExpression: RegExp = /^\^([\\\(\)\{\}\[\]\+\*\?a-zA-Z0-9_-]+)\$$/;
+const regExpRegularExpression: RegExp =
+    /^(\/\^|\^|\/)([\\\(\)\{\}\[\]\+\*\?a-zA-Z0-9_-]+)(\$\/|\$|\/)$/;
+
 const isColorRGB = (s: string): boolean => {
     const isColorRGB: boolean =
         regExpHexColorRGB.test(s) || regExpRGBColorRGB.test(s) || basicColorNames.includes(s);
@@ -89,6 +94,11 @@ const isAbsolutePath = (s: string): boolean => {
 const isRelativePath = (s: string): boolean => {
     const isRelativePath: boolean = regExpRelativePath.test(s);
     return isRelativePath;
+};
+
+const isRegularExpression = (s: string): boolean => {
+    const isRegularExpression: boolean = regExpRegularExpression.test(s);
+    return isRegularExpression;
 };
 
 export const logPropertyNamesArray = (array: string[], label: string) => {
@@ -191,7 +201,12 @@ export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyT
                                                                   propertyValue as string
                                                               )
                                                             ? "RelativePath"
-                                                            : propertyTypeOriginal;
+                                                            : propertyTypeOriginal === "string" &&
+                                                                isRegularExpression(
+                                                                    propertyValue as string
+                                                                )
+                                                              ? "RegExp"
+                                                              : propertyTypeOriginal;
     // TODO More options
 
     return propertyTypEnhanced;
@@ -232,6 +247,7 @@ export const buildMetaData = (
             "HTTPMethod",
             "AbsolutePath",
             "RelativePath",
+            "RegExp",
         ].includes(propertyTypeEnhanced)
     ) {
         return `${(propertyValue as string).length} characters`;

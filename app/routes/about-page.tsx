@@ -239,6 +239,10 @@ export default function AboutPage() {
                 property types.)
             </p>
 
+            <p>
+                Make the whole tree zebra-striped, by marking the lines with <code>-</code>.
+            </p>
+
             <h3>Property types</h3>
 
             <p>
@@ -276,6 +280,13 @@ export default function AboutPage() {
                     </li>
                 ))}
             </ol>
+
+            <p>
+                The enhanced property types <code>AbsolutePath</code> and <code>RegExp</code> can be
+                hard to distinguish, since they have a common format. For example the string{" "}
+                <code>/foo/</code> could be both an absolute path and a regular expression. At the
+                moment, <code>AbsolutePath</code> has higher priority than <code>RegExp</code>.
+            </p>
 
             <h2>Disclaimer</h2>
 

@@ -37,6 +37,7 @@ export const exampleObject: {} = {
                     epochMilliSeconds: 1234567890987,
                     absolutePath: "/my/directory",
                     relativePath: "./my/directory",
+                    regularExpression: "^a+b+c$",
                     "1.1.1.1.1 - Date and time": {
                         _README:
                             "We can differentiate timestamps, local dates, local times and time zones.",
@@ -101,6 +102,8 @@ export const exampleObject: {} = {
             nadaUndefinedWillBeIgnored: undefined,
         },
         "1.5 - Ignored values": {
+            _README:
+                "The property types 'undefined', 'function', 'bigint' and 'symbol' will be ignored, since they by default are not valid JSON values.",
             thisIsUndefinedWillBeIgnored: undefined, // undefined is not valid JSON value, will be ignored.
             // thisIsBigInt: 1n, // BigInt not supported out-of-the-box by JSON.
             thisIsSymbol: Symbol("test"), // Symbol is not valid JSON value, will be ignored.
@@ -532,6 +535,20 @@ export const exampleObject: {} = {
                 "./",
                 "../",
                 "../../../foo/bar",
+            ],
+            regularExpressions: [
+                "^\\d$",
+                "/^\\d$/",
+                "/\\d/",
+                "^\\d+$",
+                "^[A-Z0-9]$",
+                "^([A-Z0-9]+)?_42$",
+                "^\\w+\\s$",
+                "^d(b+)d$",
+                "^a\\*b$",
+                "^abc$",
+                "/^abc$/",
+                "/abc/", // Will be treated as an AbsolutePath.
             ],
         },
         "2.7 - Gotchas": {
