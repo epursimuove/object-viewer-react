@@ -30,31 +30,33 @@ const { debug, error, info, trace, warning } = useLog("util.ts");
 
 export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
 
-const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
+export const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
-const regExpLocale: RegExp = /^[a-z]{2}[_-][A-Z]{2}$/;
+export const regExpLocale: RegExp = /^[a-z]{2}[_-][A-Z]{2}$/;
 
-const regExpEmailAddress: RegExp =
+export const regExpEmailAddress: RegExp =
     /^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,}$/;
 
-const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
+export const regExpArrayIndexString: RegExp = /^\[\d+\]$/;
 
-const regExpHexColorRGB: RegExp = /^#[0-9a-fA-F]{6}$/;
+export const regExpHexColorRGB: RegExp = /^#[0-9a-fA-F]{6}$/;
 
-const regExpRGBColorRGB: RegExp = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/;
+export const regExpRGBColorRGB: RegExp = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/;
 
 const regExpSemanticVersioning: RegExp = /^\d+\.\d+\.\d+$/;
 
 const regExpPhoneNumber: RegExp = /^\+\d{2}\d{2,3}\d{7}$/; // Swedish mobile number.
 
-const regExpAbsolutePath: RegExp = /^\/([\/a-zA-Z0-9_-]+)*$/;
+export const regExpAbsolutePath: RegExp = /^\/([\/a-zA-Z0-9_-]+)*$/;
 
-const regExpRelativePath: RegExp = /^((\.){1,2}\/)+([\/a-zA-Z0-9_-]+)*$/;
+export const regExpRelativePath: RegExp = /^((\.){1,2}\/)+([\/a-zA-Z0-9_-]+)*$/;
 
 // const regExpRegularExpression: RegExp = /^\/([\/\(\)\{\}\[\]\+\*\?a-zA-Z0-9_-]+)\/[dgimsuvy]{0,8}$/;
 // const regExpRegularExpression: RegExp = /^\^([\\\(\)\{\}\[\]\+\*\?a-zA-Z0-9_-]+)\$$/;
-const regExpRegularExpression: RegExp =
-    /^(\/\^|\^|\/)([\\\(\)\{\}\[\]\+\*\?a-zA-Z0-9_-]+)(\$\/|\$|\/)$/;
+// export const regExpRegularExpression: RegExp =
+//     /^(\/\^|\^|\/)([\\/(){}[\]+*? #@.,a-zA-Z0-9_-]+)(\$\/|\$|\/)$/;
+export const regExpRegularExpression: RegExp =
+    /^(\/\^|\^|\/)([\\/(){}[\]+*?:^$| #@.,a-zA-Z0-9_-]+)(\$\/|\$|\/)$/;
 
 const isColorRGB = (s: string): boolean => {
     const isColorRGB: boolean =

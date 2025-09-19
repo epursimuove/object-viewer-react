@@ -288,6 +288,12 @@ export default function AboutPage() {
                 moment, <code>AbsolutePath</code> has higher priority than <code>RegExp</code>.
             </p>
 
+            <p>
+                Many of the regular expressions that are used for guessing are displayed in the{" "}
+                <em>default JSON object</em>. So by filtering on <code>RegExp</code>, you can see
+                what the actual regular expressions look like.
+            </p>
+
             <h2>Disclaimer</h2>
 
             <p>
@@ -299,8 +305,6 @@ export default function AboutPage() {
                 Best experience for me in August 2025 has been in <em>Google Chrome</em> in{" "}
                 <em>macOS</em> and <em>Firefox</em> in <em>Android</em>.
             </p>
-
-            <p></p>
 
             <h2>
                 Current version <var>{appVersion}</var>

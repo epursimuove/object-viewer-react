@@ -1,4 +1,30 @@
-import { now, systemTimeZone } from "~/util/dateAndTime";
+import {
+    now,
+    regExpLocalDate,
+    regExpLocalTime,
+    regExpTimestamp,
+    regExpTimeZone,
+    systemTimeZone,
+} from "~/util/dateAndTime";
+import {
+    regExpExpandedIPv6,
+    regExpInsecureURL,
+    regExpIPv4,
+    regExpLocalhostURL,
+    regExpPartialCanonicalIPv6,
+    regExpSecureURL,
+} from "~/util/http";
+import {
+    regExpAbsolutePath,
+    regExpArrayIndexString,
+    regExpCountryCode,
+    regExpEmailAddress,
+    regExpHexColorRGB,
+    regExpLocale,
+    regExpRegularExpression,
+    regExpRelativePath,
+    regExpRGBColorRGB,
+} from "~/util/util";
 
 // let counter = 1;
 
@@ -549,6 +575,33 @@ export const exampleObject: {} = {
                 "^abc$",
                 "/^abc$/",
                 "/abc/", // Will be treated as an AbsolutePath.
+                {
+                    dateAndTime: {
+                        timestamp: regExpTimestamp.toString(),
+                        localDate: regExpLocalDate.toString(),
+                        localTime: regExpLocalTime.toString(),
+                        timeZone: regExpTimeZone.toString(),
+                    },
+                    web: {
+                        IPv4: regExpIPv4.toString(),
+                        expandedIPv6: regExpExpandedIPv6.toString(),
+                        partialCanonicalIPv6: regExpPartialCanonicalIPv6.toString(),
+                        https: regExpSecureURL.toString(),
+                        http: regExpInsecureURL.toString(),
+                        localhost: regExpLocalhostURL.toString(),
+                    },
+                    misc: {
+                        countryCode: regExpCountryCode.toString(),
+                        locale: regExpLocale.toString(),
+                        emailAddress: regExpEmailAddress.toString(),
+                        arrayIndex: regExpArrayIndexString.toString(),
+                        colorHex: regExpHexColorRGB.toString(),
+                        colorRGB: regExpRGBColorRGB.toString(),
+                        absolutePath: regExpAbsolutePath.toString(),
+                        relativePath: regExpRelativePath.toString(),
+                        regularExpression: regExpRegularExpression.toString(),
+                    },
+                },
             ],
         },
         "2.7 - Gotchas": {
