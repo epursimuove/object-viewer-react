@@ -1,6 +1,5 @@
 import { StatisticsRow } from "~/components/statistics-row";
 import type { DisplayRow } from "~/types";
-import { now } from "~/util/dateAndTime";
 
 export function StatisticsSection({
     displayRows,
@@ -41,7 +40,6 @@ export function StatisticsSection({
             <StatisticsRow label="Objects" value={totalNumberOfObjects} />
             <StatisticsRow label="Arrays" value={totalNumberOfArrays} />
             <StatisticsRow label="Depth" value={deepestLevel} />
-            <StatisticsRow label="'Now'" value={now} />
         </details>
     );
 }

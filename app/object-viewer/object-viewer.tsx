@@ -26,6 +26,7 @@ import { StatisticsSection } from "./statistics-section";
 import { SettingsSection } from "./settings-section";
 import { LinesSection } from "./lines-section";
 import { JsonObjectSection } from "./json-object-section";
+import { TimeSection } from "./time-section";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -255,6 +256,10 @@ export function ObjectViewer() {
                     </summary>
 
                     <form>
+                        <section id="date-and-time">
+                            <TimeSection />
+                        </section>
+
                         <section>
                             <JsonObjectSection
                                 originalObjectAsText={originalObjectAsText}
@@ -294,6 +299,7 @@ export function ObjectViewer() {
                     </form>
                 </details>
             </aside>
+
             <details open>
                 <summary>
                     <h2>
@@ -306,6 +312,7 @@ export function ObjectViewer() {
 
                 <div className="object-viewer">{objectViewerRows}</div>
             </details>
+
             <details>
                 <summary>
                     <h2>Original object</h2>
@@ -313,6 +320,7 @@ export function ObjectViewer() {
 
                 <pre>{prettifyJSON(originalObject)}</pre>
             </details>
+
             <details>
                 <summary>
                     <h2>Original object converted to object tree</h2>
@@ -320,6 +328,7 @@ export function ObjectViewer() {
 
                 <pre>{prettifyJSON(objectTree)}</pre>
             </details>
+
             <details>
                 <summary>
                     <h2>Object tree converted to DisplayRow[]</h2>

@@ -413,6 +413,21 @@ aside#toolbar {
         }
     }
 
+    #date-and-time {
+        details {
+            div {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                gap: 0.5rem;
+
+                & .label {
+                    color: var(--color-lighter);
+                }
+            }
+        }
+    }
+
     #history {
         details {
             div {
