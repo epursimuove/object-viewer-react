@@ -2,10 +2,12 @@ html {
     font-family: Arial, sans-serif;
     line-height: 1.4rem;
     font-size: 14px;
+    --color-heading-numbering: rgb(200, 200, 200);
 }
 
 body {
     overflow-y: scroll;
+    counter-reset: heading2;
 }
 
 h1,
@@ -18,6 +20,57 @@ h6 {
 
     small {
         color: rgb(200, 200, 200);
+    }
+
+    &::before {
+        font-weight: normal;
+        color: var(--color-heading-numbering);
+    }
+}
+
+h2 {
+    counter-increment: heading2;
+    counter-reset: heading3;
+
+    &::before {
+        content: counter(heading2) " ";
+    }
+}
+
+h3 {
+    counter-increment: heading3;
+    counter-reset: heading4;
+
+    &::before {
+        content: counter(heading2) "." counter(heading3) " ";
+    }
+}
+
+h4 {
+    counter-increment: heading4;
+    counter-reset: heading5;
+
+    &::before {
+        content: counter(heading2) "." counter(heading3) "." counter(heading4) " ";
+    }
+}
+
+h5 {
+    counter-increment: heading5;
+    counter-reset: heading6;
+
+    &::before {
+        content: counter(heading2) "." counter(heading3) "." counter(heading4) "." counter(heading5)
+            " ";
+    }
+}
+
+h6 {
+    counter-increment: heading6;
+
+    &::before {
+        content: counter(heading2) "." counter(heading3) "." counter(heading4) "." counter(heading5)
+            "." counter(heading6) " ";
     }
 }
 

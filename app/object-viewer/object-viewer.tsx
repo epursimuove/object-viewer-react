@@ -141,6 +141,7 @@ export function ObjectViewer() {
         };
 
         const shiftClick = event.nativeEvent instanceof PointerEvent && event.nativeEvent.shiftKey; // Shift + click should only expand first sub-level, click expands all children.
+        const commandClick = event.nativeEvent instanceof PointerEvent && event.nativeEvent.metaKey; // Command + click should only expand first sub-level, click expands all children.
 
         const nextDisplayRows: DisplayRow[] = displayRows.map(
             (displayRow: DisplayRow, index: number) => {
@@ -148,10 +149,10 @@ export function ObjectViewer() {
                     trace("displayRow, nextRowItem", displayRow, nextRowItem);
                     return nextRowItem;
                 } else if (isDescendant(nextRowItem.id, displayRow.id)) {
-                    const isExpanded = !shiftClick && nextRowItem.isExpanded;
+                    const isExpanded = !commandClick && nextRowItem.isExpanded;
                     const isVisible =
                         nextRowItem.isExpanded &&
-                        (!shiftClick || nextRowItem.id === displayRow.parentId);
+                        (!commandClick || nextRowItem.id === displayRow.parentId);
 
                     return {
                         ...displayRow,

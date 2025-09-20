@@ -456,6 +456,7 @@ export const exampleObject: {} = {
                     now.epochMilliseconds / 1000,
                     Math.floor(now.epochMilliseconds / 1000),
                     1000000000,
+                    2000000000,
                     3000000000,
                 ],
             },

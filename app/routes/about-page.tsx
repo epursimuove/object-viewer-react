@@ -71,7 +71,8 @@ export default function AboutPage() {
                 <li>
                     When clicking on an object node row, the underlying subtree is toggled. By
                     default, <em>all</em> the sublevels are displayed when expanded and hidden when
-                    collapsed. By shift-clicking you can expand only the <em>first</em> sublevel.
+                    collapsed. By cmd-clicking (on macOS) you can expand only the <em>first</em>{" "}
+                    sublevel.
                 </li>
 
                 <li>
@@ -117,8 +118,9 @@ export default function AboutPage() {
                         <li>
                             Epoch values can be either in seconds or milliseconds. The range for
                             seconds is <code>[1000000000, 3000000000]</code> and the range for
-                            milliseconds is <code>[1000000000000, 3000000000000]</code>. The ranges
-                            roughly correspond to epoch values from September 2001 to January 2065.
+                            milliseconds is <code>[1000000000000, 3000000000000]</code>. These
+                            ranges roughly correspond to epoch values from September 2001 to January
+                            2065.
                         </li>
 
                         <li>
@@ -230,19 +232,6 @@ export default function AboutPage() {
 
             <p>By hovering the property names, you get a popup describing the JSON path.</p>
 
-            <h3>Tips</h3>
-
-            <p>
-                A good way to see an overview of the tree structure, by getting rid of the "noise"
-                from the leaves, is to "Expand all" rows and uncheck the "Show leaves". (You can
-                achieve the same by filtering on <code>object</code> and <code>array</code> enhanced
-                property types.)
-            </p>
-
-            <p>
-                Make the whole tree zebra-striped, by marking the lines with <code>-</code>.
-            </p>
-
             <h3>Property types</h3>
 
             <p>
@@ -281,6 +270,8 @@ export default function AboutPage() {
                 ))}
             </ol>
 
+            <h5>Regular expressions</h5>
+
             <p>
                 The enhanced property types <code>AbsolutePath</code> and <code>RegExp</code> can be
                 hard to distinguish, since they have a common format. For example the string{" "}
@@ -292,6 +283,27 @@ export default function AboutPage() {
                 Many of the regular expressions that are used for guessing are displayed in the{" "}
                 <em>default JSON object</em>. So by filtering on <code>RegExp</code>, you can see
                 what the actual regular expressions look like.
+            </p>
+
+            <p>
+                If the content in the string is close enough to be a regular expression, the
+                property is marked as a <code>RegExp</code>, even if the content actually is a
+                syntactic disaster. The <em>intention</em> of the value may still be a regular
+                expression, even if the syntax is not currently perfect ("better to acquit than to
+                convict").
+            </p>
+
+            <h3>Tips</h3>
+
+            <p>
+                A good way to see an overview of the tree structure, by getting rid of the "noise"
+                from the leaves, is to "Expand all" rows and uncheck the "Show leaves". (You can
+                achieve the same by filtering on <code>object</code> and <code>array</code> enhanced
+                property types.)
+            </p>
+
+            <p>
+                Make the whole tree zebra-striped, by marking the lines with <code>-</code>.
             </p>
 
             <h2>Disclaimer</h2>
@@ -307,8 +319,18 @@ export default function AboutPage() {
             </p>
 
             <h2>
-                Current version <var>{appVersion}</var>
+                History of <em>NNM Object Viewer</em>
             </h2>
+
+            <p>
+                The first version of <em>NNM Object Viewer</em> was originally released in May 2025
+                and created with React <var>19.1</var>, React router <var>7.6</var> and TypeScript{" "}
+                <var>5.8</var>.
+            </p>
+
+            <h3>
+                Current version <var>{appVersion}</var>
+            </h3>
 
             <ul>
                 <li>
@@ -322,20 +344,14 @@ export default function AboutPage() {
                 </li>
             </ul>
 
-            <h2>
-                History of <em>NNM Object Viewer</em>
-            </h2>
-
-            <p>
-                The first version of <em>NNM Object Viewer</em> was originally released in May 2025
-                and created with React <var>19.1</var>, React router <var>7.6</var> and TypeScript{" "}
-                <var>5.8</var>.
-            </p>
+            <h2>Source code</h2>
 
             <p>
                 The code is available at{" "}
                 <a href="https://github.com/epursimuove/object-viewer-react">GitHub</a>.
             </p>
+
+            <h2>Dedication</h2>
 
             <p>
                 <em>NNM Object Viewer</em> is dedicated to my parents Anna-Lisa and Åke. ❤️

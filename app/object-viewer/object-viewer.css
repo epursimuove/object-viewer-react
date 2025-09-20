@@ -208,7 +208,7 @@ html {
         }
 
         .object-property-meta-data {
-            color: forestgreen;
+            color: var(--color-lighter);
             font-style: italic;
             font-size: 0.9rem;
             white-space: pre-wrap;
