@@ -7,6 +7,10 @@ const getNow = (): Temporal.Instant => Temporal.Now.instant();
 
 export const now: Temporal.Instant = getNow();
 
+const buildTime: Temporal.Instant = Temporal.Instant.from(__BUILD_TIME__);
+
+export const prettifiedBuildTime: string = buildTime.toString().slice(0, 16) + "Z";
+
 export const systemTimeZone: string = Temporal.Now.timeZoneId();
 
 export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\.\d+)?)?)Z$/;

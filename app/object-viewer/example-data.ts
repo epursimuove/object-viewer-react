@@ -1,5 +1,6 @@
 import {
     now,
+    prettifiedBuildTime,
     regExpLocalDate,
     regExpLocalTime,
     regExpTimestamp,
@@ -25,6 +26,7 @@ import {
     regExpRelativePath,
     regExpRGBColorRGB,
 } from "~/util/util";
+import { version as appVersion } from "../../package-lock.json";
 
 // let counter = 1;
 
@@ -647,6 +649,10 @@ export const exampleObject: {} = {
         firstName: "Anders",
         lastName: "Gustafson",
         url: "https://anders.nemonisimors.com",
+        appInfo: {
+            version: appVersion,
+            buildTime: prettifiedBuildTime,
+        },
     },
 };
 

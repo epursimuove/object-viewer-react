@@ -270,6 +270,20 @@ export default function AboutPage() {
                 ))}
             </ol>
 
+            <p>
+                The <code>BooleanFalse</code> and <code>BooleanTrue</code> types are enhanced from{" "}
+                <code>boolean</code>.
+            </p>
+
+            <p>
+                The <code>Epoch</code>, <code>HTTPStatus</code>, <code>Integer</code> and{" "}
+                <code>Zero</code> types are enhanced from <code>number</code>.
+            </p>
+
+            <p>
+                The other enhanced property types are from <code>string</code>.
+            </p>
+
             <h5>Regular expressions</h5>
 
             <p>
