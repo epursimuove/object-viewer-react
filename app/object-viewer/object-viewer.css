@@ -190,7 +190,7 @@ html {
                 overflow-wrap: break-word;
             }
 
-            & :is(.extra-spaces, .strange-time-zone) {
+            & :is(.extra-spaces, .strange-time-zone, .strange-reg-exp) {
                 color: red;
                 font-weight: bold;
                 cursor: help;

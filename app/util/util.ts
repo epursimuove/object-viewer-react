@@ -425,3 +425,19 @@ export const numberOfDigits = (n: number): number => {
 
     return Math.ceil(Math.log10(n + 1));
 };
+
+export const verifyRegExp = (s: string): string | null => {
+    let errorMessage: string | null = null;
+
+    try {
+        new RegExp(s);
+    } catch (error) {
+        // console.warn(`Assuming that "${s}" is a regular expression failed`);
+        if (error instanceof SyntaxError) {
+            // console.warn(error.message);
+            errorMessage = error.message;
+        }
+    }
+
+    return errorMessage;
+};

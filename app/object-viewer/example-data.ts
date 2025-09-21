@@ -578,6 +578,8 @@ export const exampleObject: {} = {
                 "^abc$",
                 "/^abc$/",
                 "/abc/", // Will be treated as an AbsolutePath.
+                "/abc)+/", // Erroneus.
+                "^[\\d$", // Erroneus.
                 {
                     dateAndTime: {
                         timestamp: regExpTimestamp.toString(),

@@ -150,6 +150,12 @@ export default function AboutPage() {
                 whitespaces in the middle, the string value is marked as suspicious.
             </p>
 
+            <p>
+                When guessing that a string defines a <em>regular expression</em> (i.e. the enhanced
+                property type is <code>RegExp</code>), the syntax of the expression may be invalid.
+                In those cases the property value is marked as suspicious.
+            </p>
+
             <h4>Property values</h4>
 
             <p>
