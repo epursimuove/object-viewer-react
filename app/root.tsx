@@ -10,9 +10,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import { version as appVersion } from "../package-lock.json";
 import { UserConfigurationProvider } from "~/object-viewer/UserConfigurationContext";
-import { BASE_NAME_URL_PREFIX } from "~/util/util";
+import { versions, BASE_NAME_URL_PREFIX } from "~/util/util";
 import { HistoryContextProvider } from "./object-viewer/HistoryContext";
 import { prettifiedBuildTime } from "./util/dateAndTime";
 
@@ -67,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
                 <footer>
                     <div>
-                        <em>NNM Object Viewer</em> <var>{appVersion}</var>
+                        <em>NNM Object Viewer</em> <var>{versions.appVersion}</var>
                     </div>
                     <div>Built: {prettifiedBuildTime}</div>
                     <div>

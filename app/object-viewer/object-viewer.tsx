@@ -7,10 +7,9 @@ import type {
     PropertyTypeEnhanced,
     PropertyValue,
 } from "~/types";
-import { prettifyJSON } from "~/util/util";
+import { prettifyJSON, versions } from "~/util/util";
 import "./object-viewer.css";
 import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
-import { version as appVersion } from "../../package-lock.json";
 import { ObjectViewerRow } from "~/components/object-viewer-row";
 import {
     UserConfigurationProvider,
@@ -245,7 +244,7 @@ export function ObjectViewer() {
             <h1>
                 NNM Object Viewer{" "}
                 <small>
-                    <var>{appVersion}</var>
+                    <var>{versions.appVersion}</var>
                 </small>
             </h1>
 

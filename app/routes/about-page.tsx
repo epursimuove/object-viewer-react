@@ -1,4 +1,4 @@
-import { version as appVersion, packages } from "../../package-lock.json";
+import { versions } from "~/util/util";
 import type { Route } from "../../.react-router/types/app/routes/+types/about-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 
@@ -349,18 +349,18 @@ export default function AboutPage() {
             </p>
 
             <h3>
-                Current version <var>{appVersion}</var>
+                Current version <var>{versions.appVersion}</var>
             </h3>
 
             <ul>
                 <li>
-                    React: <var>{packages["node_modules/react"].version}</var>
+                    React: <var>{versions.reactVersion}</var>
                 </li>
                 <li>
-                    React router: <var>{packages["node_modules/react-router"].version}</var>
+                    React router: <var>{versions.reactRouterVersion}</var>
                 </li>
                 <li>
-                    TypeScript: <var>{packages["node_modules/typescript"].version}</var>
+                    TypeScript: <var>{versions.typescriptVersion}</var>
                 </li>
             </ul>
 

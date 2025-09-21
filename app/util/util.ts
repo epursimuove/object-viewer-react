@@ -28,6 +28,13 @@ import { convertDecimalToHex } from "./math";
 
 const { debug, error, info, trace, warning } = useLog("util.ts");
 
+export const versions = {
+    appVersion: __APP_VERSION__,
+    reactVersion: __REACT_VERSION__,
+    reactRouterVersion: __REACT_ROUTER_VERSION__,
+    typescriptVersion: __TYPESCRIPT_VERSION__,
+};
+
 export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
 
 export const regExpCountryCode: RegExp = /^[A-Z]{2}$/;

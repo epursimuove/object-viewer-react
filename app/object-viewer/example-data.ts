@@ -25,8 +25,8 @@ import {
     regExpRegularExpression,
     regExpRelativePath,
     regExpRGBColorRGB,
+    versions,
 } from "~/util/util";
-import { version as appVersion } from "../../package-lock.json";
 
 // let counter = 1;
 
@@ -652,7 +652,7 @@ export const exampleObject: {} = {
         lastName: "Gustafson",
         url: "https://anders.nemonisimors.com",
         appInfo: {
-            version: appVersion,
+            version: versions.appVersion,
             buildTime: prettifiedBuildTime,
         },
     },
