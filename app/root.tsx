@@ -49,6 +49,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         >
                             Object Viewer
                         </NavLink>
+
+                        <NavLink
+                            to={`${BASE_NAME_URL_PREFIX}/docs`}
+                            className={({ isActive, isPending }) =>
+                                isPending ? "pending" : isActive ? "active" : ""
+                            }
+                        >
+                            Documentation
+                        </NavLink>
+
                         <NavLink
                             to={`${BASE_NAME_URL_PREFIX}/about`}
                             className={({ isActive, isPending }) =>

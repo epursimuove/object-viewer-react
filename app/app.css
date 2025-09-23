@@ -132,6 +132,11 @@ nav {
 
     font-size: 1.2rem;
     text-transform: uppercase;
+
+    @media screen and (width < 600px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
 
 a {
