@@ -96,7 +96,8 @@ main {
         }
     }
 
-    &#about-page {
+    &#about-page,
+    &#documentation-page {
         max-width: 1000px;
     }
 }
