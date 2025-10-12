@@ -166,3 +166,13 @@ export interface ArithmeticAggregation {
     median?: number;
     sum?: number;
 }
+
+export interface TableCell {
+    columnName: string;
+    propertyTypeEnhanced: PropertyTypeEnhanced;
+    cellValue: PropertyValue;
+    primitiveLeaf: PrimitiveLeaf & { rowType: "leaf" };
+}
+export interface TableRow {
+    cells: TableCell[];
+}

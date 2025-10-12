@@ -9,7 +9,7 @@ export function AnchoredInfoBox({
     type = "info",
     tag,
 }: {
-    labelAnchor: string;
+    labelAnchor: string | Element;
     textContent?: string;
     children?: ReactNode;
     type?: "info" | "warning" | "error";

@@ -1,6 +1,6 @@
 {
     "name": "object-viewer-react",
-    "version": "1.25.3",
+    "version": "1.25.3-array-as-table",
     "private": true,
     "type": "module",
     "scripts": {

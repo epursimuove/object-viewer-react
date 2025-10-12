@@ -448,3 +448,14 @@ export const verifyRegExp = (s: string): string | null => {
 
     return errorMessage;
 };
+
+export const prettifyPropertyName = (propertyName: string): string => {
+    return (
+        propertyName
+            // Insert space before capital letters, unless they're part of an acronym (e.g., "userID" → "user ID", not "user I D").
+            .replace(/([a-z])([A-Z])/g, "$1 $2")
+            .toLowerCase()
+            // Capitalize the first character.
+            .replace(/^./, (str) => str.toUpperCase())
+    );
+};

@@ -1,4 +1,4 @@
-import { exampleObject } from "~/object-viewer/example-data";
+import { exampleArray, exampleObject } from "~/object-viewer/example-data";
 import type {
     DisplayRow,
     HistoryItem,
@@ -19,13 +19,19 @@ import { logInfoPretty, useLog } from "~/log-manager/LogManager";
 import { Timestamp } from "~/components/timestamp";
 import { FilterSection } from "./filter-section";
 import { AnchoredInfoBox } from "~/components/anchored-info-box";
-import { convertObjectToTree, convertTreeToDisplayRows, isDescendant } from "~/util/tree";
+import {
+    convertObjectToTree,
+    convertTreeToDisplayRows,
+    couldBeDisplayedAsTable,
+    isDescendant,
+} from "~/util/tree";
 import { HistorySection } from "./history-section";
 import { StatisticsSection } from "./statistics-section";
 import { SettingsSection } from "./settings-section";
 import { LinesSection } from "./lines-section";
 import { JsonObjectSection } from "./json-object-section";
 import { TimeSection } from "./time-section";
+import { DisplayArrayAsTable } from "./display-array-as-table";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -44,6 +50,7 @@ export function ObjectViewer() {
 
     const [originalObjectAsText, setOriginalObjectAsText] = useState<string>(
         prettifyJSON(exampleObject)
+        // prettifyJSON(exampleArray)
     );
 
     const [originalObject, setOriginalObject] = useState<Record<string, PropertyValue>>({});
@@ -311,6 +318,16 @@ export function ObjectViewer() {
 
                 <div className="object-viewer">{objectViewerRows}</div>
             </details>
+
+            {couldBeDisplayedAsTable(objectTree) && (
+                <details>
+                    <summary>
+                        <h2>Array as table</h2>
+                    </summary>
+
+                    <DisplayArrayAsTable originalObject={originalObject} objectTree={objectTree} />
+                </details>
+            )}
 
             <details>
                 <summary>

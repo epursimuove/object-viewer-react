@@ -3,7 +3,6 @@ import "../object-viewer/object-viewer.css";
 import { useUserConfigurationContext } from "~/object-viewer/UserConfigurationContext";
 import type { SyntheticEvent } from "react";
 import { ObjectPropertyValue } from "~/components/object-property-value";
-import { ColorIndicator } from "./color-indicator";
 import { AnchoredInfoBox } from "./anchored-info-box";
 import { getNumberOfIntegerDigits } from "~/util/math";
 import { containsExtraSpaces } from "~/util/util";
@@ -171,10 +170,6 @@ export function ObjectViewerRow({
 
             {isLeaf ? (
                 <div className="object-property-value">
-                    {displayRow.propertyTypeEnhanced === "ColorRGB" && (
-                        <ColorIndicator primaryColor={`${displayRow.propertyValue}`} />
-                    )}
-
                     <ObjectPropertyValue displayRow={displayRow} />
                 </div>
             ) : (

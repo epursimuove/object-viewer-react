@@ -595,3 +595,15 @@ const getPossiblePrimitiveValue = (
 
     return null;
 };
+
+export const couldBeDisplayedAsTable = (objectTree: ObjectNode): boolean => {
+    if (
+        objectTree.nodeType === "array" &&
+        objectTree.depthBelow === 2 &&
+        objectTree.convenientIdentifierWhenCollapsed === "object[]"
+    ) {
+        return true;
+    }
+
+    return false;
+};

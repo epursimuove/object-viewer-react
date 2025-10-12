@@ -1,10 +1,15 @@
-import type { DisplayRow } from "~/types";
+import type { DisplayRow, PrimitiveLeaf } from "~/types";
 import "../object-viewer/object-viewer.css";
 import { Timestamp } from "~/components/timestamp";
 import { AnchoredInfoBox } from "./anchored-info-box";
 import { containsExtraSpaces, verifyRegExp } from "~/util/util";
+import { ColorIndicator } from "./color-indicator";
 
-export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) {
+export function ObjectPropertyValue({
+    displayRow,
+}: {
+    displayRow: DisplayRow | (PrimitiveLeaf & { rowType: "leaf" });
+}) {
     const textContainsExtraSpaces =
         displayRow.propertyTypeEnhanced === "string" &&
         containsExtraSpaces(displayRow.propertyValue as string);
@@ -19,6 +24,10 @@ export function ObjectPropertyValue({ displayRow }: { displayRow: DisplayRow }) 
 
     return (
         <>
+            {displayRow.propertyTypeEnhanced === "ColorRGB" && (
+                <ColorIndicator primaryColor={`${displayRow.propertyValue}`} />
+            )}
+
             {displayRow.rowType === "leaf" &&
                 displayRow.propertyTypeOriginal !== "boolean" &&
                 displayRow.propertyTypeEnhanced !== "string" &&

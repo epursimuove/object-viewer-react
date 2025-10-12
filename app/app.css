@@ -192,6 +192,77 @@ code {
     color: brown;
 }
 
+.table-wrapper {
+    overflow-x: auto;
+    max-width: 98vw;
+}
+
+table {
+    background-color: aliceblue;
+
+    border-collapse: collapse;
+
+    white-space: nowrap;
+
+    font-family: Menlo, "Courier New", monospace;
+
+    & :is(th, td):not(:first-child) {
+        padding-left: 3rem;
+    }
+
+    & :is(th, td):first-child {
+        padding-left: 0.5rem;
+    }
+
+    & :is(th, td):last-child {
+        padding-right: 0.5rem;
+    }
+
+    & thead {
+        background-color: aquamarine;
+
+        & tr {
+            &.property-type-enhanced {
+                color: var(--color-lighter);
+            }
+        }
+
+        & th {
+            text-align: start;
+        }
+    }
+
+    & tbody {
+        & tr > td {
+            padding-top: 0.5rem;
+
+            &.row-number {
+                /* font-size: 0.85rem; */
+                color: var(--color-lighter);
+                text-align: end;
+            }
+
+            &:has(.integer) {
+                color: limegreen;
+                text-align: end;
+            }
+
+            &:has(.floating-point-number) {
+                color: blueviolet;
+                text-align: end;
+            }
+
+            &:has(.timestamp, .local-date, .local-time, .time-zone) {
+                color: brown;
+            }
+        }
+
+        & tr:hover {
+            background-color: lightgoldenrodyellow;
+        }
+    }
+}
+
 .color-indicator-wrapper {
     --border-radius: 8px;
 

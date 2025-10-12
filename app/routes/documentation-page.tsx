@@ -1,5 +1,7 @@
+import { exampleArray } from "~/object-viewer/example-data";
 import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
+import { prettifyJSON } from "~/util/util";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -24,9 +26,18 @@ export default function DocumentationPage() {
 
             <h2>Basics</h2>
 
+            <p>
+                From{" "}
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">
+                    JSON
+                </a>{" "}
+                data that you provide, you automatically get helpful information about the actual
+                content and it will all be presented in a beatiful object tree.
+            </p>
+
             <ul>
                 <li>
-                    Two types of rows are handled:
+                    Two types of rows are displayed in the object tree:
                     <ul>
                         <li>
                             Either a <em>simple primitive property</em>, i.e. a <em>leaf</em>.
@@ -51,11 +62,12 @@ export default function DocumentationPage() {
 
                 <li>
                     Makes educated guesses and assumptions about the (enhanced) property types, i.e.
-                    CountryCode, LocalDate, Timestamp, Integer, EmailAddress, URL, Locale, etc, even
-                    if the guesses may be wrong sometimes. In this way we get much better
-                    information about the property values (most of the time). Guesses are made for
-                    string values and number values. Many examples of these assumptions are
-                    displayed in the <em>default JSON object</em>.
+                    CountryCode, LocalDate, Timestamp, Integer, EmailAddress, URL, Locale, etc,{" "}
+                    <em>even</em> if the guesses may be wrong sometimes ("It is easier to ask for
+                    forgiveness than permission"). In this way we get much better information about
+                    the property values (most of the time). Guesses are made for string values and
+                    number values. Many examples of these assumptions are displayed in the{" "}
+                    <em>default JSON object</em>.
                     <ul>
                         <li>
                             Numbers - we can differentiate floating point numbers and integers. We
@@ -286,6 +298,27 @@ export default function DocumentationPage() {
                 expression, even if the syntax is not currently perfect ("better to acquit than to
                 convict").
             </p>
+
+            <h2>Array as table</h2>
+
+            <p>
+                When the JSON data is an array of objects, an additional section can sometimes
+                automatically be displayed. Each object is presented as a row in table, so you
+                easily can compare and analyse. The following conditions need to be fulfilled for
+                the array of objects:
+            </p>
+
+            <ul>
+                <li>the objects should be flat (i.e. they should all have a depth of 1)</li>
+                <li>the objects should contain the same properties</li>
+                <li>[more conditions to come...]</li>
+            </ul>
+
+            <details>
+                <summary>An example of JSON data that will be displayed as a table</summary>
+
+                <pre>{prettifyJSON(exampleArray)}</pre>
+            </details>
 
             <h2>Tips</h2>
 
