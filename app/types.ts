@@ -169,6 +169,7 @@ export interface ArithmeticAggregation {
 
 export interface TableCell {
     columnName: string;
+    propertyTypeOriginal: PropertyTypeOriginal;
     propertyTypeEnhanced: PropertyTypeEnhanced;
     cellValue: PropertyValue;
     primitiveLeaf: PrimitiveLeaf & { rowType: "leaf" };

@@ -600,7 +600,8 @@ export const couldBeDisplayedAsTable = (objectTree: ObjectNode): boolean => {
     if (
         objectTree.nodeType === "array" &&
         objectTree.depthBelow === 2 &&
-        objectTree.convenientIdentifierWhenCollapsed === "object[]"
+        objectTree.convenientIdentifierWhenCollapsed === "object[]" &&
+        Object.entries(objectTree.containedProperties).length >= 2
     ) {
         return true;
     }

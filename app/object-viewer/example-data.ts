@@ -731,7 +731,7 @@ export const exampleArray: Record<string, PropertyValue>[] = enhanceArrayExample
         locale: "en-AU",
         eyeColor: "rgb(150, 70, 250)",
         email: "fred@example.com",
-        mobile: "+4670987654",
+        mobile: "+46709876543",
         timeZone: "UTC",
     },
 ]);

@@ -33,6 +33,7 @@ export function DisplayArrayAsTable({
                               const primitiveLeaf = property as PrimitiveLeaf;
                               return {
                                   columnName: primitiveLeaf["propertyName"],
+                                  propertyTypeOriginal: primitiveLeaf["propertyTypeOriginal"],
                                   propertyTypeEnhanced: primitiveLeaf["propertyTypeEnhanced"],
                                   cellValue: primitiveLeaf["propertyValue"],
                                   primitiveLeaf: { ...primitiveLeaf, rowType: "leaf" },
@@ -49,15 +50,46 @@ export function DisplayArrayAsTable({
 
     // console.log(tableRows);
 
+    const showTable = allObjectsContainSameProperties(tableRows);
+
     return (
         <>
-            <div className="table-wrapper">
-                <table className="json-as-table">
-                    <TableHeader tableRows={tableRows} />
+            {showTable ? (
+                <div className="table-wrapper">
+                    <table className="json-as-table">
+                        <TableHeader tableRows={tableRows} />
 
-                    <TableBody tableRows={tableRows} />
-                </table>
-            </div>
+                        <TableBody tableRows={tableRows} />
+                    </table>
+                </div>
+            ) : (
+                <div>The array does not contain similar objects.</div>
+            )}
         </>
     );
+}
+
+function allObjectsContainSameProperties(tableRows: TableRow[]): boolean {
+    const cellsInFirstRow: TableCell[] | undefined = tableRows.at(0)?.cells;
+
+    if (cellsInFirstRow) {
+        const numberOfProperties: number = cellsInFirstRow.length;
+
+        return tableRows.every(
+            (tableRow: TableRow) =>
+                tableRow.cells.length === numberOfProperties &&
+                tableRow.cells.every((tableCell: TableCell) => {
+                    const matchingCell: TableCell | undefined = cellsInFirstRow.find(
+                        (tableCellFirstRow: TableCell) =>
+                            tableCell.columnName === tableCellFirstRow.columnName
+                    );
+
+                    if (matchingCell) {
+                        return true;
+                    }
+                })
+        );
+    }
+
+    return false;
 }
