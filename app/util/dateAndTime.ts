@@ -114,6 +114,15 @@ export function durationRelativeToNowForTimestamp(timestampString: string): stri
     return `${prettifiedDuration(getRoundedDuration(duration))}`;
 }
 
+export function currentAge(localDateString: string): number {
+    const localDate: Temporal.PlainDate = Temporal.PlainDate.from(localDateString);
+    const today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC");
+
+    const duration: Temporal.Duration = localDate.until(today, { largestUnit: "years" });
+
+    return duration.years;
+}
+
 export function durationRelativeToNowForLocalDate(localDateString: string): string {
     const localDate: Temporal.PlainDate = Temporal.PlainDate.from(localDateString);
 

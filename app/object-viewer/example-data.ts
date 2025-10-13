@@ -1,4 +1,6 @@
+import type { PropertyValue } from "~/types";
 import {
+    currentAge,
     now,
     prettifiedBuildTime,
     regExpLocalDate,
@@ -658,7 +660,7 @@ export const exampleObject: {} = {
     },
 };
 
-export const exampleArray = [
+export const exampleArray: Record<string, PropertyValue>[] = enhanceArrayExample([
     {
         name: "Alice",
         dateOfBirth: "1983-12-03",
@@ -675,7 +677,6 @@ export const exampleArray = [
     {
         name: "Bob",
         dateOfBirth: "1945-03-04",
-        age: 29,
         married: true,
         lastLogin: "2024-12-05T04:00:54Z",
         country: "DK",
@@ -688,7 +689,6 @@ export const exampleArray = [
     {
         name: "Caroline",
         dateOfBirth: "1979-04-29",
-        age: 103,
         married: false,
         lastLogin: "2025-10-01T23:45:00Z",
         country: "DE",
@@ -700,8 +700,7 @@ export const exampleArray = [
     },
     {
         name: "David",
-        dateOfBirth: "2001-11-18",
-        age: 22,
+        dateOfBirth: "2019-11-18",
         married: false,
         lastLogin: "2025-09-30T09:05:39Z",
         country: "JP",
@@ -713,8 +712,7 @@ export const exampleArray = [
     },
     {
         name: "Erica",
-        dateOfBirth: "2012-06-29",
-        age: 8,
+        dateOfBirth: "1925-06-29",
         married: false,
         lastLogin: "2023-01-21T17:40:53Z",
         country: "NZ",
@@ -727,7 +725,6 @@ export const exampleArray = [
     {
         name: "Fred",
         dateOfBirth: "1987-09-01",
-        age: 40,
         married: false,
         lastLogin: "2025-10-05T22:05:43Z",
         country: "AU",
@@ -737,4 +734,16 @@ export const exampleArray = [
         mobile: "+4670987654",
         timeZone: "UTC",
     },
-];
+]);
+
+function enhanceArrayExample(
+    array: Record<string, PropertyValue>[]
+): Record<string, PropertyValue>[] {
+    return array.map((element: Record<string, PropertyValue>) => {
+        const age: number = currentAge(element.dateOfBirth as string) || 42;
+        return {
+            ...element,
+            age,
+        };
+    });
+}
