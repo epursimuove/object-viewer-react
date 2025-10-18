@@ -1,8 +1,14 @@
 import type { JSX } from "react";
-import type { TableCell, TableRow } from "~/types";
+import type { PropertyTypeEnhanced, PropertyTypeOriginal, TableCell, TableRow } from "~/types";
 import { prettifyPropertyName } from "~/util/util";
 
-export function TableHeader({ tableRows }: { tableRows: TableRow[] }): JSX.Element {
+export function TableHeader({
+    tableRows,
+    columnHeaders,
+}: {
+    tableRows: TableRow[];
+    columnHeaders: Set<string>;
+}): JSX.Element {
     const tableHeadHtml = (
         <thead>
             {tableRows.length > 0 && (
@@ -10,25 +16,25 @@ export function TableHeader({ tableRows }: { tableRows: TableRow[] }): JSX.Eleme
                     <tr>
                         <th className="row-number">{tableRows.length}</th>
 
-                        {tableRows[0].cells.map((cell: TableCell) => {
+                        {[...columnHeaders].map((columnName: string) => {
                             return (
-                                <th key={cell.columnName}>
-                                    {"" + prettifyPropertyName(cell.columnName)}
-                                </th>
+                                <th key={columnName}>{"" + prettifyPropertyName(columnName)}</th>
                             );
                         })}
                     </tr>
-                    {/* <tr className="property-type-enhanced">
+
+                    <tr className="original-property-name">
                         <th className="row-number"></th>
 
-                        {tableRows[0].cells.map((cell: TableCell) => {
-                            return <th key={cell.columnName}>{"" + cell.propertyTypeEnhanced}</th>;
+                        {[...columnHeaders].map((columnName: string) => {
+                            return <th key={columnName}>{"" + columnName}</th>;
                         })}
-                    </tr> */}
+                    </tr>
+
                     <tr className="property-type-enhanced">
                         <th className="row-number"></th>
 
-                        {getCommonPropertyTypeAncestorForColumns(tableRows).map(
+                        {getCommonPropertyTypeAncestorForColumns(tableRows, columnHeaders).map(
                             (propertyType: string, index: number) => {
                                 return <th key={index}>{propertyType}</th>;
                             }
@@ -42,7 +48,10 @@ export function TableHeader({ tableRows }: { tableRows: TableRow[] }): JSX.Eleme
     return tableHeadHtml;
 }
 
-function getCommonPropertyTypeAncestorForColumns(tableRows: TableRow[]): string[] {
+function getCommonPropertyTypeAncestorForColumns(
+    tableRows: TableRow[],
+    columnHeaders: Set<string>
+): string[] {
     // Get all cells for first row.
     // If enhanced property type for each row's cell equals corresponding cell in first row,
     // then use enhanced property type.
@@ -50,30 +59,51 @@ function getCommonPropertyTypeAncestorForColumns(tableRows: TableRow[]): string[
     // then use original property type.
     // Otherwise use "???".
 
-    const cellsInFirstRow: TableCell[] | undefined = tableRows.at(0)?.cells;
+    const cellMapInFirstRow: Map<string, TableCell> | undefined = tableRows.at(0)?.cellMap;
 
-    if (cellsInFirstRow) {
-        const result: string[] = cellsInFirstRow.map((tableCell: TableCell, index: number) => {
+    if (cellMapInFirstRow?.size) {
+        const result: string[] = [...columnHeaders].map((columnName: string, index: number) => {
+            let commonPropertyTypeEnhanced: PropertyTypeEnhanced | undefined;
+
             const enhancedPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
+                if (
+                    commonPropertyTypeEnhanced === undefined &&
+                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
+                ) {
+                    commonPropertyTypeEnhanced =
+                        tableRow.cellMap.get(columnName)?.propertyTypeEnhanced;
+                }
                 return (
-                    tableRow.cells.at(index)?.propertyTypeEnhanced ===
-                    tableCell.propertyTypeEnhanced
+                    tableRow.cellMap.get(columnName) === undefined ||
+                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced ===
+                        commonPropertyTypeEnhanced
                 );
             });
 
-            if (enhancedPropertyTypeMatch) {
-                return tableCell.propertyTypeEnhanced;
+            if (enhancedPropertyTypeMatch && commonPropertyTypeEnhanced) {
+                return commonPropertyTypeEnhanced;
             }
 
+            let commonPropertyTypeOriginal: PropertyTypeOriginal | undefined;
+
             const originalPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
+                if (
+                    commonPropertyTypeOriginal === undefined &&
+                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
+                ) {
+                    commonPropertyTypeOriginal =
+                        tableRow.cellMap.get(columnName)?.propertyTypeOriginal;
+                }
+
                 return (
-                    tableRow.cells.at(index)?.propertyTypeOriginal ===
-                    tableCell.propertyTypeOriginal
+                    tableRow.cellMap.get(columnName) === undefined ||
+                    tableRow.cellMap.get(columnName)?.propertyTypeOriginal ===
+                        commonPropertyTypeOriginal
                 );
             });
 
-            if (originalPropertyTypeMatch) {
-                return tableCell.propertyTypeOriginal;
+            if (originalPropertyTypeMatch && commonPropertyTypeOriginal) {
+                return commonPropertyTypeOriginal;
             }
 
             return "???";

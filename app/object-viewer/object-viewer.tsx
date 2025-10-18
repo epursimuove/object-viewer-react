@@ -1,4 +1,9 @@
-import { exampleArray, exampleObject } from "~/object-viewer/example-data";
+import {
+    exampleArray,
+    exampleArray2,
+    exampleArray3,
+    exampleObject,
+} from "~/object-viewer/example-data";
 import type {
     DisplayRow,
     HistoryItem,
@@ -51,6 +56,8 @@ export function ObjectViewer() {
     const [originalObjectAsText, setOriginalObjectAsText] = useState<string>(
         prettifyJSON(exampleObject)
         // prettifyJSON(exampleArray)
+        // prettifyJSON(exampleArray2)
+        // prettifyJSON(exampleArray3)
     );
 
     const [originalObject, setOriginalObject] = useState<Record<string, PropertyValue>>({});
@@ -244,6 +251,8 @@ export function ObjectViewer() {
         resetFilters();
     }
 
+    const displayTableAsDefault = couldBeDisplayedAsTable(objectTree);
+
     logInfoPretty("DONE", false);
 
     return (
@@ -306,7 +315,7 @@ export function ObjectViewer() {
                 </details>
             </aside>
 
-            <details open>
+            <details open={!displayTableAsDefault}>
                 <summary>
                     <h2>
                         Object tree{" "}
@@ -319,8 +328,8 @@ export function ObjectViewer() {
                 <div className="object-viewer">{objectViewerRows}</div>
             </details>
 
-            {couldBeDisplayedAsTable(objectTree) && (
-                <details>
+            {displayTableAsDefault && (
+                <details open>
                     <summary>
                         <h2>Array as table</h2>
                     </summary>

@@ -736,6 +736,50 @@ export const exampleArray: Record<string, PropertyValue>[] = enhanceArrayExample
     },
 ]);
 
+export const exampleArray2: Record<string, PropertyValue>[] = [
+    { foo: { bar: { baz: 42 } } },
+    { foo: { bar: { baz: 987 } } },
+    { foo: { bar: { baz: 1234 } } },
+];
+
+export const exampleArray3: Record<string, PropertyValue>[] = [
+    {
+        name: "John",
+        result: 1035,
+        dateOfBirth: "1980-12-10",
+        passedTest: false,
+        version: "9.8.123",
+        grade: 4.2,
+    },
+    {
+        name: "Madelene",
+        result: 1550,
+        dateOfBirth: "2002-04-22",
+        passedTest: true,
+        version: "9.11.2",
+        grade: 4.8,
+    },
+    {
+        name: "Catharina",
+        result: 980,
+        dateOfBirth: "1943-07-03",
+        passedTest: false,
+        version: "10.1.45",
+        grade: 3.3,
+    },
+    {
+        name: "Josephine",
+        dateOfBirth: "1977-11-29",
+        version: "10.1.45",
+    },
+    {
+        name: "Jacob",
+        result: 1200,
+        passedTest: true,
+        grade: 2.0,
+    },
+];
+
 function enhanceArrayExample(
     array: Record<string, PropertyValue>[]
 ): Record<string, PropertyValue>[] {

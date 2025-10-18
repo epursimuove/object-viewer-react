@@ -22,6 +22,8 @@ export function DisplayArrayAsTable({
 
     const tableRows: TableRow[] = Object.entries(objectTree.containedProperties).map(
         ([_index, arrayElement]: [string, ObjectTree]) => {
+            const cellMap: Map<string, TableCell> = new Map<string, TableCell>(); // columnName -> TableCell.
+
             const cells: TableCell[] =
                 arrayElement.nodeType === "object"
                     ? Object.entries((arrayElement as ObjectNode)["containedProperties"]).map(
@@ -42,24 +44,34 @@ export function DisplayArrayAsTable({
                       )
                     : [];
 
+            // Build the mapping.
+            cells.forEach((tableCell: TableCell) => {
+                cellMap.set(tableCell.columnName, tableCell);
+            });
+
             return {
-                cells,
+                cellMap,
             };
         }
     );
 
-    // console.log(tableRows);
+    const columnHeaders: Set<string> = createColumnHeaders(tableRows);
 
-    const showTable = allObjectsContainSameProperties(tableRows);
+    // Not needed anymore? const showTable = allObjectsContainSameProperties(tableRows);
+    const showTable = true;
 
     return (
         <>
             {showTable ? (
                 <div className="table-wrapper">
                     <table className="json-as-table">
-                        <TableHeader tableRows={tableRows} />
+                        <caption>
+                            Root array as table, containing {columnHeaders.size} columns.
+                        </caption>
 
-                        <TableBody tableRows={tableRows} />
+                        <TableHeader tableRows={tableRows} columnHeaders={columnHeaders} />
+
+                        <TableBody tableRows={tableRows} columnHeaders={columnHeaders} />
                     </table>
                 </div>
             ) : (
@@ -69,16 +81,33 @@ export function DisplayArrayAsTable({
     );
 }
 
+function createColumnHeaders(tableRows: TableRow[]): Set<string> {
+    const columnHeaders: Set<string> = new Set<string>();
+
+    tableRows.forEach((tableRow: TableRow) => {
+        [...tableRow.cellMap.values()].forEach((tableCell: TableCell, index: number) => {
+            columnHeaders.add(tableCell.columnName);
+        });
+    });
+
+    const columnHeadersSorted: Set<string> = new Set(
+        [...columnHeaders].toSorted((a, b) => a.localeCompare(b))
+    );
+
+    return columnHeadersSorted;
+}
+
 function allObjectsContainSameProperties(tableRows: TableRow[]): boolean {
-    const cellsInFirstRow: TableCell[] | undefined = tableRows.at(0)?.cells;
+    const firstRow: TableRow | undefined = tableRows.at(0);
+    const cellsInFirstRow: TableCell[] = firstRow ? [...firstRow.cellMap.values()] : [];
 
-    if (cellsInFirstRow) {
-        const numberOfProperties: number = cellsInFirstRow.length;
+    const numberOfProperties: number = cellsInFirstRow.length;
 
+    if (numberOfProperties > 0) {
         return tableRows.every(
             (tableRow: TableRow) =>
-                tableRow.cells.length === numberOfProperties &&
-                tableRow.cells.every((tableCell: TableCell) => {
+                tableRow.cellMap.size === numberOfProperties &&
+                [...tableRow.cellMap.values()].every((tableCell: TableCell) => {
                     const matchingCell: TableCell | undefined = cellsInFirstRow.find(
                         (tableCellFirstRow: TableCell) =>
                             tableCell.columnName === tableCellFirstRow.columnName

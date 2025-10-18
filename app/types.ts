@@ -175,5 +175,5 @@ export interface TableCell {
     primitiveLeaf: PrimitiveLeaf & { rowType: "leaf" };
 }
 export interface TableRow {
-    cells: TableCell[];
+    cellMap: Map<string, TableCell>; // columnName -> TableCell.
 }

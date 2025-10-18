@@ -1,4 +1,4 @@
-import { exampleArray } from "~/object-viewer/example-data";
+import { exampleArray, exampleArray2, exampleArray3 } from "~/object-viewer/example-data";
 import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 import { prettifyJSON } from "~/util/util";
@@ -310,14 +310,57 @@ export default function DocumentationPage() {
 
             <ul>
                 <li>the objects should be flat (i.e. they should all have a depth of 1)</li>
-                <li>the objects should contain the same properties</li>
+                <li className="not-anymore">the objects should contain the same properties</li>
                 <li>[more conditions to come...]</li>
             </ul>
 
+            <p>
+                The table header contains property names and calculated "common" property types. By
+                hovering some of the cells, you can get additional info about the actual values.
+            </p>
+
+            <p>
+                If all the objects contain the same properties, the result will be a full table.
+                Otherwise the result will be a sparse table, where some of the cells are empty
+                (indicated by <code>&empty;</code>).
+            </p>
+
+            <p>
+                If a table is created, that section will be opened by default (and the object tree
+                section is closed).
+            </p>
+
+            <p>
+                Note: Most of the tools in the toolbar are for the <em>object tree</em> view, so
+                <em>Filters</em>, <em>Settings</em> and <em>Lines</em> functionality will not affect
+                the <em>array as table</em> view.
+            </p>
+
+            <h3>Examples of JSON data that will be displayed as a table</h3>
+
+            <p>
+                Here are some trivial examples of JSON data that will be displayed as a table. Copy
+                and paste into the <em>JSON object/array</em> textarea.
+            </p>
+
             <details>
-                <summary>An example of JSON data that will be displayed as a table</summary>
+                <summary>An array containing similar objects with depth 1</summary>
 
                 <pre>{prettifyJSON(exampleArray)}</pre>
+            </details>
+
+            <details>
+                <summary>
+                    An array containing similar objects that are deeper [NB! Not supported yet]
+                </summary>
+
+                <pre>{prettifyJSON(exampleArray2)}</pre>
+            </details>
+
+            <details>
+                <summary>A sparse array containing objects with different properties</summary>
+
+                <pre>{prettifyJSON(exampleArray3)}</pre>
             </details>
 
             <h2>Tips</h2>

@@ -156,6 +156,10 @@ a {
 ul {
     li {
         margin-block: 1rem;
+
+        &.not-anymore {
+            text-decoration: line-through;
+        }
     }
 }
 
@@ -198,7 +202,7 @@ code {
 }
 
 table {
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
 
     border-collapse: collapse;
 
@@ -218,12 +222,25 @@ table {
         padding-right: 0.5rem;
     }
 
+    & caption {
+        text-align: start;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+    }
+
     & thead {
-        background-color: aquamarine;
+        background-color: rgb(230, 255, 230);
 
         & tr {
             &.property-type-enhanced {
                 color: var(--color-lighter);
+            }
+
+            &.original-property-name {
+                color: var(--color-lighter);
+
+                & th {
+                    font-weight: normal;
+                }
             }
         }
 
@@ -255,10 +272,15 @@ table {
             &:has(.timestamp, .local-date, .local-time, .time-zone) {
                 color: brown;
             }
+
+            &.empty-cell {
+                /* background-color: rgb(255, 250, 250); */
+                color: rgb(240, 240, 240);
+            }
         }
 
         & tr:hover {
-            background-color: lightgoldenrodyellow;
+            background-color: lightyellow;
         }
     }
 }
