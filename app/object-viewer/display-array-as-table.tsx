@@ -8,6 +8,7 @@ import type {
 } from "~/types";
 import { TableHeader } from "./table-header";
 import { TableBody } from "./table-body";
+import { isNadaPropertyValue } from "~/util/tree";
 
 export function DisplayArrayAsTable({
     originalObject,
@@ -33,12 +34,17 @@ export function DisplayArrayAsTable({
                                   throw new Error(`Why is ${property.propertyName} not a leaf?`);
                               }
                               const primitiveLeaf = property as PrimitiveLeaf;
+
                               return {
                                   columnName: primitiveLeaf["propertyName"],
                                   propertyTypeOriginal: primitiveLeaf["propertyTypeOriginal"],
                                   propertyTypeEnhanced: primitiveLeaf["propertyTypeEnhanced"],
                                   cellValue: primitiveLeaf["propertyValue"],
-                                  primitiveLeaf: { ...primitiveLeaf, rowType: "leaf" },
+                                  primitiveLeaf: {
+                                      ...primitiveLeaf,
+                                      rowType: "leaf",
+                                      isNada: isNadaPropertyValue(property),
+                                  },
                               };
                           }
                       )

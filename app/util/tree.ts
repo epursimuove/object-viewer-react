@@ -511,14 +511,7 @@ export function convertTreeToDisplayRowsHelper(
 
         hardcodedNode.propertyValue = propertyValue;
 
-        const isNada: boolean =
-            (currentObjectNode.propertyTypeOriginal === "string" && propertyValue === "") ||
-            (currentObjectNode.propertyTypeOriginal === "number" && propertyValue === 0) ||
-            (currentObjectNode.propertyTypeOriginal === "boolean" && !propertyValue) ||
-            currentObjectNode.propertyTypeEnhanced === "NullValue"; /*||
-            currentObjectNode.propertyTypeEnhanced === "UndefinedValue"*/
-
-        hardcodedNode.isNada = isNada;
+        hardcodedNode.isNada = isNadaPropertyValue(currentObjectNode);
     }
 
     displayRows.push(hardcodedNode);
@@ -607,4 +600,17 @@ export const couldBeDisplayedAsTable = (objectTree: ObjectNode): boolean => {
     }
 
     return false;
+};
+
+export const isNadaPropertyValue = (objectTree: ObjectTree): boolean => {
+    const propertyValue: PropertyValue = (objectTree as PrimitiveLeaf).propertyValue;
+
+    const isNada: boolean =
+        (objectTree.propertyTypeOriginal === "string" && propertyValue === "") ||
+        (objectTree.propertyTypeOriginal === "number" && propertyValue === 0) ||
+        (objectTree.propertyTypeOriginal === "boolean" && !propertyValue) ||
+        objectTree.propertyTypeEnhanced === "NullValue"; /*||
+            currentObjectNode.propertyTypeEnhanced === "UndefinedValue"*/
+
+    return isNada;
 };

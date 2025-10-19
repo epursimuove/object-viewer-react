@@ -750,6 +750,7 @@ export const exampleArray3: Record<string, PropertyValue>[] = [
         passedTest: false,
         version: "9.8.123",
         grade: 4.2,
+        celsius: 21,
     },
     {
         name: "Madelene",
@@ -766,15 +767,17 @@ export const exampleArray3: Record<string, PropertyValue>[] = [
         passedTest: false,
         version: "10.1.45",
         grade: 3.3,
+        celsius: -3,
     },
     {
         name: "Josephine",
         dateOfBirth: "1977-11-29",
         version: "10.1.45",
+        celsius: 0,
     },
     {
         name: "Jacob",
-        result: 1200,
+        result: 700,
         passedTest: true,
         grade: 2.0,
     },

@@ -90,7 +90,9 @@ export function ObjectPropertyValue({
             )}
 
             {displayRow.isNada && displayRow.propertyTypeOriginal !== "boolean" && (
-                <span className="nada-value">{`${displayRow.propertyValue}`}</span>
+                <span
+                    className={`nada-value ${displayRow.propertyTypeOriginal === "number" && "integer"}`}
+                >{`${displayRow.propertyValue}`}</span>
             )}
 
             {displayRow.propertyTypeEnhanced === "Timestamp" && (
