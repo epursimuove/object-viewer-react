@@ -8,7 +8,11 @@ import type {
 } from "~/types";
 import { TableHeader } from "./table-header";
 import { TableBody } from "./table-body";
-import { isNadaPropertyValue } from "~/util/tree";
+import { convertObjectToTree, couldBeDisplayedAsTable, isNadaPropertyValue } from "~/util/tree";
+import { flattenObjectIfNeeded } from "~/util/util";
+import { useLog } from "~/log-manager/LogManager";
+
+const { debug, info } = useLog("display-array-as-table.tsx");
 
 export function DisplayArrayAsTable({
     originalObject,
@@ -17,11 +21,43 @@ export function DisplayArrayAsTable({
     originalObject: Record<string, PropertyValue>;
     objectTree: ObjectNode;
 }) {
-    if (objectTree.numberOfDescendants > 1 && objectTree.depthBelow !== 2) {
-        console.error(`Invalid depth: ${objectTree.depthBelow}`, objectTree);
+    info("Setting up DisplayArrayAsTable");
+
+    let objectTreeForArrayAsTable: ObjectNode = objectTree;
+
+    const shouldBeFlattenedBeforeDisplayedAsTable: boolean =
+        typeof originalObject === "object" &&
+        Array.isArray(originalObject) &&
+        objectTree.depthBelow > 2;
+
+    if (shouldBeFlattenedBeforeDisplayedAsTable) {
+        debug(`Flattening object with max-depth ${objectTree.depthBelow} before displaying`);
+        const originalObjectWithArrayAtRoot: Record<string, PropertyValue>[] =
+            originalObject as unknown as Record<string, PropertyValue>[]; // TODO How to fix TypeScript craziness?!?
+
+        const flattenedObject: Record<string, PropertyValue>[] = originalObjectWithArrayAtRoot.map(
+            (subObject: Record<string, PropertyValue>) => flattenObjectIfNeeded(subObject)
+            //   ) as unknown as Record<string, PropertyValue> // TODO How to fix TypeScript craziness?!?
+        );
+
+        const flattenedObjectTree: ObjectNode | null = convertObjectToTree(flattenedObject);
+
+        if (flattenedObjectTree) {
+            objectTreeForArrayAsTable = flattenedObjectTree;
+        }
     }
 
-    const tableRows: TableRow[] = Object.entries(objectTree.containedProperties).map(
+    if (
+        objectTreeForArrayAsTable.numberOfDescendants > 1 &&
+        objectTreeForArrayAsTable.depthBelow !== 2
+    ) {
+        console.error(
+            `Invalid depth: ${objectTreeForArrayAsTable.depthBelow}`,
+            objectTreeForArrayAsTable
+        );
+    }
+
+    const tableRows: TableRow[] = Object.entries(objectTreeForArrayAsTable.containedProperties).map(
         ([_index, arrayElement]: [string, ObjectTree]) => {
             const cellMap: Map<string, TableCell> = new Map<string, TableCell>(); // columnName -> TableCell.
 
@@ -72,7 +108,11 @@ export function DisplayArrayAsTable({
                 <div className="table-wrapper">
                     <table className="json-as-table">
                         <caption>
-                            Root array as table, containing {columnHeaders.size} columns.
+                            Root array as table, containing{" "}
+                            <strong>{columnHeaders.size} columns</strong> and{" "}
+                            <strong>{tableRows.length} rows</strong>.
+                            {shouldBeFlattenedBeforeDisplayedAsTable &&
+                                " Note that original JSON array was flattened before display."}
                         </caption>
 
                         <TableHeader tableRows={tableRows} columnHeaders={columnHeaders} />
@@ -99,6 +139,8 @@ function createColumnHeaders(tableRows: TableRow[]): Set<string> {
     const columnHeadersSorted: Set<string> = new Set(
         [...columnHeaders].toSorted((a, b) => a.localeCompare(b))
     );
+
+    debug(`Created ${columnHeadersSorted.size} columns`, columnHeadersSorted);
 
     return columnHeadersSorted;
 }

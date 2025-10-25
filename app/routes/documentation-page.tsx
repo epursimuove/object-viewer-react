@@ -303,13 +303,17 @@ export default function DocumentationPage() {
 
             <p>
                 When the JSON data is an array of objects, an additional section can sometimes
-                automatically be displayed. Each object is presented as a row in table, so you
-                easily can compare and analyse. The following conditions need to be fulfilled for
-                the array of objects:
+                automatically be displayed. Each object is presented as a row in a structured table,
+                so you easily can compare and analyse. The following conditions need to be fulfilled
+                for the array of objects:
             </p>
 
             <ul>
-                <li>the objects should be flat (i.e. they should all have a depth of 1)</li>
+                <li>the root of the JSON data should be an array</li>
+                <li>the root array should contain at least two elements</li>
+                <li className="not-anymore">
+                    the objects should be flat (i.e. they should all have a depth of 1)
+                </li>
                 <li className="not-anymore">the objects should contain the same properties</li>
                 <li>[more conditions to come...]</li>
             </ul>
@@ -326,14 +330,42 @@ export default function DocumentationPage() {
             </p>
 
             <p>
-                If a table is created, that section will be opened by default (and the object tree
-                section is closed).
+                If a table is created, that section will be expanded by default (and the object tree
+                section is collapsed).
+            </p>
+
+            <p>
+                Note: Most of the fonts used in <em>NNM Object Viewer</em> are monospaced, which is
+                even more important for the <em>tabular data</em> in the array-as-table solution. I
+                would also argue that generally it is much more aesthetic and informative using
+                monospaced fonts in tables.
             </p>
 
             <p>
                 Note: Most of the tools in the toolbar are for the <em>object tree</em> view, so
                 <em>Filters</em>, <em>Settings</em> and <em>Lines</em> functionality will not affect
                 the <em>array as table</em> view.
+            </p>
+
+            <h3>Flattened arrays</h3>
+
+            <p>
+                If the root array contains sub-objects, these are flattened before displayed in the
+                table, so it will be easier to compare the sub-objects.
+            </p>
+
+            <p>
+                A sub-object like <code>{"{ foo: { bar: { baz: 42 } } }"}</code> will be flattened
+                to look like <code>{"{ foo.bar.baz: 42 }"}</code>. The property names from ancestors
+                are kept as prefixes in the resulting property name, so it will be easier to
+                distinguish the properties among different levels and different sub-objects.
+            </p>
+
+            <h4>Arrays within arrays</h4>
+
+            <p>
+                To keep the array-as-table solution from being too messy, arrays contained in the
+                sub-objects are skipped from being displayed (at least for now).
             </p>
 
             <h3>Examples of JSON data that will be displayed as a table</h3>
@@ -351,7 +383,8 @@ export default function DocumentationPage() {
 
             <details>
                 <summary>
-                    An array containing similar objects that are deeper [NB! Not supported yet]
+                    An array containing objects (some similar, some different) that are deeper (and
+                    therefore flattened before display)
                 </summary>
 
                 <pre>{prettifyJSON(exampleArray2)}</pre>

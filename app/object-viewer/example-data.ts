@@ -740,6 +740,56 @@ export const exampleArray2: Record<string, PropertyValue>[] = [
     { foo: { bar: { baz: 42 } } },
     { foo: { bar: { baz: 987 } } },
     { foo: { bar: { baz: 1234 } } },
+
+    {
+        personalInfo: {
+            firstName: "Alexandra",
+            lastName: "Jones",
+            status: { dateOfBirth: "1995-01-27", married: false },
+        },
+        address: { street: "Storgatan 123", city: "Stockholm", country: "SE" },
+    },
+    {
+        personalInfo: {
+            firstName: "Basil",
+            lastName: "Ericsson",
+            status: { dateOfBirth: "1920-12-01", married: true },
+        },
+        address: { street: "Västervägen 9", city: "Göteborg", country: "SE" },
+    },
+    {
+        personalInfo: {
+            firstName: "Clarence",
+            lastName: "Shoemaker",
+            status: { dateOfBirth: "2004-08-19", married: false },
+        },
+        address: { street: "Drottninggatan 55", city: "Malmö", country: "SE" },
+        foo: { bar: { baz: 88 } },
+    },
+    {
+        personalInfo: {
+            firstName: "Dan",
+            lastName: "Svensson",
+            status: { dateOfBirth: "2010-10-29", married: false },
+        },
+        address: { street: "Main street 42", city: "New York", country: "US" },
+    },
+    {
+        personalInfo: {
+            firstName: "Elaine",
+            lastName: "Smith",
+            status: { dateOfBirth: "1968-03-12", married: true },
+        },
+        address: { street: "Abbey road 5", city: "Los Angeles", country: "US" },
+    },
+    {
+        personalInfo: {
+            firstName: "Fanny",
+            lastName: "Østberg",
+            status: { married: true },
+        },
+        address: { country: "NO" },
+    },
 ];
 
 export const exampleArray3: Record<string, PropertyValue>[] = [

@@ -459,3 +459,34 @@ export const prettifyPropertyName = (propertyName: string): string => {
             .replace(/^./, (str) => str.toUpperCase())
     );
 };
+
+export const flattenObjectIfNeeded = (
+    object: Record<string, PropertyValue>,
+    parentKey: string = "",
+    accumulatedFlattenedObject: Record<string, PropertyValue> = {}
+): Record<string, PropertyValue> => {
+    trace(`Flatten object if needed`, parentKey, object, accumulatedFlattenedObject);
+
+    for (const [propertyName, propertyValue] of Object.entries(object)) {
+        const fullKey = parentKey ? `${parentKey}.${propertyName}` : propertyName;
+
+        if (Array.isArray(propertyValue)) {
+            // Skip arrays.
+            continue;
+        } else if (propertyValue && typeof propertyValue === "object") {
+            // Recurse into nested objects.
+            flattenObjectIfNeeded(
+                propertyValue as Record<string, PropertyValue>,
+                fullKey,
+                accumulatedFlattenedObject
+            );
+        } else {
+            // Assign primitive value.
+            accumulatedFlattenedObject[fullKey] = propertyValue;
+        }
+    }
+
+    // console.log(object, accumulatedFlattenedObject);
+
+    return accumulatedFlattenedObject;
+};

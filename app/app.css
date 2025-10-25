@@ -225,6 +225,8 @@ table {
     & caption {
         text-align: start;
         font-family: Verdana, Arial, Helvetica, sans-serif;
+        color: var(--color-lighter);
+        padding-block-end: 0.7rem;
     }
 
     & thead {

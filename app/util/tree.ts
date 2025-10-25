@@ -590,16 +590,20 @@ const getPossiblePrimitiveValue = (
 };
 
 export const couldBeDisplayedAsTable = (objectTree: ObjectNode): boolean => {
+    let displayInTable = false;
+
     if (
         objectTree.nodeType === "array" &&
-        objectTree.depthBelow === 2 &&
+        // objectTree.depthBelow === 2 &&
         objectTree.convenientIdentifierWhenCollapsed === "object[]" &&
         Object.entries(objectTree.containedProperties).length >= 2
     ) {
-        return true;
+        displayInTable = true;
     }
 
-    return false;
+    debug(`Could be displayed as table?`, displayInTable, objectTree);
+
+    return displayInTable;
 };
 
 export const isNadaPropertyValue = (objectTree: ObjectTree): boolean => {
