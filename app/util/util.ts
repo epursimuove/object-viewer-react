@@ -450,8 +450,11 @@ export const verifyRegExp = (s: string): string | null => {
 };
 
 export const prettifyPropertyName = (propertyName: string): string => {
+    // Get last part from a concatenated name, eg "foo.bar.baz" -> "baz".
+    const actualPropertyName: string = propertyName.split(".").at(-1) || propertyName;
+
     return (
-        propertyName
+        actualPropertyName
             // Insert space before capital letters, unless they're part of an acronym (e.g., "userID" → "user ID", not "user I D").
             .replace(/([a-z])([A-Z])/g, "$1 $2")
             .toLowerCase()
