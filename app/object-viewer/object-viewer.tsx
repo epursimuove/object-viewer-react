@@ -37,6 +37,7 @@ import { LinesSection } from "./lines-section";
 import { JsonObjectSection } from "./json-object-section";
 import { TimeSection } from "./time-section";
 import { DisplayArrayAsTable } from "./display-array-as-table";
+import { CopableContent } from "~/components/CopableContent";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -343,7 +344,7 @@ export function ObjectViewer() {
                     <h2>Original object</h2>
                 </summary>
 
-                <pre>{prettifyJSON(originalObject)}</pre>
+                <CopableContent label="JSON">{prettifyJSON(originalObject)}</CopableContent>
             </details>
 
             <details>
@@ -351,7 +352,7 @@ export function ObjectViewer() {
                     <h2>Original object converted to object tree</h2>
                 </summary>
 
-                <pre>{prettifyJSON(objectTree)}</pre>
+                <CopableContent label="JSON">{prettifyJSON(objectTree)}</CopableContent>
             </details>
 
             <details>
@@ -359,7 +360,7 @@ export function ObjectViewer() {
                     <h2>Object tree converted to DisplayRow[]</h2>
                 </summary>
 
-                <pre>{prettifyJSON(displayRows)}</pre>
+                <CopableContent label="JSON">{prettifyJSON(displayRows)}</CopableContent>
             </details>
         </main>
     );

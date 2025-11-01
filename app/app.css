@@ -442,3 +442,38 @@ select {
         }
     }
 }
+
+.copy-container {
+    background-color: #f8f8f8;
+    /* position: relative; */
+    /* padding: 0.5rem; */
+
+    & .tool-bar {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        padding: 0.2rem;
+
+        & .label {
+            font-size: 0.9rem;
+            color: #888888;
+        }
+
+        & button {
+            /* position: absolute;
+        top: 0.2rem;
+        right: 0.2rem; */
+
+            font-size: 0.8rem;
+            background: transparent;
+            border: 1px solid #aaaaaa;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            padding: 0.1rem 0.4rem;
+        }
+    }
+
+    &:has(button:hover) {
+        background-color: #f0f0f0;
+    }
+}

@@ -2,6 +2,7 @@ import { exampleArray, exampleArray2, exampleArray3 } from "~/object-viewer/exam
 import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 import { prettifyJSON } from "~/util/util";
+import { CopableContent } from "~/components/CopableContent";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -378,7 +379,7 @@ export default function DocumentationPage() {
             <details>
                 <summary>An array containing similar objects with depth 1</summary>
 
-                <pre>{prettifyJSON(exampleArray)}</pre>
+                <CopableContent label="JSON">{prettifyJSON(exampleArray)}</CopableContent>
             </details>
 
             <details>
@@ -387,13 +388,13 @@ export default function DocumentationPage() {
                     therefore flattened before display)
                 </summary>
 
-                <pre>{prettifyJSON(exampleArray2)}</pre>
+                <CopableContent label="JSON">{prettifyJSON(exampleArray2)}</CopableContent>
             </details>
 
             <details>
                 <summary>A sparse array containing objects with different properties</summary>
 
-                <pre>{prettifyJSON(exampleArray3)}</pre>
+                <CopableContent label="JSON">{prettifyJSON(exampleArray3)}</CopableContent>
             </details>
 
             <h2>Tips</h2>
