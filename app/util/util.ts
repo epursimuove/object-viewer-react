@@ -453,14 +453,16 @@ export const prettifyPropertyName = (propertyName: string): string => {
     // Get last part from a concatenated name, eg "foo.bar.baz" -> "baz".
     const actualPropertyName: string = propertyName.split(".").at(-1) || propertyName;
 
-    return (
-        actualPropertyName
-            // Insert space before capital letters, unless they're part of an acronym (e.g., "userID" → "user ID", not "user I D").
-            .replace(/([a-z])([A-Z])/g, "$1 $2")
-            .toLowerCase()
-            // Capitalize the first character.
-            .replace(/^./, (str) => str.toUpperCase())
-    );
+    const prettifiedPropertyName: string = actualPropertyName
+        // "isFoo" and "hasFoo" should result in "Foo?".
+        .replace(/^(?:is|has)([A-Z].*)/, "$1?")
+        // Insert space before capital letters, unless they're part of an acronym (e.g., "userID" → "user ID", not "user I D").
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .toLowerCase()
+        // Capitalize the first character.
+        .replace(/^./, (str) => str.toUpperCase());
+
+    return prettifiedPropertyName;
 };
 
 export const flattenObjectIfNeeded = (
