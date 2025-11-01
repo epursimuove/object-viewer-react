@@ -43,7 +43,8 @@ export const isTimeZone = (s: string): boolean => {
 };
 
 export const isEpoch = (n: number): boolean =>
-    (1000000000 <= n && n <= 3000000000) || (1000000000000 <= n && n <= 3000000000000);
+    Number.isInteger(n) &&
+    ((1000000000 <= n && n <= 3000000000) || (1000000000000 <= n && n <= 3000000000000));
 
 export const padTimestampToMilliseconds = (timestamp: Temporal.Instant): string =>
     timestamp.toString().padEnd(24);
