@@ -737,9 +737,9 @@ export const exampleArray: Record<string, PropertyValue>[] = enhanceArrayExample
 ]);
 
 export const exampleArray2: Record<string, PropertyValue>[] = [
-    { foo: { bar: { baz: 42 } } },
-    { foo: { bar: { baz: 987 } } },
-    { foo: { bar: { baz: 1234 } } },
+    { foo: { bar: { baz: 42, isDone: true } } },
+    { foo: { bar: { baz: 987, isDone: false } } },
+    { foo: { bar: { baz: 1234, isDone: true } } },
 
     {
         personalInfo: {
@@ -789,6 +789,42 @@ export const exampleArray2: Record<string, PropertyValue>[] = [
             status: { married: true },
         },
         address: { country: "NO" },
+    },
+    {
+        personalInfo: {
+            firstName: "David",
+            lastName: "Brent",
+            status: { married: false },
+        },
+        address: { company: "Wernham Hogg", city: "Slough", country: "GB" },
+    },
+    {
+        personalInfo: {
+            firstName: "Michael",
+            lastName: "Scott",
+            status: { married: false },
+        },
+        address: { company: "Dunder Mifflin Inc.", city: "Scranton", country: "US" },
+    },
+    {
+        personalInfo: {
+            firstName: "Basil",
+            lastName: "Fawlty",
+            status: { married: true },
+        },
+        address: { company: "Fawlty Towers", city: "Torquay", country: "GB" },
+    },
+    {
+        personalInfo: {
+            firstName: "Al",
+            lastName: "Bundy",
+            status: { married: true },
+        },
+        address: {
+            company: "Gary's Shoes and Accessories for Today's Woman",
+            city: "Chicago",
+            country: "US",
+        },
     },
 ];
 
