@@ -1,14 +1,29 @@
 import type { JSX } from "react";
-import type { PropertyTypeEnhanced, PropertyTypeOriginal, TableCell, TableRow } from "~/types";
+import type {
+    PropertyTypeEnhanced,
+    PropertyTypeOriginal,
+    TableCell,
+    TableRow,
+    TableRowSorterConfiguration,
+} from "~/types";
 import { prettifyPropertyName } from "~/util/util";
 
 export function TableHeader({
     tableRows,
     columnHeaders,
+    sortingOn,
+    handleSortOrderChange,
 }: {
     tableRows: TableRow[];
     columnHeaders: Set<string>;
+    sortingOn: TableRowSorterConfiguration | null;
+    handleSortOrderChange: (columnName: string) => void;
 }): JSX.Element {
+    const commonPropertyTypeAncestorForColumns: string[] = getCommonPropertyTypeAncestorForColumns(
+        tableRows,
+        columnHeaders
+    );
+
     const tableHeadHtml = (
         <thead>
             {tableRows.length > 0 && (
@@ -16,9 +31,23 @@ export function TableHeader({
                     <tr>
                         <th className="row-number">{tableRows.length}</th>
 
-                        {[...columnHeaders].map((columnName: string) => {
+                        {[...columnHeaders].map((columnName: string, index: number) => {
+                            const columnIsSortable =
+                                commonPropertyTypeAncestorForColumns[index] !==
+                                unknownCommonPropertyTypeAncestor;
+
+                            const sortedOnThisColumn = sortingOn?.columnName === columnName;
+
                             return (
-                                <th key={columnName}>{"" + prettifyPropertyName(columnName)}</th>
+                                <th
+                                    key={columnName}
+                                    className={`${columnIsSortable ? "sorting-possible" : ""} ${sortedOnThisColumn ? "sorting-on" : ""} ${sortedOnThisColumn ? (sortingOn.ascending ? "ascending" : "descending") : ""}`}
+                                    {...(columnIsSortable
+                                        ? { onClick: () => handleSortOrderChange(columnName) }
+                                        : {})}
+                                >
+                                    {"" + prettifyPropertyName(columnName)}
+                                </th>
                             );
                         })}
                     </tr>
@@ -34,7 +63,7 @@ export function TableHeader({
                     <tr className="property-type-enhanced">
                         <th className="row-number"></th>
 
-                        {getCommonPropertyTypeAncestorForColumns(tableRows, columnHeaders).map(
+                        {commonPropertyTypeAncestorForColumns.map(
                             (propertyType: string, index: number) => {
                                 return <th key={index}>{propertyType}</th>;
                             }
@@ -47,6 +76,8 @@ export function TableHeader({
 
     return tableHeadHtml;
 }
+
+const unknownCommonPropertyTypeAncestor = "???";
 
 function getCommonPropertyTypeAncestorForColumns(
     tableRows: TableRow[],
@@ -106,7 +137,7 @@ function getCommonPropertyTypeAncestorForColumns(
                 return commonPropertyTypeOriginal;
             }
 
-            return "???";
+            return unknownCommonPropertyTypeAncestor;
         });
 
         return result;

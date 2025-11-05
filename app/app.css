@@ -248,6 +248,20 @@ table {
 
         & th {
             text-align: start;
+
+            &.sorting-possible {
+                cursor: pointer;
+            }
+
+            &.sorting-on {
+                &.ascending {
+                    text-decoration: underline;
+                }
+
+                &.descending {
+                    text-decoration: overline;
+                }
+            }
         }
     }
 

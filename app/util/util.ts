@@ -3,6 +3,9 @@ import type {
     PropertyTypeEnhanced,
     PropertyTypeOriginal,
     PropertyValue,
+    TableRow,
+    TableRowComparator,
+    TableRowSorterConfiguration,
 } from "~/types";
 import { useLog } from "~/log-manager/LogManager";
 import {
@@ -136,6 +139,50 @@ export const sortPropertyNames = (propertyNameA: string, propertyNameB: string):
     }
 
     return propertyNameA.localeCompare(propertyNameB);
+};
+
+const createTableRowSorter = ({
+    columnName,
+    ascending,
+}: TableRowSorterConfiguration): TableRowComparator => {
+    const sortTableRowsByColumn = (tableRowA: TableRow, tableRowB: TableRow): number => {
+        const a: PropertyValue = tableRowA.cellMap.get(columnName)?.cellValue;
+
+        const b: PropertyValue = tableRowB.cellMap.get(columnName)?.cellValue;
+
+        // Always move undefined values to bottom.
+        if (a === undefined && b === undefined) return 0;
+        if (a === undefined) return 1;
+        if (b === undefined) return -1;
+
+        const sortOrder = ascending ? +1 : -1;
+
+        if (typeof a === "string" && typeof b === "string") {
+            return a.localeCompare(b) * sortOrder;
+        }
+
+        if (typeof a === "number" && typeof b === "number") {
+            return (a - b) * sortOrder;
+        }
+
+        if (typeof a === "boolean" && typeof b === "boolean") {
+            return (Number(a) - Number(b)) * sortOrder;
+        }
+
+        return 0;
+    };
+
+    return sortTableRowsByColumn;
+};
+
+export const sortTableBy = (
+    tableRows: TableRow[],
+    sorting: TableRowSorterConfiguration | null
+): TableRow[] => {
+    if (sorting) {
+        return tableRows.toSorted(createTableRowSorter(sorting));
+    }
+    return tableRows;
 };
 
 export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnhanced => {

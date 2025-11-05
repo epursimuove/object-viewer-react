@@ -7,15 +7,15 @@ export function CopableContent({
     children: string;
     label: "JSON" | "CSS" | "HTML" | "JavaScript" | "Plain text";
 }): JSX.Element {
-    const [textIsCopied, setTextIsCopied] = useState<boolean>(false);
+    const [textHasBeenCopied, setTextHasBeenCopied] = useState<boolean>(false);
 
     const textToCopy: string = children; // as string;
 
     const handleCopyContent = async () => {
         try {
             await navigator.clipboard.writeText(textToCopy);
-            setTextIsCopied(true);
-            setTimeout(() => setTextIsCopied(false), 1500);
+            setTextHasBeenCopied(true);
+            setTimeout(() => setTextHasBeenCopied(false), 2000);
         } catch (error) {
             console.error(error);
         }
@@ -24,11 +24,12 @@ export function CopableContent({
     return (
         <div className="copy-container">
             <div className="tool-bar">
-                <button onClick={handleCopyContent}>{textIsCopied ? "Copied!" : "Copy"}</button>
+                <button onClick={handleCopyContent} disabled={textHasBeenCopied}>
+                    {textHasBeenCopied ? "Copied!" : "Copy"}
+                </button>
 
                 {label && (
                     <div className="label">
-                        {" "}
                         ({textToCopy.length} characters) {label}
                     </div>
                 )}

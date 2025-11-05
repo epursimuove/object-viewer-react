@@ -5,12 +5,14 @@ import type {
     PropertyValue,
     TableCell,
     TableRow,
+    TableRowSorterConfiguration,
 } from "~/types";
 import { TableHeader } from "./table-header";
 import { TableBody } from "./table-body";
 import { convertObjectToTree, couldBeDisplayedAsTable, isNadaPropertyValue } from "~/util/tree";
 import { flattenObjectIfNeeded } from "~/util/util";
 import { useLog } from "~/log-manager/LogManager";
+import { useState } from "react";
 
 const { debug, info } = useLog("display-array-as-table.tsx");
 
@@ -99,6 +101,26 @@ export function DisplayArrayAsTable({
 
     const columnHeaders: Set<string> = createColumnHeaders(tableRows);
 
+    const [sortingOn, setSortingOn] = useState<TableRowSorterConfiguration | null>(null);
+
+    const handleSortOrderChange = (columnName: string) => {
+        debug(`Sort on ${columnName}`);
+
+        if (sortingOn) {
+            if (sortingOn.columnName === columnName) {
+                if (!sortingOn.ascending) {
+                    setSortingOn(null);
+                } else {
+                    setSortingOn({ columnName, ascending: !sortingOn.ascending });
+                }
+            } else {
+                setSortingOn({ columnName, ascending: true });
+            }
+        } else {
+            setSortingOn({ columnName, ascending: true });
+        }
+    };
+
     // Not needed anymore? const showTable = allObjectsContainSameProperties(tableRows);
     const showTable = true;
 
@@ -115,9 +137,18 @@ export function DisplayArrayAsTable({
                                 " Note that original JSON array was flattened before display."}
                         </caption>
 
-                        <TableHeader tableRows={tableRows} columnHeaders={columnHeaders} />
+                        <TableHeader
+                            tableRows={tableRows}
+                            columnHeaders={columnHeaders}
+                            sortingOn={sortingOn}
+                            handleSortOrderChange={handleSortOrderChange}
+                        />
 
-                        <TableBody tableRows={tableRows} columnHeaders={columnHeaders} />
+                        <TableBody
+                            tableRows={tableRows}
+                            columnHeaders={columnHeaders}
+                            sortingOn={sortingOn}
+                        />
                     </table>
                 </div>
             ) : (

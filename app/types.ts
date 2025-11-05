@@ -177,3 +177,7 @@ export interface TableCell {
 export interface TableRow {
     cellMap: Map<string, TableCell>; // columnName -> TableCell.
 }
+
+export type TableRowComparator = (tableRowA: TableRow, tableRowB: TableRow) => number;
+
+export type TableRowSorterConfiguration = { columnName: string; ascending: boolean };

@@ -348,6 +348,19 @@ export default function DocumentationPage() {
                 the <em>array as table</em> view.
             </p>
 
+            <h3>Sorted rows</h3>
+
+            <p>
+                The rows in the array-as-table can be sorted by clicking on the column headers.
+                Clicking the header toggles between ascending, descending and original/default
+                order.
+            </p>
+
+            <p>
+                The column must consist of "common" property types to be sortable. So columns with
+                strings <em>or</em> numbers <em>or</em> booleans, but they can't be mixed.
+            </p>
+
             <h3>Flattened arrays</h3>
 
             <p>
