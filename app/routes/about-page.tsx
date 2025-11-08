@@ -39,10 +39,38 @@ export default function AboutPage() {
                 liabilities for errors.
             </p>
 
-            <p>
-                Best experience for me in August 2025 has been in <em>Google Chrome</em> in{" "}
-                <em>macOS</em> and <em>Firefox</em> in <em>Android</em>.
-            </p>
+            <p>Best experience for me in November 2025 has been in the following browsers:</p>
+
+            <ul>
+                <li>
+                    <em>macOS</em>
+                </li>
+
+                <ul>
+                    <li>
+                        <em>Google Chrome</em> <var>142.0</var>
+                    </li>
+                    <li>
+                        (<em>Firefox</em> <var>144.0</var>)
+                    </li>
+                    <li>
+                        (<em>Safari</em> <var>26.1</var>)
+                    </li>
+                </ul>
+
+                <li>
+                    <em>Android</em>
+                </li>
+
+                <ul>
+                    <li>
+                        <em>Firefox</em> <var>144.0</var>
+                    </li>
+                    <li>
+                        <em>Google Chrome</em> <var>142.0</var>
+                    </li>
+                </ul>
+            </ul>
 
             <h2>
                 History of <em>NNM Object Viewer</em>
