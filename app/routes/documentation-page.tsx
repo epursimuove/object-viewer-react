@@ -3,6 +3,7 @@ import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 import { prettifyJSON } from "~/util/util";
 import { CopableContent } from "~/components/CopableContent";
+import { unknownCommonPropertyTypeAncestor } from "~/object-viewer/table-header";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -114,7 +115,7 @@ export default function DocumentationPage() {
                             NB! The timestamp and epoch values are compared to the time when the
                             object tree was <em>recalculated</em>, so these comparisons are not
                             dynamically updated. You see the "now" value that is used in the{" "}
-                            <em>Statistics</em> section in the toolbar.
+                            <em>Time</em> section in the toolbar.
                         </li>
 
                         <li>
@@ -239,7 +240,16 @@ export default function DocumentationPage() {
 
             <ol>
                 {originalPropertyTypes.map((originalPropertyType) => (
-                    <li key={originalPropertyType}>
+                    <li
+                        key={originalPropertyType}
+                        className={
+                            ["bigint", "function", "symbol", "undefined"].includes(
+                                originalPropertyType
+                            )
+                                ? "not-in-use"
+                                : ""
+                        }
+                    >
                         <code>{originalPropertyType}</code>
                     </li>
                 ))}
@@ -320,8 +330,14 @@ export default function DocumentationPage() {
             </ul>
 
             <p>
-                The table header contains property names and calculated "common" property types. By
-                hovering some of the cells, you can get additional info about the actual values.
+                The table header contains property names and calculated "common" property types for
+                the property values in a column. If there is no "common" property type for a column,
+                it is indicated by <code>{unknownCommonPropertyTypeAncestor}</code>.
+            </p>
+
+            <p>
+                By hovering many of the cells, you can get additional info about the actual property
+                values.
             </p>
 
             <p>
@@ -331,8 +347,8 @@ export default function DocumentationPage() {
             </p>
 
             <p>
-                If a table is created, that section will be expanded by default (and the object tree
-                section is collapsed).
+                If a table is created, the array-as-table section will be expanded by default (and
+                the object tree section is collapsed).
             </p>
 
             <p>
@@ -343,7 +359,7 @@ export default function DocumentationPage() {
             </p>
 
             <p>
-                Note: Most of the tools in the toolbar are for the <em>object tree</em> view, so
+                Note: Most of the tools in the toolbar are for the <em>object tree</em> view, so{" "}
                 <em>Filters</em>, <em>Settings</em> and <em>Lines</em> functionality will not affect
                 the <em>array as table</em> view.
             </p>
@@ -359,6 +375,10 @@ export default function DocumentationPage() {
             <p>
                 The column must consist of "common" property types to be sortable. So columns with
                 strings <em>or</em> numbers <em>or</em> booleans, but they can't be mixed.
+            </p>
+
+            <p>
+                Strings are compared with the Swedish locale (<code>sv-SE</code>).
             </p>
 
             <h3>Flattened arrays</h3>

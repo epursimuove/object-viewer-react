@@ -158,7 +158,7 @@ const createTableRowSorter = ({
         const sortOrder = ascending ? +1 : -1;
 
         if (typeof a === "string" && typeof b === "string") {
-            return a.localeCompare(b) * sortOrder;
+            return a.localeCompare(b, "sv-SE") * sortOrder;
         }
 
         if (typeof a === "number" && typeof b === "number") {

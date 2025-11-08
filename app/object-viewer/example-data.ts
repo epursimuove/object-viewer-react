@@ -792,6 +792,30 @@ export const exampleArray2: Record<string, PropertyValue>[] = [
     },
     {
         personalInfo: {
+            firstName: "Åke",
+            lastName: "Åslund",
+            status: { married: false },
+        },
+        address: { country: "SE" },
+    },
+    {
+        personalInfo: {
+            firstName: "Åsa",
+            lastName: "Östlund",
+            status: { married: false },
+        },
+        address: { country: "SE" },
+    },
+    {
+        personalInfo: {
+            firstName: "Örjan",
+            lastName: "Ängberg",
+            status: { married: true },
+        },
+        address: { country: "SE" },
+    },
+    {
+        personalInfo: {
             firstName: "David",
             lastName: "Brent",
             status: { married: false },

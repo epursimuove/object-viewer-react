@@ -153,11 +153,13 @@ a {
     }
 }
 
-ul {
+ul,
+ol {
     li {
         margin-block: 1rem;
 
-        &.not-anymore {
+        &.not-anymore,
+        &.not-in-use {
             text-decoration: line-through;
         }
     }

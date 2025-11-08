@@ -77,7 +77,7 @@ export function TableHeader({
     return tableHeadHtml;
 }
 
-const unknownCommonPropertyTypeAncestor = "???";
+export const unknownCommonPropertyTypeAncestor = "???";
 
 function getCommonPropertyTypeAncestorForColumns(
     tableRows: TableRow[],
