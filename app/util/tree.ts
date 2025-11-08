@@ -406,7 +406,10 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
 
                 currentObjectNode.convenientIdentifierWhenCollapsed = `${arrayTypeToDisplay}[]`;
 
-                if (arrayTypeOriginal === "number") {
+                if (
+                    arrayTypeOriginal === "number" &&
+                    !["HTTPStatus", "Zero"].includes(arrayTypeToDisplay)
+                ) {
                     const values: number[] = Object.values(
                         currentObjectNode.containedProperties
                     ).map(
@@ -414,6 +417,28 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                     ) as number[];
 
                     const aggregation: ArithmeticAggregation = calculateAggregations(values);
+                    currentObjectNode.arithmeticAggregation = aggregation;
+                } else if (
+                    arrayTypeOriginal === "string" &&
+                    ![
+                        "HTTPMethod",
+                        "LocalDate",
+                        "LocalTime",
+                        "Timestamp",
+                        "CountryCode",
+                        "Locale",
+                    ].includes(arrayTypeToDisplay)
+                ) {
+                    const values: string[] = Object.values(
+                        currentObjectNode.containedProperties
+                    ).map(
+                        (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
+                    ) as string[];
+
+                    const aggregation: ArithmeticAggregation = calculateAggregations(
+                        values.map((s: string) => s.length)
+                    );
+
                     currentObjectNode.arithmeticAggregation = aggregation;
                 }
             }

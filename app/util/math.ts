@@ -14,7 +14,7 @@ export const calculateAggregations = (numbers: number[]): ArithmeticAggregation 
     const max: number = sortedValues.at(-1)!;
     const sum: number = sortedValues.reduce((previous, current) => previous + current, 0);
     const mean: number = maxNumberOfDecimals(sum / numberOfItems);
-    const median: number = calculateMedian(sortedValues);
+    const median: number = maxNumberOfDecimals(calculateMedian(sortedValues));
 
     return { length: numberOfItems, min, max, mean, median, sum };
 };

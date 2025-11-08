@@ -163,10 +163,33 @@ export default function DocumentationPage() {
             <h2>Arithmetic aggregation</h2>
 
             <p>
-                For arrays of type <code>number[]</code> or <code>Integer[]</code>, convenient
-                values (<em>sum</em>, <em>min</em>, <em>max</em>, <em>mean</em> and <em>median</em>)
-                are calculated automatically for you. These values are displayed in a popup, when
-                you hover over the <code>number[]</code> or <code>Integer[]</code> labels.
+                For some arrays, convenient aggregated values (<em>length</em> (number of items),{" "}
+                <em>sum</em>, <em>min</em>, <em>max</em>, <em>mean</em> and <em>median</em>) are
+                calculated automatically for you.
+            </p>
+
+            <p>
+                These values are displayed in a popup, when you hover over the <code>number[]</code>{" "}
+                or <code>string[]</code> labels.
+            </p>
+
+            <h3>Numbers</h3>
+
+            <p>
+                Support for arrays of type <code>number[]</code> (except when{" "}
+                <code>HTTPStatus[]</code> or <code>Zero[]</code>)
+            </p>
+
+            <h3>Strings</h3>
+
+            <p>
+                For string arrays, the <em>length</em> of each string are used for the calculations.
+            </p>
+
+            <p>
+                Support for arrays of type <code>string[]</code> (except when{" "}
+                <code>HTTPMethod[]</code>, <code>LocalDate[]</code>, <code>LocalTime[]</code>,{" "}
+                <code>Timestamp[]</code>, <code>CountryCode[]</code> or <code>Locale[]</code>)
             </p>
 
             <h2>History of objects</h2>
