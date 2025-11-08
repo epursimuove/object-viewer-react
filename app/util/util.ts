@@ -188,81 +188,87 @@ export const sortTableBy = (
 export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnhanced => {
     const propertyTypeOriginal: PropertyTypeOriginal = typeof propertyValue;
 
-    const propertyTypEnhanced: PropertyTypeEnhanced =
-        propertyTypeOriginal === "object" && Array.isArray(propertyValue)
-            ? "array"
-            : propertyTypeOriginal === "object" && propertyValue === null
-              ? "NullValue"
-              : propertyTypeOriginal === "number" && propertyValue === 0
-                ? "Zero"
-                : propertyTypeOriginal === "number" && isHTTPStatus(propertyValue as number)
-                  ? "HTTPStatus"
-                  : propertyTypeOriginal === "number" && isEpoch(propertyValue as number)
-                    ? "Epoch"
-                    : propertyTypeOriginal === "number" && Number.isInteger(propertyValue)
-                      ? "Integer"
-                      : propertyTypeOriginal === "boolean" && propertyValue
-                        ? "BooleanTrue"
-                        : propertyTypeOriginal === "boolean" && !propertyValue
-                          ? "BooleanFalse"
-                          : propertyTypeOriginal === "string" &&
-                              isTimestamp(propertyValue as string)
-                            ? "Timestamp"
-                            : propertyTypeOriginal === "string" &&
-                                isLocalDate(propertyValue as string)
-                              ? "LocalDate"
-                              : propertyTypeOriginal === "string" &&
-                                  isLocalTime(propertyValue as string)
-                                ? "LocalTime"
-                                : propertyTypeOriginal === "string" &&
-                                    isTimeZone(propertyValue as string)
-                                  ? "TimeZone"
-                                  : propertyTypeOriginal === "string" &&
-                                      potentialCountryCode(propertyValue as string)
-                                    ? "CountryCode"
-                                    : propertyTypeOriginal === "string" &&
-                                        potentialLocale(propertyValue as string)
-                                      ? "Locale"
-                                      : propertyTypeOriginal === "string" &&
-                                          potentialEmailAddress(propertyValue as string)
-                                        ? "EmailAddress"
-                                        : propertyTypeOriginal === "string" && propertyValue === ""
-                                          ? "EmptyString"
-                                          : propertyTypeOriginal === "string" &&
-                                              isURL(propertyValue as string)
-                                            ? "URL"
-                                            : propertyTypeOriginal === "string" &&
-                                                isColorRGB(propertyValue as string)
-                                              ? "ColorRGB"
-                                              : propertyTypeOriginal === "string" &&
-                                                  isSemanticVersioning(propertyValue as string)
-                                                ? "SemVer"
-                                                : propertyTypeOriginal === "string" &&
-                                                    isIPv4Address(propertyValue as string)
-                                                  ? "IPv4"
-                                                  : propertyTypeOriginal === "string" &&
-                                                      isIPv6Address(propertyValue as string)
-                                                    ? "IPv6"
-                                                    : propertyTypeOriginal === "string" &&
-                                                        isPhoneNumber(propertyValue as string)
-                                                      ? "PhoneNumber"
-                                                      : propertyTypeOriginal === "string" &&
-                                                          isHTTPMethod(propertyValue as string)
-                                                        ? "HTTPMethod"
-                                                        : propertyTypeOriginal === "string" &&
-                                                            isAbsolutePath(propertyValue as string)
-                                                          ? "AbsolutePath"
-                                                          : propertyTypeOriginal === "string" &&
-                                                              isRelativePath(
-                                                                  propertyValue as string
-                                                              )
-                                                            ? "RelativePath"
-                                                            : propertyTypeOriginal === "string" &&
-                                                                isRegularExpression(
-                                                                    propertyValue as string
-                                                                )
-                                                              ? "RegExp"
-                                                              : propertyTypeOriginal;
+    let propertyTypEnhanced: PropertyTypeEnhanced;
+
+    switch (propertyTypeOriginal) {
+        case "object":
+            propertyTypEnhanced = Array.isArray(propertyValue)
+                ? "array"
+                : propertyValue === null
+                  ? "NullValue"
+                  : propertyTypeOriginal;
+
+            break;
+
+        case "number":
+            propertyTypEnhanced =
+                propertyValue === 0
+                    ? "Zero"
+                    : isHTTPStatus(propertyValue as number)
+                      ? "HTTPStatus"
+                      : isEpoch(propertyValue as number)
+                        ? "Epoch"
+                        : Number.isInteger(propertyValue)
+                          ? "Integer"
+                          : propertyTypeOriginal;
+            break;
+
+        case "boolean":
+            propertyTypEnhanced = propertyValue
+                ? "BooleanTrue"
+                : !propertyValue
+                  ? "BooleanFalse"
+                  : propertyTypeOriginal;
+            break;
+
+        case "string":
+            const propertyValueAsString: string = propertyValue as string;
+
+            propertyTypEnhanced =
+                propertyValue === ""
+                    ? "EmptyString"
+                    : isTimestamp(propertyValueAsString)
+                      ? "Timestamp"
+                      : isLocalDate(propertyValueAsString)
+                        ? "LocalDate"
+                        : isLocalTime(propertyValueAsString)
+                          ? "LocalTime"
+                          : isTimeZone(propertyValueAsString)
+                            ? "TimeZone"
+                            : potentialCountryCode(propertyValueAsString)
+                              ? "CountryCode"
+                              : potentialLocale(propertyValueAsString)
+                                ? "Locale"
+                                : potentialEmailAddress(propertyValueAsString)
+                                  ? "EmailAddress"
+                                  : isURL(propertyValueAsString)
+                                    ? "URL"
+                                    : isColorRGB(propertyValueAsString)
+                                      ? "ColorRGB"
+                                      : isSemanticVersioning(propertyValueAsString)
+                                        ? "SemVer"
+                                        : isIPv4Address(propertyValueAsString)
+                                          ? "IPv4"
+                                          : isIPv6Address(propertyValueAsString)
+                                            ? "IPv6"
+                                            : isPhoneNumber(propertyValueAsString)
+                                              ? "PhoneNumber"
+                                              : isHTTPMethod(propertyValueAsString)
+                                                ? "HTTPMethod"
+                                                : isAbsolutePath(propertyValueAsString)
+                                                  ? "AbsolutePath"
+                                                  : isRelativePath(propertyValueAsString)
+                                                    ? "RelativePath"
+                                                    : isRegularExpression(propertyValueAsString)
+                                                      ? "RegExp"
+                                                      : propertyTypeOriginal;
+            break;
+
+        default:
+            propertyTypEnhanced = propertyTypeOriginal;
+            break;
+    }
+
     // TODO More options
 
     return propertyTypEnhanced;
