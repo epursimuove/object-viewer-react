@@ -1,10 +1,11 @@
-import type { ArithmeticAggregation, DisplayRow } from "~/types";
+import type { DisplayRow } from "~/types";
 import "../object-viewer/object-viewer.css";
 import { useUserConfigurationContext } from "~/object-viewer/UserConfigurationContext";
 import type { SyntheticEvent } from "react";
 import { ObjectPropertyValue } from "~/components/object-property-value";
 import { AnchoredInfoBox } from "./anchored-info-box";
 import { containsExtraSpaces, prettifyArithmeticAggregation } from "~/util/util";
+import { ArithmeticAggregation } from "./arithmetic-aggregation";
 
 export function ObjectViewerRow({
     displayRow,
@@ -138,12 +139,9 @@ export function ObjectViewerRow({
                         displayRow.convenientIdentifierWhenCollapsed &&
                         (displayRow.propertyTypeEnhanced === "array" ? (
                             displayRow.arithmeticAggregation ? (
-                                <AnchoredInfoBox
+                                <ArithmeticAggregation
                                     labelAnchor={displayRow.convenientIdentifierWhenCollapsed}
-                                    tag="Aggregation"
-                                    textContent={prettifyArithmeticAggregation(
-                                        displayRow.arithmeticAggregation
-                                    )}
+                                    arithmeticAggregation={displayRow.arithmeticAggregation}
                                 />
                             ) : (
                                 <>{displayRow.convenientIdentifierWhenCollapsed}</>

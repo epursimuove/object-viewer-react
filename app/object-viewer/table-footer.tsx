@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { AnchoredInfoBox } from "~/components/anchored-info-box";
+import { ArithmeticAggregation as ArithmeticAggregationComponent } from "~/components/arithmetic-aggregation";
 import type {
     ArithmeticAggregation,
     CommonPropertyTypeAncestor,
@@ -41,12 +41,9 @@ export function TableFooter({
                             return (
                                 <th key={columnName}>
                                     {aggregations[index] && (
-                                        <AnchoredInfoBox // TODO Make an Aggregation component... Used in ObjectViewerRow also.
-                                            labelAnchor={"\u03A3"} // Sigma.
-                                            tag="Aggregation"
-                                            textContent={prettifyArithmeticAggregation(
-                                                aggregations[index]
-                                            )}
+                                        <ArithmeticAggregationComponent
+                                            labelAnchor={"\u03A3"}
+                                            arithmeticAggregation={aggregations[index]}
                                         />
                                     )}
                                 </th>
