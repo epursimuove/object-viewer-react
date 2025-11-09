@@ -4,8 +4,7 @@ import { useUserConfigurationContext } from "~/object-viewer/UserConfigurationCo
 import type { SyntheticEvent } from "react";
 import { ObjectPropertyValue } from "~/components/object-property-value";
 import { AnchoredInfoBox } from "./anchored-info-box";
-import { getNumberOfIntegerDigits } from "~/util/math";
-import { containsExtraSpaces } from "~/util/util";
+import { containsExtraSpaces, prettifyArithmeticAggregation } from "~/util/util";
 
 export function ObjectViewerRow({
     displayRow,
@@ -57,45 +56,6 @@ export function ObjectViewerRow({
           ${displayRow.recursiveToggleIcon === "∅" ? "empty" : ""}
           ${isVisible ? "" : "hidden"}
           `;
-
-    const prettifyArithmeticAggregation = (
-        arithmeticAggregation: ArithmeticAggregation
-    ): string => {
-        const largestNumber: number = Object.entries(arithmeticAggregation)
-            .map((item) => Math.abs(item[1]))
-            .reduce((previousNumber, currentNumber) => Math.max(previousNumber, currentNumber));
-
-        const maxNumberOfIntegerDigits: number = getNumberOfIntegerDigits(largestNumber);
-
-        const lengthPlusMinusSign = 1;
-
-        const neededLengthForIntegerPart: number = maxNumberOfIntegerDigits + lengthPlusMinusSign;
-
-        const pad = (n: number | undefined): string => {
-            if (n === undefined) {
-                return "???";
-            }
-            const numberOfIntegerDigits: number = getNumberOfIntegerDigits(n);
-            const lengthPlusMinusSign: number = n < 0 ? 1 : 0;
-
-            const lengthForIntegerPart: number = numberOfIntegerDigits + lengthPlusMinusSign;
-
-            const leftPadding: string = " ".repeat(
-                neededLengthForIntegerPart - lengthForIntegerPart
-            );
-
-            return `${leftPadding}${n}`;
-        };
-
-        return [
-            `Length: ${pad(arithmeticAggregation.length)}`,
-            `Sum:    ${pad(arithmeticAggregation.sum)}`,
-            `Min:    ${pad(arithmeticAggregation.min)}`,
-            `Max:    ${pad(arithmeticAggregation.max)}`,
-            `Mean:   ${pad(arithmeticAggregation.mean)}`,
-            `Median: ${pad(arithmeticAggregation.median)}`,
-        ].join("\n");
-    };
 
     const propertyNameContainsExtraSpaces = containsExtraSpaces(displayRow.propertyName);
 

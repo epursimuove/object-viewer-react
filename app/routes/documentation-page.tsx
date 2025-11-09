@@ -3,7 +3,7 @@ import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 import { prettifyJSON } from "~/util/util";
 import { CopableContent } from "~/components/CopableContent";
-import { unknownCommonPropertyTypeAncestor } from "~/object-viewer/table-header";
+import { unknownCommonPropertyTypeAncestor } from "~/object-viewer/display-array-as-table";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -356,6 +356,12 @@ export default function DocumentationPage() {
                 The table header contains property names and calculated "common" property types for
                 the property values in a column. If there is no "common" property type for a column,
                 it is indicated by <code>{unknownCommonPropertyTypeAncestor}</code>.
+            </p>
+
+            <p>
+                The table footer contains aggregated values for columns, in the same way as
+                described in the <em>Arithmetic aggregation</em> section above. NB! Only cells that
+                are non-empty are used in the aggregation calculations.
             </p>
 
             <p>

@@ -2,6 +2,8 @@ import type {
     ObjectNode,
     ObjectTree,
     PrimitiveLeaf,
+    PropertyTypeEnhanced,
+    PropertyTypeOriginal,
     PropertyValue,
     TableCell,
     TableRow,
@@ -13,6 +15,7 @@ import { convertObjectToTree, couldBeDisplayedAsTable, isNadaPropertyValue } fro
 import { flattenObjectIfNeeded } from "~/util/util";
 import { useLog } from "~/log-manager/LogManager";
 import { useState } from "react";
+import { TableFooter } from "./table-footer";
 
 const { debug, info } = useLog("display-array-as-table.tsx");
 
@@ -121,6 +124,11 @@ export function DisplayArrayAsTable({
         }
     };
 
+    const commonPropertyTypeAncestorForColumns: string[] = getCommonPropertyTypeAncestorForColumns(
+        tableRows,
+        columnHeaders
+    );
+
     // Not needed anymore? const showTable = allObjectsContainSameProperties(tableRows);
     const showTable = true;
 
@@ -142,12 +150,23 @@ export function DisplayArrayAsTable({
                             columnHeaders={columnHeaders}
                             sortingOn={sortingOn}
                             handleSortOrderChange={handleSortOrderChange}
+                            commonPropertyTypeAncestorForColumns={
+                                commonPropertyTypeAncestorForColumns
+                            }
                         />
 
                         <TableBody
                             tableRows={tableRows}
                             columnHeaders={columnHeaders}
                             sortingOn={sortingOn}
+                        />
+
+                        <TableFooter
+                            tableRows={tableRows}
+                            columnHeaders={columnHeaders}
+                            commonPropertyTypeAncestorForColumns={
+                                commonPropertyTypeAncestorForColumns
+                            }
                         />
                     </table>
                 </div>
@@ -201,3 +220,74 @@ function allObjectsContainSameProperties(tableRows: TableRow[]): boolean {
 
     return false;
 }
+
+function getCommonPropertyTypeAncestorForColumns(
+    tableRows: TableRow[],
+    columnHeaders: Set<string>
+): string[] {
+    // Get all cells for first row.
+    // If enhanced property type for each row's cell equals corresponding cell in first row,
+    // then use enhanced property type.
+    // If original property type for each row's cell equals corresponding cell in first row,
+    // then use original property type.
+    // Otherwise use "???".
+
+    const cellMapInFirstRow: Map<string, TableCell> | undefined = tableRows.at(0)?.cellMap;
+
+    if (cellMapInFirstRow?.size) {
+        const result: string[] = [...columnHeaders].map((columnName: string, index: number) => {
+            let commonPropertyTypeEnhanced: PropertyTypeEnhanced | undefined;
+
+            const enhancedPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
+                if (
+                    commonPropertyTypeEnhanced === undefined &&
+                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
+                ) {
+                    commonPropertyTypeEnhanced =
+                        tableRow.cellMap.get(columnName)?.propertyTypeEnhanced;
+                }
+                return (
+                    tableRow.cellMap.get(columnName) === undefined ||
+                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced ===
+                        commonPropertyTypeEnhanced
+                );
+            });
+
+            if (enhancedPropertyTypeMatch && commonPropertyTypeEnhanced) {
+                return commonPropertyTypeEnhanced;
+            }
+
+            let commonPropertyTypeOriginal: PropertyTypeOriginal | undefined;
+
+            const originalPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
+                if (
+                    commonPropertyTypeOriginal === undefined &&
+                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
+                ) {
+                    commonPropertyTypeOriginal =
+                        tableRow.cellMap.get(columnName)?.propertyTypeOriginal;
+                }
+
+                return (
+                    tableRow.cellMap.get(columnName) === undefined ||
+                    tableRow.cellMap.get(columnName)?.propertyTypeOriginal ===
+                        commonPropertyTypeOriginal
+                );
+            });
+
+            if (originalPropertyTypeMatch && commonPropertyTypeOriginal) {
+                return commonPropertyTypeOriginal;
+            }
+
+            return unknownCommonPropertyTypeAncestor;
+        });
+
+        return result;
+    }
+
+    throw new Error("Hmmmmm, no rows found?!?");
+
+    // return new Array(50).fill("???");
+}
+
+export const unknownCommonPropertyTypeAncestor = "???";

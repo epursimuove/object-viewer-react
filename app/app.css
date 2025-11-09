@@ -231,8 +231,11 @@ table {
         padding-block-end: 0.7rem;
     }
 
-    & thead {
-        background-color: rgb(230, 255, 230);
+    & thead,
+    & tfoot {
+        /* background-color: rgb(240, 240, 255); */
+        background-color: lavenderblush;
+        border: 1px solid rgb(200, 200, 200);
 
         & tr {
             &.property-type-enhanced {
@@ -299,6 +302,12 @@ table {
 
         & tr:hover {
             background-color: lightyellow;
+        }
+
+        & tr {
+            &:nth-child(even) {
+                background-color: rgb(245, 245, 245);
+            }
         }
     }
 }
