@@ -2,13 +2,18 @@ import type { JSX } from "react";
 import { AnchoredInfoBox } from "~/components/anchored-info-box";
 import type {
     ArithmeticAggregation,
+    CommonPropertyTypeAncestor,
     PropertyTypeOriginal,
     PropertyValue,
     TableCell,
     TableRow,
 } from "~/types";
 import { calculateAggregations } from "~/util/math";
-import { prettifyArithmeticAggregation } from "~/util/util";
+import {
+    excludedAggregationNumberPropertyTypes,
+    excludedAggregationStringPropertyTypes,
+    prettifyArithmeticAggregation,
+} from "~/util/util";
 
 export function TableFooter({
     tableRows,
@@ -17,7 +22,7 @@ export function TableFooter({
 }: {
     tableRows: TableRow[];
     columnHeaders: Set<string>;
-    commonPropertyTypeAncestorForColumns: string[];
+    commonPropertyTypeAncestorForColumns: CommonPropertyTypeAncestor[];
 }): JSX.Element {
     const aggregations: (ArithmeticAggregation | null)[] = calculateAggregationsForColumns(
         tableRows,
@@ -59,7 +64,7 @@ export function TableFooter({
 function calculateAggregationsForColumns(
     tableRows: TableRow[],
     columnHeaders: Set<string>,
-    commonPropertyTypeAncestorForColumns: string[]
+    commonPropertyTypeAncestorForColumns: CommonPropertyTypeAncestor[]
 ): (ArithmeticAggregation | null)[] {
     const result: (ArithmeticAggregation | null)[] = [...columnHeaders].map(
         (columnName: string, index: number) => {
@@ -82,12 +87,14 @@ function calculateAggregationsForColumns(
 
                 if (
                     arrayTypeOriginal === "number" &&
-                    !["HTTPStatus", "Zero"].includes(commonPropertyTypeAncestorForColumns[index])
+                    !excludedAggregationNumberPropertyTypes.includes(
+                        commonPropertyTypeAncestorForColumns[index]
+                    )
                 ) {
                     return calculateAggregations(cellValues as number[]);
                 } else if (
                     arrayTypeOriginal === "string" &&
-                    !["LocalDate", "LocalTime", "Timestamp", "CountryCode", "Locale"].includes(
+                    !excludedAggregationStringPropertyTypes.includes(
                         commonPropertyTypeAncestorForColumns[index]
                     )
                 ) {

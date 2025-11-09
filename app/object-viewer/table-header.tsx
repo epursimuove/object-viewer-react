@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import type { TableRow, TableRowSorterConfiguration } from "~/types";
+import type { CommonPropertyTypeAncestor, TableRow, TableRowSorterConfiguration } from "~/types";
 import { prettifyPropertyName } from "~/util/util";
 import { unknownCommonPropertyTypeAncestor } from "./display-array-as-table";
 
@@ -14,7 +14,7 @@ export function TableHeader({
     columnHeaders: Set<string>;
     sortingOn: TableRowSorterConfiguration | null;
     handleSortOrderChange: (columnName: string) => void;
-    commonPropertyTypeAncestorForColumns: string[];
+    commonPropertyTypeAncestorForColumns: CommonPropertyTypeAncestor[];
 }): JSX.Element {
     const tableHeadHtml = (
         <thead>

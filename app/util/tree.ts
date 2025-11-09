@@ -15,6 +15,8 @@ import {
     buildPath,
     getPropertyTypeEnhanced,
     sortPropertyNames,
+    excludedAggregationNumberPropertyTypes,
+    excludedAggregationStringPropertyTypes,
 } from "./util";
 import { useLog } from "~/log-manager/LogManager";
 import { calculateAggregations } from "./math";
@@ -408,7 +410,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
 
                 if (
                     arrayTypeOriginal === "number" &&
-                    !["HTTPStatus", "Zero"].includes(arrayTypeToDisplay)
+                    !excludedAggregationNumberPropertyTypes.includes(arrayTypeToDisplay)
                 ) {
                     const values: number[] = Object.values(
                         currentObjectNode.containedProperties
@@ -420,14 +422,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                     currentObjectNode.arithmeticAggregation = aggregation;
                 } else if (
                     arrayTypeOriginal === "string" &&
-                    ![
-                        "HTTPMethod",
-                        "LocalDate",
-                        "LocalTime",
-                        "Timestamp",
-                        "CountryCode",
-                        "Locale",
-                    ].includes(arrayTypeToDisplay)
+                    !excludedAggregationStringPropertyTypes.includes(arrayTypeToDisplay)
                 ) {
                     const values: string[] = Object.values(
                         currentObjectNode.containedProperties

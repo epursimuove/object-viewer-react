@@ -1,5 +1,6 @@
 import type {
     ArithmeticAggregation,
+    CommonPropertyTypeAncestor,
     ExtraSpaces,
     PropertyTypeEnhanced,
     PropertyTypeOriginal,
@@ -586,3 +587,17 @@ export const prettifyArithmeticAggregation = (
         `Median: ${pad(arithmeticAggregation.median)}`,
     ].join("\n");
 };
+
+export const excludedAggregationNumberPropertyTypes: CommonPropertyTypeAncestor[] = [
+    "HTTPStatus",
+    "Zero",
+];
+
+export const excludedAggregationStringPropertyTypes: CommonPropertyTypeAncestor[] = [
+    "HTTPMethod",
+    "LocalDate",
+    "LocalTime",
+    "Timestamp",
+    "CountryCode",
+    "Locale",
+];

@@ -1,4 +1,5 @@
 import type {
+    CommonPropertyTypeAncestor,
     ObjectNode,
     ObjectTree,
     PrimitiveLeaf,
@@ -124,10 +125,8 @@ export function DisplayArrayAsTable({
         }
     };
 
-    const commonPropertyTypeAncestorForColumns: string[] = getCommonPropertyTypeAncestorForColumns(
-        tableRows,
-        columnHeaders
-    );
+    const commonPropertyTypeAncestorForColumns: CommonPropertyTypeAncestor[] =
+        getCommonPropertyTypeAncestorForColumns(tableRows, columnHeaders);
 
     // Not needed anymore? const showTable = allObjectsContainSameProperties(tableRows);
     const showTable = true;
@@ -224,7 +223,7 @@ function allObjectsContainSameProperties(tableRows: TableRow[]): boolean {
 function getCommonPropertyTypeAncestorForColumns(
     tableRows: TableRow[],
     columnHeaders: Set<string>
-): string[] {
+): CommonPropertyTypeAncestor[] {
     // Get all cells for first row.
     // If enhanced property type for each row's cell equals corresponding cell in first row,
     // then use enhanced property type.
@@ -235,52 +234,54 @@ function getCommonPropertyTypeAncestorForColumns(
     const cellMapInFirstRow: Map<string, TableCell> | undefined = tableRows.at(0)?.cellMap;
 
     if (cellMapInFirstRow?.size) {
-        const result: string[] = [...columnHeaders].map((columnName: string, index: number) => {
-            let commonPropertyTypeEnhanced: PropertyTypeEnhanced | undefined;
+        const result: CommonPropertyTypeAncestor[] = [...columnHeaders].map(
+            (columnName: string, index: number) => {
+                let commonPropertyTypeEnhanced: PropertyTypeEnhanced | undefined;
 
-            const enhancedPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
-                if (
-                    commonPropertyTypeEnhanced === undefined &&
-                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
-                ) {
-                    commonPropertyTypeEnhanced =
-                        tableRow.cellMap.get(columnName)?.propertyTypeEnhanced;
-                }
-                return (
-                    tableRow.cellMap.get(columnName) === undefined ||
-                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced ===
-                        commonPropertyTypeEnhanced
-                );
-            });
+                const enhancedPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
+                    if (
+                        commonPropertyTypeEnhanced === undefined &&
+                        tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
+                    ) {
+                        commonPropertyTypeEnhanced =
+                            tableRow.cellMap.get(columnName)?.propertyTypeEnhanced;
+                    }
+                    return (
+                        tableRow.cellMap.get(columnName) === undefined ||
+                        tableRow.cellMap.get(columnName)?.propertyTypeEnhanced ===
+                            commonPropertyTypeEnhanced
+                    );
+                });
 
-            if (enhancedPropertyTypeMatch && commonPropertyTypeEnhanced) {
-                return commonPropertyTypeEnhanced;
-            }
-
-            let commonPropertyTypeOriginal: PropertyTypeOriginal | undefined;
-
-            const originalPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
-                if (
-                    commonPropertyTypeOriginal === undefined &&
-                    tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
-                ) {
-                    commonPropertyTypeOriginal =
-                        tableRow.cellMap.get(columnName)?.propertyTypeOriginal;
+                if (enhancedPropertyTypeMatch && commonPropertyTypeEnhanced) {
+                    return commonPropertyTypeEnhanced;
                 }
 
-                return (
-                    tableRow.cellMap.get(columnName) === undefined ||
-                    tableRow.cellMap.get(columnName)?.propertyTypeOriginal ===
-                        commonPropertyTypeOriginal
-                );
-            });
+                let commonPropertyTypeOriginal: PropertyTypeOriginal | undefined;
 
-            if (originalPropertyTypeMatch && commonPropertyTypeOriginal) {
-                return commonPropertyTypeOriginal;
+                const originalPropertyTypeMatch: boolean = tableRows.every((tableRow: TableRow) => {
+                    if (
+                        commonPropertyTypeOriginal === undefined &&
+                        tableRow.cellMap.get(columnName)?.propertyTypeEnhanced
+                    ) {
+                        commonPropertyTypeOriginal =
+                            tableRow.cellMap.get(columnName)?.propertyTypeOriginal;
+                    }
+
+                    return (
+                        tableRow.cellMap.get(columnName) === undefined ||
+                        tableRow.cellMap.get(columnName)?.propertyTypeOriginal ===
+                            commonPropertyTypeOriginal
+                    );
+                });
+
+                if (originalPropertyTypeMatch && commonPropertyTypeOriginal) {
+                    return commonPropertyTypeOriginal;
+                }
+
+                return unknownCommonPropertyTypeAncestor;
             }
-
-            return unknownCommonPropertyTypeAncestor;
-        });
+        );
 
         return result;
     }

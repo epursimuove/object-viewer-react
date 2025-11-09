@@ -1,4 +1,5 @@
 import type { Temporal } from "@js-temporal/polyfill";
+import type { unknownCommonPropertyTypeAncestor } from "./object-viewer/display-array-as-table";
 
 export type PropertyName = string;
 
@@ -48,6 +49,10 @@ const allPropertyTypes = [...originalPropertyTypes, ...enhancedPropertyTypes] as
 export type PropertyTypeOriginal = (typeof originalPropertyTypes)[number];
 
 export type PropertyTypeEnhanced = (typeof allPropertyTypes)[number];
+
+export type CommonPropertyTypeAncestor =
+    | PropertyTypeEnhanced
+    | typeof unknownCommonPropertyTypeAncestor;
 
 export type PropertyValue = number | string | boolean | null | object | undefined;
 
