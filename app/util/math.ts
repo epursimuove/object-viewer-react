@@ -36,7 +36,7 @@ export const convertDecimalToHex = (decimal: string): string =>
 export const getNumberOfIntegerDigits = (n: number) => {
     // Purely math, no strings in this solution.
     const numberOfIntegerDigits: number =
-        n === 0 ? 1 : Math.floor(Math.log10(Math.floor(Math.abs(n)))) + 1;
+        n === 0 || Math.abs(n) < 1 ? 1 : Math.floor(Math.log10(Math.floor(Math.abs(n)))) + 1;
 
     return numberOfIntegerDigits;
 };
