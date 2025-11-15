@@ -308,6 +308,10 @@ table {
 
         & tr:hover {
             background-color: lightyellow;
+
+            &:nth-child(even) {
+                background-color: rgb(255, 255, 200);
+            }
         }
     }
 }
@@ -472,6 +476,7 @@ select {
     background-color: #f8f8f8;
     /* position: relative; */
     /* padding: 0.5rem; */
+    /* overflow-x: auto; */
 
     & .tool-bar {
         display: flex;
