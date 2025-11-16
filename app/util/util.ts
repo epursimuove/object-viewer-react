@@ -579,7 +579,7 @@ export const prettifyArithmeticAggregation = (
     };
 
     return [
-        `Length: ${pad(arithmeticAggregation.length)}`,
+        `Items:  ${pad(arithmeticAggregation.items)}`,
         `Sum:    ${pad(arithmeticAggregation.sum)}`,
         `Min:    ${pad(arithmeticAggregation.min)}`,
         `Max:    ${pad(arithmeticAggregation.max)}`,
