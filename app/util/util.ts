@@ -601,3 +601,5 @@ export const excludedAggregationStringPropertyTypes: CommonPropertyTypeAncestor[
     "CountryCode",
     "Locale",
 ];
+
+export const unknownCommonPropertyTypeAncestor = "???";

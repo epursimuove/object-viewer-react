@@ -290,5 +290,3 @@ function getCommonPropertyTypeAncestorForColumns(
 
     // return new Array(50).fill("???");
 }
-
-export const unknownCommonPropertyTypeAncestor = "???";

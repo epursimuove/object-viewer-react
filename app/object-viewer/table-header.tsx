@@ -1,7 +1,6 @@
 import type { JSX } from "react";
 import type { CommonPropertyTypeAncestor, TableRow, TableRowSorterConfiguration } from "~/types";
-import { prettifyPropertyName } from "~/util/util";
-import { unknownCommonPropertyTypeAncestor } from "./display-array-as-table";
+import { prettifyPropertyName, unknownCommonPropertyTypeAncestor } from "~/util/util";
 
 export function TableHeader({
     tableRows,

@@ -1,9 +1,8 @@
 import { exampleArray, exampleArray2, exampleArray3 } from "~/object-viewer/example-data";
 import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
-import { prettifyJSON } from "~/util/util";
+import { prettifyJSON, unknownCommonPropertyTypeAncestor } from "~/util/util";
 import { CopableContent } from "~/components/CopableContent";
-import { unknownCommonPropertyTypeAncestor } from "~/object-viewer/display-array-as-table";
 
 export function meta({}: Route.MetaArgs) {
     return [
