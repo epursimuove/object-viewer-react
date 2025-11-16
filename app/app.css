@@ -255,17 +255,30 @@ table {
             text-align: start;
 
             &.sorting-possible {
-                cursor: pointer;
+                /* cursor: pointer; */
+                cursor: ns-resize;
             }
 
             &.sorting-on {
                 &.ascending {
                     text-decoration: underline;
+                    cursor: s-resize;
                 }
 
                 &.descending {
                     text-decoration: overline;
+                    cursor: n-resize;
                 }
+            }
+        }
+
+        & tr:has(th.sorting-on) {
+            > th.sorting-on {
+                color: rgb(0, 180, 0);
+            }
+            > th:not(.sorting-on).sorting-possible {
+                color: darkorange;
+                /* cursor: pointer; */
             }
         }
     }
