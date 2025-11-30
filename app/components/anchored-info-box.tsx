@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 let counter = 0;
 
@@ -9,7 +9,7 @@ export function AnchoredInfoBox({
     type = "info",
     tag,
 }: {
-    labelAnchor: string | Element;
+    labelAnchor: string | JSX.Element;
     textContent?: string;
     children?: ReactNode;
     type?: "info" | "warning" | "error";

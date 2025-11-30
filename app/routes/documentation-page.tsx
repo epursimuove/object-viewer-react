@@ -473,8 +473,8 @@ export default function DocumentationPage() {
 
             <p>
                 If you have a list of objects that you want to compare, convert your list to a JSON
-                array and you will be presented with a table where it will be really
-                <em>easy</em> to compare and examine the objects content.
+                array and you will be presented with a table where it will be really <em>easy</em>{" "}
+                to compare and examine the objects content.
             </p>
         </main>
     );

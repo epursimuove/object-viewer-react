@@ -13,7 +13,7 @@ import type {
 import { TableHeader } from "./table-header";
 import { TableBody } from "./table-body";
 import { convertObjectToTree, couldBeDisplayedAsTable, isNadaPropertyValue } from "~/util/tree";
-import { flattenObjectIfNeeded } from "~/util/util";
+import { flattenObjectIfNeeded, unknownCommonPropertyTypeAncestor } from "~/util/util";
 import { useLog } from "~/log-manager/LogManager";
 import { useState } from "react";
 import { TableFooter } from "./table-footer";
@@ -24,7 +24,7 @@ export function DisplayArrayAsTable({
     originalObject,
     objectTree,
 }: {
-    originalObject: Record<string, PropertyValue>;
+    originalObject: Record<string, PropertyValue> | Record<string, PropertyValue>[];
     objectTree: ObjectNode;
 }) {
     info("Setting up DisplayArrayAsTable");
@@ -39,7 +39,7 @@ export function DisplayArrayAsTable({
     if (shouldBeFlattenedBeforeDisplayedAsTable) {
         debug(`Flattening object with max-depth ${objectTree.depthBelow} before displaying`);
         const originalObjectWithArrayAtRoot: Record<string, PropertyValue>[] =
-            originalObject as unknown as Record<string, PropertyValue>[]; // TODO How to fix TypeScript craziness?!?
+            originalObject as Record<string, PropertyValue>[]; // TODO How to fix TypeScript craziness?!?
 
         const flattenedObject: Record<string, PropertyValue>[] = originalObjectWithArrayAtRoot.map(
             (subObject: Record<string, PropertyValue>) => flattenObjectIfNeeded(subObject)

@@ -74,7 +74,9 @@ function createEmptyArrayNode(): ObjectNode {
     return objectNode;
 }
 
-export function convertObjectToTree(originalObject: Record<string, PropertyValue>): ObjectNode {
+export function convertObjectToTree(
+    originalObject: Record<string, PropertyValue> | Record<string, PropertyValue>[]
+): ObjectNode {
     info("Converting JSON object to object tree");
 
     resetIdCounter();

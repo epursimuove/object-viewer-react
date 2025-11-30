@@ -1,5 +1,5 @@
 import type { Temporal } from "@js-temporal/polyfill";
-import type { unknownCommonPropertyTypeAncestor } from "./object-viewer/display-array-as-table";
+import type { unknownCommonPropertyTypeAncestor } from "./util/util";
 
 export type PropertyName = string;
 
