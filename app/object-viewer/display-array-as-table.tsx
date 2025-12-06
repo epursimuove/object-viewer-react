@@ -107,7 +107,10 @@ export function DisplayArrayAsTable({
 
     const [sortingOn, setSortingOn] = useState<TableRowSorterConfiguration | null>(null);
 
-    const handleSortOrderChange = (columnName: string) => {
+    const handleSortOrderChange = (
+        columnName: string,
+        commonPropertyTypeAncestorForColumn: CommonPropertyTypeAncestor
+    ) => {
         debug(`Sort on ${columnName}`);
 
         if (sortingOn) {
@@ -115,13 +118,17 @@ export function DisplayArrayAsTable({
                 if (!sortingOn.ascending) {
                     setSortingOn(null);
                 } else {
-                    setSortingOn({ columnName, ascending: !sortingOn.ascending });
+                    setSortingOn({
+                        columnName,
+                        ascending: !sortingOn.ascending,
+                        commonPropertyTypeAncestorForColumn,
+                    });
                 }
             } else {
-                setSortingOn({ columnName, ascending: true });
+                setSortingOn({ columnName, ascending: true, commonPropertyTypeAncestorForColumn });
             }
         } else {
-            setSortingOn({ columnName, ascending: true });
+            setSortingOn({ columnName, ascending: true, commonPropertyTypeAncestorForColumn });
         }
     };
 

@@ -12,7 +12,10 @@ export function TableHeader({
     tableRows: TableRow[];
     columnHeaders: Set<string>;
     sortingOn: TableRowSorterConfiguration | null;
-    handleSortOrderChange: (columnName: string) => void;
+    handleSortOrderChange: (
+        columnName: string,
+        commonPropertyTypeAncestorForColumn: CommonPropertyTypeAncestor
+    ) => void;
     commonPropertyTypeAncestorForColumns: CommonPropertyTypeAncestor[];
 }): JSX.Element {
     const tableHeadHtml = (
@@ -23,8 +26,11 @@ export function TableHeader({
                         <th className="row-number">{tableRows.length}</th>
 
                         {[...columnHeaders].map((columnName: string, index: number) => {
+                            const commonPropertyTypeAncestorForColumn =
+                                commonPropertyTypeAncestorForColumns[index];
+
                             const columnIsSortable =
-                                commonPropertyTypeAncestorForColumns[index] !==
+                                commonPropertyTypeAncestorForColumn !==
                                 unknownCommonPropertyTypeAncestor;
 
                             const sortedOnThisColumn = sortingOn?.columnName === columnName;
@@ -34,7 +40,13 @@ export function TableHeader({
                                     key={columnName}
                                     className={`${columnIsSortable ? "sorting-possible" : ""} ${sortedOnThisColumn ? "sorting-on" : ""} ${sortedOnThisColumn ? (sortingOn.ascending ? "ascending" : "descending") : ""}`}
                                     {...(columnIsSortable
-                                        ? { onClick: () => handleSortOrderChange(columnName) }
+                                        ? {
+                                              onClick: () =>
+                                                  handleSortOrderChange(
+                                                      columnName,
+                                                      commonPropertyTypeAncestorForColumn
+                                                  ),
+                                          }
                                         : {})}
                                 >
                                     {"" + prettifyPropertyName(columnName)}

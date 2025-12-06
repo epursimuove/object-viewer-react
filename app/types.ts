@@ -185,4 +185,8 @@ export interface TableRow {
 
 export type TableRowComparator = (tableRowA: TableRow, tableRowB: TableRow) => number;
 
-export type TableRowSorterConfiguration = { columnName: string; ascending: boolean };
+export type TableRowSorterConfiguration = {
+    columnName: string;
+    ascending: boolean;
+    commonPropertyTypeAncestorForColumn: CommonPropertyTypeAncestor;
+};

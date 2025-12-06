@@ -143,10 +143,29 @@ export const sortPropertyNames = (propertyNameA: string, propertyNameB: string):
     return propertyNameA.localeCompare(propertyNameB);
 };
 
+const semanticVersioningCompare = (a: string, b: string): number => {
+    trace(`Comparing ${a} and ${b}`);
+
+    const [majorA, minorA, patchA]: number[] = a.split(".").map((n) => Number.parseInt(n));
+    const [majorB, minorB, patchB]: number[] = b.split(".").map((n) => Number.parseInt(n));
+
+    const diffMajor = majorA - majorB;
+    const diffMinor = minorA - minorB;
+    const diffPatch = patchA - patchB;
+
+    // return diffMajor !== 0 ? diffMajor : diffMinor !== 0 ? diffMinor : diffPatch;
+    return diffMajor || diffMinor || diffPatch;
+};
+
 const createTableRowSorter = ({
     columnName,
     ascending,
+    commonPropertyTypeAncestorForColumn,
 }: TableRowSorterConfiguration): TableRowComparator => {
+    debug(
+        `Sorting "${columnName}" which is handled as a ${commonPropertyTypeAncestorForColumn} column`
+    );
+
     const sortTableRowsByColumn = (tableRowA: TableRow, tableRowB: TableRow): number => {
         const a: PropertyValue = tableRowA.cellMap.get(columnName)?.cellValue;
 
@@ -160,6 +179,9 @@ const createTableRowSorter = ({
         const sortOrder = ascending ? +1 : -1;
 
         if (typeof a === "string" && typeof b === "string") {
+            if (commonPropertyTypeAncestorForColumn === "SemVer") {
+                return semanticVersioningCompare(a, b) * sortOrder;
+            }
             return a.localeCompare(b, "sv-SE") * sortOrder;
         }
 
