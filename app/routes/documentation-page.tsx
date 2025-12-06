@@ -162,7 +162,7 @@ export default function DocumentationPage() {
             <h2>Arithmetic aggregation</h2>
 
             <p>
-                For some arrays, convenient aggregated values (<em>length</em> (number of items),{" "}
+                For some arrays, convenient aggregated values (number of <em>items</em>,{" "}
                 <em>sum</em>, <em>min</em>, <em>max</em>, <em>mean</em> and <em>median</em>) are
                 calculated automatically for you.
             </p>

@@ -1,6 +1,6 @@
 {
     "name": "object-viewer-react",
-    "version": "1.33.3",
+    "version": "1.33.4",
     "private": true,
     "type": "module",
     "scripts": {
