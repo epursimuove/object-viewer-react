@@ -94,6 +94,12 @@ export default function DocumentationPage() {
                     Date and time.
                     <ul>
                         <li>
+                            The following date and time values are handled specially:{" "}
+                            <em>local dates</em>, <em>local times</em>, <em>timestamps</em>,{" "}
+                            <em>epoch</em> values and <em>time zones</em>.
+                        </li>
+
+                        <li>
                             The <a href="https://anders.nemonisimors.com/currentTime">UTC</a> time
                             zone is (the only one) used for timestamps. No, there will probably not
                             be any support for{" "}
@@ -406,7 +412,10 @@ export default function DocumentationPage() {
             </p>
 
             <p>
-                Strings are compared with the Swedish locale (<code>sv-SE</code>).
+                Strings are compared with the Swedish locale (<code>sv-SE</code>). Note that{" "}
+                <code>SemVer</code> values are correctly compared using integer comparison and not
+                by string comparison, so{" "}
+                <code>1.2.3 &lt; 1.11.0 &lt; 9.8.7 &lt; 10.9.99 &lt; 10.11.12</code>.
             </p>
 
             <h3>Flattened arrays</h3>
