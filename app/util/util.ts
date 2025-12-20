@@ -28,6 +28,7 @@ import {
     durationRelativeToNowForTimestamp,
     assembleTimeZoneInformation,
     durationRelativeToNowForEpoch,
+    durationRelativeToNowForLocalTime,
 } from "./dateAndTime";
 import { convertDecimalToHex, getNumberOfIntegerDigits } from "./math";
 
@@ -364,6 +365,8 @@ export const buildMetaData = (
             return durationRelativeToNowForTimestamp(propertyValue as string);
         } else if (propertyTypeEnhanced === "LocalDate") {
             return durationRelativeToNowForLocalDate(propertyValue as string);
+        } else if (propertyTypeEnhanced === "LocalTime") {
+            return durationRelativeToNowForLocalTime(propertyValue as string);
         } else if (propertyTypeEnhanced === "TimeZone") {
             return assembleTimeZoneInformation(propertyValue as string);
         } else if (propertyTypeEnhanced === "Epoch") {

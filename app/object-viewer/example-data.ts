@@ -426,6 +426,8 @@ export const exampleObject: {} = {
                         .toZonedDateTimeISO("UTC")
                         .with({ month: 12, day: 31, hour: 23, minute: 59, second: 59 })
                         .toInstant(),
+                    "2035-18-10T12:00:00Z", // Suspicious.
+                    "2035-01-10T26:00:00Z", // Suspicious.
                 ],
                 localDates: [
                     "1969-07-20",
@@ -435,8 +437,17 @@ export const exampleObject: {} = {
                         .add({ hours: 24 * 20 })
                         .toString()
                         .slice(0, 10),
+                    "2025-15-20", // Suspicious.
+                    "2027-01-32", // Suspicious.
+                    "2028-02-30", // Suspicious.
                 ],
-                localTimes: ["08:25:30", "21:40:00", "14:05"],
+                localTimes: [
+                    "08:25:30",
+                    "21:40:00",
+                    "14:05",
+                    "24:30", // Suspicious.
+                    "05:10:65", // Suspicious.
+                ],
                 timeZones: [
                     "UTC",
                     "Etc/UTC",
@@ -641,6 +652,24 @@ export const exampleObject: {} = {
                 foo: "bar",
                 " foo": "bar",
                 "foo ": "bar",
+                " foo ": "bar",
+            },
+            evilPropertiesObject5: {
+                0: "The number 0",
+                O: "The letter O",
+                l: "The letter l",
+                1: "The number 1",
+                I: "The letter I",
+                2: "The number 2",
+                Z: "The letter Z",
+                5: "The number 5",
+                S: "The letter S",
+                6: "The number 6",
+                b: "The letter b",
+                8: "The number 8",
+                B: "The letter B",
+                9: "The number 9",
+                g: "The letter g",
             },
         },
     },
@@ -761,7 +790,7 @@ export const exampleArray2: Record<string, PropertyValue>[] = [
         personalInfo: {
             firstName: "Clarence",
             lastName: "Shoemaker",
-            status: { dateOfBirth: "2004-08-19", married: false },
+            status: { dateOfBirth: "2004-18-19" /* Purposely invalid date */, married: false },
         },
         address: { street: "Drottninggatan 55", city: "Malmö", country: "SE" },
         foo: { bar: { baz: 88 } },

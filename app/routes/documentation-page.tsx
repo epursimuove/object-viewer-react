@@ -3,6 +3,7 @@ import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 import { prettifyJSON, unknownCommonPropertyTypeAncestor } from "~/util/util";
 import { CopableContent } from "~/components/CopableContent";
+import { ColorIndicator } from "~/components/color-indicator";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -146,7 +147,9 @@ export default function DocumentationPage() {
             <p>
                 When guessing that a string defines a <em>regular expression</em> (i.e. the enhanced
                 property type is <code>RegExp</code>), the syntax of the expression may be invalid.
-                In those cases the property value is marked as suspicious.
+                In those cases the property value is marked as suspicious. See{" "}
+                <a href="#better_to_acquit_than_to_convict">better to acquit than to convict</a> (it
+                is the same with <em>date and time</em> values).
             </p>
 
             <h3>Property values</h3>
@@ -194,7 +197,7 @@ export default function DocumentationPage() {
             <p>
                 Support for arrays of type <code>string[]</code> (except when{" "}
                 <code>HTTPMethod[]</code>, <code>LocalDate[]</code>, <code>LocalTime[]</code>,{" "}
-                <code>Timestamp[]</code>, <code>CountryCode[]</code> or <code>Locale[]</code>)
+                <code>Timestamp[]</code>, <code>CountryCode[]</code> or <code>Locale[]</code>).
             </p>
 
             <h2>History of objects</h2>
@@ -207,8 +210,14 @@ export default function DocumentationPage() {
             <p>
                 The history items are tagged with convenient color markers, so they can easily be
                 distinguished. Eight different colors are used, so the combinations of the two
-                colors are 64 (8&times;8).
+                colors are 64 (8&times;8). Some examples:
             </p>
+
+            <ul>
+                <li>{<ColorIndicator primaryColor="red" secondaryColor="green" />}</li>
+                <li>{<ColorIndicator primaryColor="blue" secondaryColor="yellow" />}</li>
+                <li>{<ColorIndicator primaryColor="white" secondaryColor="black" />}</li>
+            </ul>
 
             <h2>Filtering</h2>
 
@@ -330,12 +339,31 @@ export default function DocumentationPage() {
                 what the actual regular expressions look like.
             </p>
 
+            <h4 id="better_to_acquit_than_to_convict">Better to acquit than to convict</h4>
+
+            <p>
+                Sometimes erroneous assumptions are made, but the intention is always to help you as
+                the user. I think these false positives are better, than to keep the types as
+                meaningless <code>string</code>/<code>number</code> values, since they may actually
+                help you indicate errors in the data.
+            </p>
+
+            <h5>Regular expressions</h5>
+
             <p>
                 If the content in the string is close enough to be a regular expression, the
                 property is marked as a <code>RegExp</code>, even if the content actually is a
                 syntactic disaster. The <em>intention</em> of the value may still be a regular
-                expression, even if the syntax is not currently perfect ("better to acquit than to
-                convict").
+                expression, even if the syntax is not currently perfect.
+            </p>
+
+            <h5>Date and time</h5>
+
+            <p>
+                The enhanced property types <code>LocalDate</code>, <code>LocalTime</code>,
+                <code>Timestamp</code> and <code>TimeZone</code> can be close enough to be date/time
+                values. So they are sometimes marked with these enhanced property types, even if the
+                content is invalid.
             </p>
 
             <h2>Array as table</h2>
@@ -485,6 +513,8 @@ export default function DocumentationPage() {
                 array and you will be presented with a table where it will be really <em>easy</em>{" "}
                 to compare and examine the objects content.
             </p>
+
+            <p>The menu and its parts can be toggled by using access keys.</p>
         </main>
     );
 }

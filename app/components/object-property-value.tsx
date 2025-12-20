@@ -18,7 +18,22 @@ export function ObjectPropertyValue({
         displayRow.propertyTypeEnhanced === "TimeZone" &&
         displayRow.propertyMetaData?.includes("Error");
 
-    const strangeRegExp =
+    const strangeLocalDate: boolean | undefined =
+        displayRow.propertyTypeEnhanced === "LocalDate" &&
+        displayRow.propertyMetaData?.includes("Error");
+    // verifyLocalDate(displayRow.propertyValue as string);
+
+    const strangeLocalTime: boolean | undefined =
+        displayRow.propertyTypeEnhanced === "LocalTime" &&
+        displayRow.propertyMetaData?.includes("Error");
+    // verifyLocalTime(displayRow.propertyValue as string);
+
+    const strangeTimestamp: boolean | undefined =
+        displayRow.propertyTypeEnhanced === "Timestamp" &&
+        displayRow.propertyMetaData?.includes("Error");
+    // verifyTimestamp(displayRow.propertyValue as string);
+
+    const strangeRegExp: string | false | null =
         displayRow.propertyTypeEnhanced === "RegExp" &&
         verifyRegExp(displayRow.propertyValue as string);
 
@@ -96,15 +111,48 @@ export function ObjectPropertyValue({
             )}
 
             {displayRow.propertyTypeEnhanced === "Timestamp" && (
-                <Timestamp timestamp={displayRow.propertyValue as string} />
+                <span className={`local-date ${strangeTimestamp && "strange-timestamp"}`}>
+                    {strangeTimestamp ? (
+                        <AnchoredInfoBox
+                            labelAnchor={`${displayRow.propertyValue}`}
+                            tag="NB!"
+                            textContent={`Looks like a proper timestamp, but out-of-range!`}
+                            type="warning"
+                        />
+                    ) : (
+                        <Timestamp timestamp={displayRow.propertyValue as string} />
+                    )}
+                </span>
             )}
 
             {displayRow.propertyTypeEnhanced === "LocalDate" && (
-                <span className="local-date">{`${displayRow.propertyValue}`}</span>
+                <span className={`local-date ${strangeLocalDate && "strange-local-date"}`}>
+                    {strangeLocalDate ? (
+                        <AnchoredInfoBox
+                            labelAnchor={`${displayRow.propertyValue}`}
+                            tag="NB!"
+                            textContent={`Looks like a proper local date, but out-of-range!`}
+                            type="warning"
+                        />
+                    ) : (
+                        `${displayRow.propertyValue}`
+                    )}
+                </span>
             )}
 
             {displayRow.propertyTypeEnhanced === "LocalTime" && (
-                <span className="local-time">{`${displayRow.propertyValue}`}</span>
+                <span className={`local-time ${strangeLocalTime && "strange-local-time"}`}>
+                    {strangeLocalTime ? (
+                        <AnchoredInfoBox
+                            labelAnchor={`${displayRow.propertyValue}`}
+                            tag="NB!"
+                            textContent={`Looks like a proper local time, but out-of-range!`}
+                            type="warning"
+                        />
+                    ) : (
+                        `${displayRow.propertyValue}`
+                    )}
+                </span>
             )}
 
             {displayRow.propertyTypeEnhanced === "TimeZone" && (

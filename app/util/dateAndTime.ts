@@ -1,7 +1,7 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { useLog } from "~/log-manager/LogManager";
 
-const { trace } = useLog("dateAndTime.ts");
+const { debug, error: errorLog, trace } = useLog("dateAndTime.ts");
 
 const getNow = (): Temporal.Instant => Temporal.Now.instant();
 
@@ -13,14 +13,41 @@ export const prettifiedBuildTime: string = buildTime.toString().slice(0, 16) + "
 
 export const systemTimeZone: string = Temporal.Now.timeZoneId();
 
-export const regExpTimestamp: RegExp = /^(\d\d\d\d-\d\d-\d\d)T(\d\d:\d\d(:\d\d(\.\d+)?)?)Z$/;
+export const regExpTimestamp: RegExp =
+    /^((?:19|20)\d\d-[0-1]\d-[0-3]\d)T([0-2]\d:[0-5]\d(:[0-6]\d(\.\d+)?)?)Z$/;
 
-export const regExpLocalDate: RegExp = /^\d\d\d\d-\d\d-\d\d$/;
+export const regExpLocalDate: RegExp = /^(?:19|20)\d\d-[0-1]\d-[0-3]\d$/;
 
-export const regExpLocalTime: RegExp = /^\d\d:\d\d(:\d\d)?$/;
+export const regExpLocalTime: RegExp = /^[0-2]\d:[0-5]\d(:[0-6]\d)?$/;
 
 export const regExpTimeZone: RegExp =
     /^((Etc\/)?UTC)|((Africa|America|Antarctica|Atlantic|Asia|Australia|Europe|Indian|Pacific)\/[A-Z][A-Za-z_-]+)$/;
+
+const assertCorrectness = () => {
+    const sourcePartRegExpLocalDate = regExpLocalDate.source.slice(1, -1);
+    const sourcePartRegExpLocalTime = regExpLocalTime.source.slice(1, -3); // -3 since timestamp has optional millisecons, which local time does not have.
+    const sourcePartRegExpTimestamp = regExpTimestamp.source.slice(1, -1);
+
+    debug(`Local date`, sourcePartRegExpLocalDate);
+    debug(`Local time`, sourcePartRegExpLocalTime);
+    debug(`Timestamp`, sourcePartRegExpTimestamp);
+
+    console.assert(
+        sourcePartRegExpTimestamp.includes(sourcePartRegExpLocalDate),
+        `Local date is not part of timestamp`,
+        sourcePartRegExpLocalDate,
+        sourcePartRegExpTimestamp
+    );
+
+    console.assert(
+        sourcePartRegExpTimestamp.includes(sourcePartRegExpLocalTime),
+        `Local time is not part of timestamp`,
+        sourcePartRegExpLocalTime,
+        sourcePartRegExpTimestamp
+    );
+};
+
+assertCorrectness();
 
 export const isTimestamp = (s: string): boolean => {
     const isTimestamp: boolean = regExpTimestamp.test(s);
@@ -108,14 +135,30 @@ function getRoundedDuration(duration: Temporal.Duration): Temporal.Duration {
 }
 
 export function durationRelativeToNowForTimestamp(timestampString: string): string {
-    const timestamp: Temporal.Instant = Temporal.Instant.from(timestampString);
+    try {
+        const timestamp: Temporal.Instant = Temporal.Instant.from(timestampString);
 
-    const duration: Temporal.Duration = now.since(timestamp);
+        const duration: Temporal.Duration = now.since(timestamp);
 
-    return `${prettifiedDuration(getRoundedDuration(duration))}`;
+        return `${prettifiedDuration(getRoundedDuration(duration))}`;
+    } catch (error) {
+        if (error instanceof RangeError) {
+            return `RangeError: ${error.message}`;
+        } else if (error instanceof TypeError) {
+            return `TypeError: ${error.message}`;
+        } else if (error instanceof Error) {
+            return `Error: ${error.message}`;
+        } else {
+            return `Unknown Error: ${error}`;
+        }
+    }
 }
 
 export function currentAge(localDateString: string): number {
+    if (verifyLocalDate(localDateString)) {
+        return -1;
+    }
+
     const localDate: Temporal.PlainDate = Temporal.PlainDate.from(localDateString);
     const today: Temporal.PlainDate = Temporal.Now.plainDateISO("UTC");
 
@@ -125,13 +168,44 @@ export function currentAge(localDateString: string): number {
 }
 
 export function durationRelativeToNowForLocalDate(localDateString: string): string {
-    const localDate: Temporal.PlainDate = Temporal.PlainDate.from(localDateString);
+    try {
+        const localDate: Temporal.PlainDate = Temporal.PlainDate.from(localDateString);
 
-    const duration: Temporal.Duration = now
-        .toZonedDateTimeISO("UTC")
-        .since(localDate.toZonedDateTime("UTC"));
+        const duration: Temporal.Duration = now
+            .toZonedDateTimeISO("UTC")
+            .since(localDate.toZonedDateTime("UTC"));
 
-    return `${prettifiedDuration(getRoundedDuration(duration))}`;
+        return `${prettifiedDuration(getRoundedDuration(duration))}`;
+    } catch (error) {
+        if (error instanceof RangeError) {
+            return `RangeError: ${error.message}`;
+        } else if (error instanceof TypeError) {
+            return `TypeError: ${error.message}`;
+        } else if (error instanceof Error) {
+            return `Error: ${error.message}`;
+        } else {
+            return `Unknown Error: ${error}`;
+        }
+    }
+}
+
+export function durationRelativeToNowForLocalTime(localTimeString: string): string | undefined {
+    try {
+        // For local time values, we really can't compare to now, since that is not correct.
+        // As a good-enough-solution, just let Temporal generically verify the content
+        // of the local time string, and catch any errors.
+        Temporal.PlainTime.from(localTimeString);
+    } catch (error) {
+        if (error instanceof RangeError) {
+            return `RangeError: ${error.message}`;
+        } else if (error instanceof TypeError) {
+            return `TypeError: ${error.message}`;
+        } else if (error instanceof Error) {
+            return `Error: ${error.message}`;
+        } else {
+            return `Unknown Error: ${error}`;
+        }
+    }
 }
 
 export function durationRelativeToNowForEpoch(epochValue: number): string {
@@ -166,3 +240,36 @@ export function assembleTimeZoneInformation(timeZoneString: string): string {
         }
     }
 }
+
+type StringToTemporalFunction = (
+    s: string
+) => Temporal.PlainDate | Temporal.PlainTime | Temporal.Instant;
+
+const verifyHelper =
+    (fn: StringToTemporalFunction) =>
+    (s: string): string | null => {
+        let errorMessage: string | null = null;
+
+        try {
+            fn(s);
+        } catch (error) {
+            if (error instanceof RangeError || error instanceof TypeError) {
+                errorMessage = error.message;
+                errorLog(`Error`, errorMessage);
+            }
+        }
+
+        return errorMessage;
+    };
+
+export const verifyLocalDate = (s: string): string | null => {
+    return verifyHelper(Temporal.PlainDate.from)(s);
+};
+
+export const verifyLocalTime = (s: string): string | null => {
+    return verifyHelper(Temporal.PlainTime.from)(s);
+};
+
+export const verifyTimestamp = (s: string): string | null => {
+    return verifyHelper(Temporal.Instant.from)(s);
+};
