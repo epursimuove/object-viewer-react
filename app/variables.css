@@ -9,8 +9,6 @@ html {
     --color-divider: rgb(200, 200, 200);
     --color-lighter: rgb(160, 160, 160);
     --color-boolean-border: rgb(230, 230, 230);
-
-    width: max-content;
 }
 
 @media screen and (max-width: 600px) {

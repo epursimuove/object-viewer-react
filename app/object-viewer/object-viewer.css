@@ -1,4 +1,6 @@
 .object-viewer {
+    width: max-content;
+
     white-space: nowrap;
 
     font-family: Menlo, "Courier New", monospace;
