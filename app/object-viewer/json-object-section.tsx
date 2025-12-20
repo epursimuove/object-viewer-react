@@ -72,7 +72,7 @@ export function JsonObjectSection({
 
     return (
         <details ref={jsonObjectSection} open>
-            <summary>JSON object</summary>
+            <summary accessKey="J">JSON object</summary>
 
             <div className={"json-object"}>
                 <label htmlFor="originalObject">JSON object/array</label>

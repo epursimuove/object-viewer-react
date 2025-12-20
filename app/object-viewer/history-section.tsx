@@ -35,7 +35,7 @@ export function HistorySection({
 
     return (
         <details open>
-            <summary>History</summary>
+            <summary accessKey="H">History</summary>
 
             <div>
                 {/* {loadHistoryFromStorage().length} items */}

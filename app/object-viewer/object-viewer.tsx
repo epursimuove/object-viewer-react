@@ -267,7 +267,7 @@ export function ObjectViewer() {
 
             <aside id="toolbar">
                 <details className="menu-wrapper" open>
-                    <summary>
+                    <summary accessKey="M">
                         <strong>MENU</strong>
                     </summary>
 

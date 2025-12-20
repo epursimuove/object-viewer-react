@@ -4,7 +4,7 @@ import { now } from "~/util/dateAndTime";
 export function TimeSection({}) {
     return (
         <details open>
-            <summary>Time</summary>
+            <summary accessKey="T">Time</summary>
 
             <div>
                 <span className="label">"Now":</span>

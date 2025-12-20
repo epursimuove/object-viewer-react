@@ -33,7 +33,7 @@ export function SettingsSection({
 
     return (
         <details open>
-            <summary>Settings</summary>
+            <summary accessKey="X">Settings</summary>
 
             <SettingsCheckbox
                 label="Indent object tree"

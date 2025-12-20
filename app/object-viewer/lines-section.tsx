@@ -114,7 +114,7 @@ export function LinesSection({
 
     return (
         <details open>
-            <summary>Lines</summary>
+            <summary accessKey="L">Lines</summary>
 
             <div>
                 <label htmlFor="gotoLine">Mark line(s) and scroll to line</label>

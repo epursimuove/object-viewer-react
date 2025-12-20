@@ -32,7 +32,7 @@ export function StatisticsSection({
 
     return (
         <details open>
-            <summary>Statistics</summary>
+            <summary accessKey="S">Statistics</summary>
 
             <StatisticsRow label="Rows" value={totalNumberOfRows} emphasize />
             <StatisticsRow label="Visible" value={numberOfVisibleRows} emphasize />

@@ -92,7 +92,7 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
 
     return (
         <details open className={`${filtersActivated && "filters-active"}`}>
-            <summary>Filters</summary>
+            <summary accessKey="F">Filters</summary>
 
             <div className="button-row">
                 <button type="reset" onClick={resetFilters} disabled={!filtersActivated}>
