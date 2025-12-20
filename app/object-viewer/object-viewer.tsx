@@ -13,6 +13,7 @@ import type {
     PropertyValue,
 } from "~/types";
 import { prettifyJSON, versions } from "~/util/util";
+import "../variables.css";
 import "./object-viewer.css";
 import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { ObjectViewerRow } from "~/components/object-viewer-row";

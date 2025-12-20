@@ -1,0 +1,20 @@
+html {
+    font-family: Arial, sans-serif;
+    line-height: 1.4rem;
+    font-size: 14px;
+    --color-heading-numbering: rgb(200, 200, 200);
+
+    --indentation: 3rem;
+    --color-nada: rgb(200, 200, 200);
+    --color-divider: rgb(200, 200, 200);
+    --color-lighter: rgb(160, 160, 160);
+    --color-boolean-border: rgb(230, 230, 230);
+
+    width: max-content;
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        --indentation: 1.5rem;
+    }
+}

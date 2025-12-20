@@ -9,6 +9,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import "./variables.css";
 import "./app.css";
 import { UserConfigurationProvider } from "~/object-viewer/UserConfigurationContext";
 import { versions, BASE_NAME_URL_PREFIX } from "~/util/util";
