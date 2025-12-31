@@ -163,7 +163,10 @@ export interface HistoryItem {
     timestampLastView: Temporal.Instant;
 }
 
+export type ArithmeticAggregationType = "numbers" | "string lengths";
+
 export interface ArithmeticAggregation {
+    type?: ArithmeticAggregationType;
     items?: number;
     min?: number;
     max?: number;

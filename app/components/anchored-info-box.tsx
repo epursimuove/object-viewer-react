@@ -8,12 +8,14 @@ export function AnchoredInfoBox({
     children,
     type = "info",
     tag,
+    subTag,
 }: {
     labelAnchor: string | JSX.Element;
     textContent?: string;
     children?: ReactNode;
     type?: "info" | "warning" | "error";
     tag?: string;
+    subTag?: string;
 }) {
     counter++;
     return (
@@ -30,6 +32,8 @@ export function AnchoredInfoBox({
                     <div>{tag}</div>
                     {/* <div>{type}</div> */}
                 </div>
+
+                <div className="info-box-subtag">{subTag}</div>
 
                 <div>{children ? children : textContent}</div>
             </div>

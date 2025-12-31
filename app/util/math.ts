@@ -1,9 +1,12 @@
-import type { ArithmeticAggregation } from "~/types";
+import type { ArithmeticAggregation, ArithmeticAggregationType } from "~/types";
 
 const maxNumberOfDecimals = (n: number, numberOfDecimals = 2): number =>
     Math.round(n * Math.pow(10, numberOfDecimals)) / Math.pow(10, numberOfDecimals);
 
-export const calculateAggregations = (numbers: number[]): ArithmeticAggregation => {
+export const calculateAggregations = (
+    numbers: number[],
+    type: ArithmeticAggregationType = "numbers"
+): ArithmeticAggregation => {
     const numberOfItems: number = numbers.length;
     if (numberOfItems === 0) {
         return {};
@@ -16,7 +19,7 @@ export const calculateAggregations = (numbers: number[]): ArithmeticAggregation 
     const mean: number = maxNumberOfDecimals(sum / numberOfItems);
     const median: number = maxNumberOfDecimals(calculateMedian(sortedValues));
 
-    return { items: numberOfItems, min, max, mean, median, sum };
+    return { type, items: numberOfItems, min, max, mean, median, sum };
 };
 
 const calculateMedian = (numbers: number[]): number => {

@@ -14,6 +14,7 @@ export function ArithmeticAggregation({
         <AnchoredInfoBox
             labelAnchor={labelAnchor}
             tag="Aggregation"
+            subTag={arithmeticAggregation.type}
             textContent={prettifyArithmeticAggregation(arithmeticAggregation)}
         />
     );

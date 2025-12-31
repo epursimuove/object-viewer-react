@@ -88,7 +88,7 @@ function calculateAggregationsForColumns(
                         commonPropertyTypeAncestorForColumns[index]
                     )
                 ) {
-                    return calculateAggregations(cellValues as number[]);
+                    return calculateAggregations(cellValues as number[], "numbers");
                 } else if (
                     arrayTypeOriginal === "string" &&
                     !excludedAggregationStringPropertyTypes.includes(
@@ -96,7 +96,8 @@ function calculateAggregationsForColumns(
                     )
                 ) {
                     return calculateAggregations(
-                        (cellValues as string[]).map((s: string) => s.length)
+                        (cellValues as string[]).map((s: string) => s.length),
+                        "string lengths"
                     );
                 }
             }

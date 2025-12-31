@@ -420,7 +420,10 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                         (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
                     ) as number[];
 
-                    const aggregation: ArithmeticAggregation = calculateAggregations(values);
+                    const aggregation: ArithmeticAggregation = calculateAggregations(
+                        values,
+                        "numbers"
+                    );
                     currentObjectNode.arithmeticAggregation = aggregation;
                 } else if (
                     arrayTypeOriginal === "string" &&
@@ -433,7 +436,8 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                     ) as string[];
 
                     const aggregation: ArithmeticAggregation = calculateAggregations(
-                        values.map((s: string) => s.length)
+                        values.map((s: string) => s.length),
+                        "string lengths"
                     );
 
                     currentObjectNode.arithmeticAggregation = aggregation;

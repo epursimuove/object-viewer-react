@@ -460,6 +460,11 @@ table {
             justify-content: space-between;
             gap: 2rem;
         }
+
+        & .info-box-subtag {
+            color: var(--color-lighter);
+            font-size: 0.8rem;
+        }
     }
 
     .info-box-anchor:hover + .info-box {
