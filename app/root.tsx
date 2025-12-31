@@ -14,7 +14,7 @@ import "./app.css";
 import { UserConfigurationProvider } from "~/object-viewer/UserConfigurationContext";
 import { versions, BASE_NAME_URL_PREFIX } from "~/util/util";
 import { HistoryContextProvider } from "./object-viewer/HistoryContext";
-import { prettifiedBuildTime } from "./util/dateAndTime";
+import { currentYear, prettifiedBuildTime } from "./util/dateAndTime";
 
 // export const links: Route.LinksFunction = () => [
 //   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -81,7 +81,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     </div>
                     <div>Built: {prettifiedBuildTime}</div>
                     <div>
-                        Copyright &copy; 2025{" "}
+                        Copyright &copy; 2025-{currentYear}{" "}
                         <a href="https://anders.nemonisimors.com">Anders Gustafson</a> (
                         <a href="https://www.nemonisimors.com">www.nemonisimors.com</a>). All rights
                         reserved.

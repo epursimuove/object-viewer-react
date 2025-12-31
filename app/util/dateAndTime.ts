@@ -7,6 +7,9 @@ const getNow = (): Temporal.Instant => Temporal.Now.instant();
 
 export const now: Temporal.Instant = getNow();
 
+export const currentYear: string = `${Temporal.Now.plainDateISO("UTC").toString().slice(0, 4)}`;
+// TODO NOT SUPPORTED YET export const currentYear: string = `${Temporal.Now.plainDateISO("UTC").year}`;
+
 const buildTime: Temporal.Instant = Temporal.Instant.from(__BUILD_TIME__);
 
 export const prettifiedBuildTime: string = buildTime.toString().slice(0, 16) + "Z";
