@@ -1,7 +1,7 @@
 import type { DisplayRow } from "~/types";
 import "../object-viewer/object-viewer.css";
 import { useUserConfigurationContext } from "~/object-viewer/UserConfigurationContext";
-import type { SyntheticEvent } from "react";
+import type { JSX, SyntheticEvent } from "react";
 import { ObjectPropertyValue } from "~/components/object-property-value";
 import { AnchoredInfoBox } from "./anchored-info-box";
 import { containsExtraSpaces, prettifyArithmeticAggregation } from "~/util/util";
@@ -45,7 +45,6 @@ export function ObjectViewerRow({
         displayRow.propertyTypeEnhanced !== displayRow.propertyTypeOriginal;
 
     const rowItemCssClasses: string = `
-        row-item-wrapper
          ${
              displayRow.propertyTypeEnhanced === "object" && displayRow.propertyValue !== null
                  ? "recursive-structure object-header"
@@ -60,9 +59,35 @@ export function ObjectViewerRow({
 
     const propertyNameContainsExtraSpaces = containsExtraSpaces(displayRow.propertyName);
 
+    function createConvenientIdentifierForArrayAndObject(): JSX.Element | null {
+        if (showIdentifyingValues && displayRow.convenientIdentifierWhenCollapsed) {
+            const label: string = isArray
+                ? `${displayRow.convenientIdentifierWhenCollapsed}`
+                : isObject
+                  ? `<${displayRow.convenientIdentifierWhenCollapsed}>`
+                  : `?¿?`;
+
+            if (isArray || isObject) {
+                if (displayRow.arithmeticAggregation) {
+                    return (
+                        <ArithmeticAggregation
+                            labelAnchor={label}
+                            arithmeticAggregation={displayRow.arithmeticAggregation}
+                        />
+                    );
+                } else {
+                    return <>{label}</>;
+                }
+            } else {
+                throw new Error("Illegal state?!?"); // TODO Is this else-block needed?
+            }
+        }
+        return null;
+    }
+
     return (
         <div
-            className={rowItemCssClasses}
+            className={`row-item-wrapper ${rowItemCssClasses}`}
             onClick={
                 displayRow.hasChildren
                     ? (event) => toggleRow(displayRow.rowNumber, event)
@@ -135,20 +160,7 @@ export function ObjectViewerRow({
                 </div>
             ) : (
                 <div className="convenient-identifier">
-                    {showIdentifyingValues &&
-                        displayRow.convenientIdentifierWhenCollapsed &&
-                        (displayRow.propertyTypeEnhanced === "array" ? (
-                            displayRow.arithmeticAggregation ? (
-                                <ArithmeticAggregation
-                                    labelAnchor={displayRow.convenientIdentifierWhenCollapsed}
-                                    arithmeticAggregation={displayRow.arithmeticAggregation}
-                                />
-                            ) : (
-                                <>{displayRow.convenientIdentifierWhenCollapsed}</>
-                            )
-                        ) : (
-                            <>&lt;{displayRow.convenientIdentifierWhenCollapsed}&gt;</>
-                        ))}
+                    {createConvenientIdentifierForArrayAndObject()}
                 </div>
             )}
 

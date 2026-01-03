@@ -476,7 +476,40 @@ export const exampleObject: {} = {
                 ],
             },
         },
-        "2.6 - Misc": {
+        "2.6 - Arithmetic aggregation": {
+            mathAndPhysics: [
+                {
+                    x: 50,
+                    y: 60,
+                    z: 70,
+                },
+                {
+                    x: -90,
+                    y: 450,
+                },
+                {
+                    depth: 50,
+                    width: 60,
+                    height: 70,
+                },
+            ],
+            texts: {
+                first: "Something",
+                second: "is going",
+                third: "on",
+            },
+            integers: {
+                one: 1,
+                two: 2,
+            },
+            semanticVersioning: {
+                frontend: "3.25.129",
+                backend: "19.2.0",
+                database: "1.0.44",
+            },
+            myIntegerArray: [123, 246],
+        },
+        "2.7 - Misc": {
             flights: [
                 {
                     from: {
@@ -622,7 +655,7 @@ export const exampleObject: {} = {
                 },
             ],
         },
-        "2.7 - Gotchas": {
+        "2.8 - Gotchas": {
             evilPropertiesObject: {
                 "[0]": true,
                 "[1]": false,

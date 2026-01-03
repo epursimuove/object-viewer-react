@@ -171,14 +171,28 @@ export default function DocumentationPage() {
             <h2>Arithmetic aggregation</h2>
 
             <p>
-                For some arrays, convenient aggregated values (number of <em>items</em>,{" "}
+                For some arrays and objects, convenient aggregated values (number of <em>items</em>,{" "}
                 <em>sum</em>, <em>min</em>, <em>max</em>, <em>mean</em> and <em>median</em>) are
                 calculated automatically for you.
             </p>
 
             <p>
-                These values are displayed in a popup, when you hover over the <code>number[]</code>{" "}
-                or <code>string[]</code> labels.
+                For objects where <em>all</em> the properties are of the same type, either{" "}
+                <code>string</code> or <code>number</code>, we can calculate aggregation information
+                in the same way as for arrays.
+            </p>
+
+            <p>
+                These values are displayed in a popup, when you hover over the convenient
+                identifiers in the rows for an array or object. For an array it is often{" "}
+                <code>number[]</code> or <code>string[]</code> labels. For an object those labels
+                contain
+                <em>"All properties of type XXX"</em>.
+            </p>
+
+            <p>
+                There should be at least two items in the array/object in order to calculate
+                aggregation values.
             </p>
 
             <h3>Numbers</h3>
@@ -187,6 +201,8 @@ export default function DocumentationPage() {
                 Support for arrays of type <code>number[]</code> (except when{" "}
                 <code>HTTPStatus[]</code> or <code>Zero[]</code>)
             </p>
+
+            <p>Support for those same types (and exceptions) for objects.</p>
 
             <h3>Strings</h3>
 
@@ -199,6 +215,8 @@ export default function DocumentationPage() {
                 <code>HTTPMethod[]</code>, <code>LocalDate[]</code>, <code>LocalTime[]</code>,{" "}
                 <code>Timestamp[]</code>, <code>CountryCode[]</code> or <code>Locale[]</code>).
             </p>
+
+            <p>Support for those same types (and exceptions) for objects.</p>
 
             <h2>History of objects</h2>
 

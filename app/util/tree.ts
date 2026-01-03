@@ -275,7 +275,10 @@ function decideDescendantsAndDepthBelow(currentObjectNode: ObjectNode) {
 }
 
 function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
-    if (currentObjectNode.nodeType !== "leaf") {
+    const isObject = currentObjectNode.nodeType === "object";
+    const isArray = currentObjectNode.nodeType === "array";
+
+    if (isArray || isObject) {
         debug(
             "currentObjectNode.propertyName",
             currentObjectNode.propertyName,
@@ -370,7 +373,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
             currentObjectNode.convenientIdentifierWhenCollapsed = identifyingValueParts.join(", ");
         }
 
-        if (currentObjectNode.nodeType === "array") {
+        if (isArray || isObject) {
             const typeOriginalOfItems: Set<PropertyTypeOriginal> = new Set(
                 Object.values(currentObjectNode.containedProperties).map(
                     (objectTree: ObjectTree) => objectTree.propertyTypeOriginal
@@ -378,23 +381,27 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
             );
 
             if (typeOriginalOfItems.size === 1) {
+                // Variables arrayTypeOriginal and arrayTypeToDisplay are used for both arrays and objects.
                 const arrayTypeOriginal: PropertyTypeOriginal = [...typeOriginalOfItems][0];
 
                 let arrayTypeToDisplay: PropertyTypeOriginal | PropertyTypeEnhanced =
                     arrayTypeOriginal;
 
-                if (arrayTypeOriginal === "string" || arrayTypeOriginal === "number") {
+                const containsNumbers = arrayTypeOriginal === "number";
+                const containsStrings = arrayTypeOriginal === "string";
+
+                if (containsStrings || containsNumbers) {
                     const typeEnhancedOfItems: Set<PropertyTypeEnhanced> = new Set(
                         Object.values(currentObjectNode.containedProperties).map(
                             (objectTree: ObjectTree) => objectTree.propertyTypeEnhanced
                         )
                     );
 
-                    if (arrayTypeOriginal === "string") {
+                    if (containsStrings) {
                         if (typeEnhancedOfItems.size === 1) {
                             arrayTypeToDisplay = [...typeEnhancedOfItems][0];
                         }
-                    } else if (arrayTypeOriginal === "number") {
+                    } else if (containsNumbers) {
                         if (typeEnhancedOfItems.size === 1) {
                             arrayTypeToDisplay = [...typeEnhancedOfItems][0];
                         } /*else if (typeEnhancedOfItems.size === 2) {
@@ -408,40 +415,76 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                     }
                 }
 
-                currentObjectNode.convenientIdentifierWhenCollapsed = `${arrayTypeToDisplay}[]`;
+                trace(
+                    `currentObjectNode.convenientIdentifierWhenCollapsed BEFORE`,
+                    currentObjectNode.convenientIdentifierWhenCollapsed
+                );
 
-                if (
-                    arrayTypeOriginal === "number" &&
-                    !excludedAggregationNumberPropertyTypes.includes(arrayTypeToDisplay)
-                ) {
-                    const values: number[] = Object.values(
-                        currentObjectNode.containedProperties
-                    ).map(
-                        (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
-                    ) as number[];
+                const atLeastTwoItems =
+                    Object.keys(currentObjectNode.containedProperties).length >= 2;
 
-                    const aggregation: ArithmeticAggregation = calculateAggregations(
-                        values,
-                        "numbers"
-                    );
-                    currentObjectNode.arithmeticAggregation = aggregation;
+                if (isArray) {
+                    currentObjectNode.convenientIdentifierWhenCollapsed = `${arrayTypeToDisplay}[]`;
                 } else if (
-                    arrayTypeOriginal === "string" &&
-                    !excludedAggregationStringPropertyTypes.includes(arrayTypeToDisplay)
+                    isObject &&
+                    atLeastTwoItems &&
+                    arrayTypeToDisplay !== "object" // Not interested in objects containing sub-objects here.
                 ) {
-                    const values: string[] = Object.values(
-                        currentObjectNode.containedProperties
-                    ).map(
-                        (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
-                    ) as string[];
-
-                    const aggregation: ArithmeticAggregation = calculateAggregations(
-                        values.map((s: string) => s.length),
-                        "string lengths"
-                    );
-
-                    currentObjectNode.arithmeticAggregation = aggregation;
+                    if (currentObjectNode.convenientIdentifierWhenCollapsed === undefined) {
+                        currentObjectNode.convenientIdentifierWhenCollapsed = `All properties of type ${arrayTypeToDisplay}`;
+                    } else {
+                        currentObjectNode.convenientIdentifierWhenCollapsed += ` (All properties of type ${arrayTypeToDisplay})`;
+                    }
                 }
+
+                trace(
+                    `currentObjectNode.convenientIdentifierWhenCollapsed AFTER`,
+                    currentObjectNode.convenientIdentifierWhenCollapsed
+                );
+
+                trace(`atLeastTwoItems`, atLeastTwoItems);
+
+                if (atLeastTwoItems) {
+                    if (
+                        containsNumbers &&
+                        !excludedAggregationNumberPropertyTypes.includes(arrayTypeToDisplay)
+                    ) {
+                        const values: number[] = Object.values(
+                            currentObjectNode.containedProperties
+                        ).map(
+                            (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
+                        ) as number[];
+
+                        const aggregation: ArithmeticAggregation = calculateAggregations(
+                            values,
+                            "numbers"
+                        );
+                        currentObjectNode.arithmeticAggregation = aggregation;
+                    } else if (
+                        containsStrings &&
+                        !excludedAggregationStringPropertyTypes.includes(arrayTypeToDisplay)
+                    ) {
+                        const values: string[] = Object.values(
+                            currentObjectNode.containedProperties
+                        ).map(
+                            (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
+                        ) as string[];
+
+                        const aggregation: ArithmeticAggregation = calculateAggregations(
+                            values.map((s: string) => s.length),
+                            "string lengths"
+                        );
+
+                        currentObjectNode.arithmeticAggregation = aggregation;
+                    }
+                }
+
+                trace(
+                    `currentObjectNode.arithmeticAggregation`,
+                    Object.keys(currentObjectNode.containedProperties).length,
+                    arrayTypeOriginal,
+                    currentObjectNode.arithmeticAggregation
+                );
             }
         }
     }
