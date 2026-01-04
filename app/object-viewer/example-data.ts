@@ -202,7 +202,20 @@ export const exampleObject: {} = {
             ],
         },
 
-        "1.8 - Misc": {},
+        "1.8 - Arithmetic aggregation": {
+            _README:
+                "For some types of arrays and objects, aggregated information can be calculated. Either when all the items are numbers or when they all are strings.",
+            randomNumbers: [42, 4711, -12, 3.14, 0],
+            ages: [25, 37, 12, 64],
+            fruits: ["apple", "banana", "pear"],
+            user: { firstName: "Diana", lastName: "Johnson", timeZone: "Asia/Kolkata" },
+            dimensions: {
+                width: 1000,
+                height: 2000,
+            },
+        },
+
+        "1.9 - Misc": {},
     },
     "2 - Examples": {
         "2.1 - Person": {

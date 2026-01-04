@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type SyntheticEvent } from "react";
 import { useLog } from "~/log-manager/LogManager";
+import { createFocusEnablerForSection } from "~/util/eventListeners";
 
 const { info, trace } = useLog("lines-section.tsx");
 
@@ -44,6 +45,13 @@ export function LinesSection({
     const [gotoLine, setGotoLine] = useState<string>("");
     const [gotoLineModified, setGotoLineModified] = useState<boolean>(false);
     const gotoLineModifiedCallback = useRef<null | (() => void)>(null);
+
+    const linesSectionRef = useRef<HTMLDetailsElement | null>(null);
+    const inputElementRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        createFocusEnablerForSection(linesSectionRef, inputElementRef);
+    }, []);
 
     useEffect(() => {
         info(`gotoLine modified`, gotoLine);
@@ -113,12 +121,14 @@ export function LinesSection({
     }
 
     return (
-        <details open>
+        <details ref={linesSectionRef} open>
             <summary accessKey="L">Lines</summary>
 
             <div>
                 <label htmlFor="gotoLine">Mark line(s) and scroll to line</label>
                 <input
+                    autoFocus
+                    ref={inputElementRef}
                     type="text"
                     name="gotoLine"
                     id="gotoLine"

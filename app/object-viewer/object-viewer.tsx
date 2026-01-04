@@ -286,6 +286,13 @@ export function ObjectViewer() {
                             />
                         </section>
 
+                        <section id="goto-line">
+                            <LinesSection
+                                totalNumberOfRows={totalNumberOfRows}
+                                expandAll={expandAll}
+                            />
+                        </section>
+
                         <section id="history">
                             <HistorySection
                                 handleRetrievalFromHistory={handleRetrievalFromHistory}
@@ -298,13 +305,6 @@ export function ObjectViewer() {
 
                         <section id="filters">
                             <FilterSection displayRows={displayRows} />
-                        </section>
-
-                        <section id="goto-line">
-                            <LinesSection
-                                totalNumberOfRows={totalNumberOfRows}
-                                expandAll={expandAll}
-                            />
                         </section>
 
                         <section id="statistics">

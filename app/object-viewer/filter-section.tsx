@@ -1,8 +1,9 @@
-import { Fragment, useMemo, useState, type ChangeEvent, type JSX } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState, type ChangeEvent, type JSX } from "react";
 import { useUserConfigurationContext } from "./UserConfigurationContext";
 import type { DisplayRow, PropertyTypeEnhanced } from "~/types";
 import { numberOfDigits } from "~/util/util";
 import { SettingsCheckbox } from "~/components/settings-checkbox";
+import { createFocusEnablerForSection } from "~/util/eventListeners";
 
 export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
     const {
@@ -14,6 +15,13 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
     } = useUserConfigurationContext();
 
     const [sortOnFrequency, setSortOnFrequency] = useState<boolean>(false);
+
+    const filterSectionRef = useRef<HTMLDetailsElement | null>(null);
+    const inputElementRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        createFocusEnablerForSection(filterSectionRef, inputElementRef);
+    }, []);
 
     const delta = (
         maxLength: number,
@@ -91,7 +99,7 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
     };
 
     return (
-        <details open className={`${filtersActivated && "filters-active"}`}>
+        <details ref={filterSectionRef} open className={`${filtersActivated && "filters-active"}`}>
             <summary accessKey="F">Filters</summary>
 
             <div className="button-row">
@@ -103,6 +111,7 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
             <div>
                 <label htmlFor="filterOnProperty">Property (name/value)</label>
                 <input
+                    ref={inputElementRef}
                     type="text"
                     name="filterOnProperty"
                     id="filterOnProperty"

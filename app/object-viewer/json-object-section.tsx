@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLog } from "~/log-manager/LogManager";
 import type { PropertyValue } from "~/types";
 import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
+import { createFocusEnablerForSection } from "~/util/eventListeners";
 
 const { debug, error, info } = useLog("json-object-section.tsx");
 
@@ -16,8 +17,8 @@ export function JsonObjectSection({
     setOriginalObjectAsText: React.Dispatch<React.SetStateAction<string>>;
     resetFilters: () => void;
 }) {
-    const jsonObjectSection = useRef<HTMLDetailsElement | null>(null);
-    const jsonObjectTextArea = useRef<HTMLTextAreaElement | null>(null);
+    const jsonObjectSectionRef = useRef<HTMLDetailsElement | null>(null);
+    const jsonObjectTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const { savedHistory, setSavedHistory, clearSavedHistory } = useHistoryContext();
 
@@ -51,33 +52,17 @@ export function JsonObjectSection({
     }
 
     useEffect(() => {
-        const jsonObjectSectionDetailsElement = jsonObjectSection.current;
-        const jsonObjectTextAreaElement = jsonObjectTextArea.current;
-
-        if (jsonObjectSectionDetailsElement && jsonObjectTextAreaElement) {
-            const handleToggle = () => {
-                if (jsonObjectSectionDetailsElement.open) {
-                    jsonObjectTextAreaElement.focus();
-                }
-            };
-
-            jsonObjectSectionDetailsElement.addEventListener("toggle", handleToggle);
-
-            // Cleanup on component unmount.
-            return () => {
-                jsonObjectSectionDetailsElement.removeEventListener("toggle", handleToggle);
-            };
-        }
+        createFocusEnablerForSection(jsonObjectSectionRef, jsonObjectTextAreaRef);
     }, []);
 
     return (
-        <details ref={jsonObjectSection} open>
+        <details ref={jsonObjectSectionRef} open>
             <summary accessKey="J">JSON object</summary>
 
             <div className={"json-object"}>
                 <label htmlFor="originalObject">JSON object/array</label>
                 <textarea
-                    ref={jsonObjectTextArea}
+                    ref={jsonObjectTextAreaRef}
                     name="originalObject"
                     id="originalObject"
                     rows={5}
