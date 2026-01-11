@@ -338,9 +338,7 @@ function translateCurrencyCodeToEnglishName(currencyCode: string) {
 }
 
 function currencyExample(currencyCode: string) {
-    return new Intl.NumberFormat("en-GB", { style: "currency", currency: currencyCode }).format(
-        100
-    );
+    return new Intl.NumberFormat("en", { style: "currency", currency: currencyCode }).format(100);
 }
 
 export const buildMetaData = (
