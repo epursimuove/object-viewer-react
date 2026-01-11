@@ -219,6 +219,67 @@ export default function DocumentationPage() {
 
             <p>Support for those same types (and exceptions) for objects.</p>
 
+            <h2>Settings</h2>
+
+            <p>
+                The <em>Settings</em> section handles the following.
+            </p>
+
+            <h3>Indent object tree</h3>
+
+            <p>
+                Handles the horizontal indentation, where each child is indented a bit from its
+                parent.
+            </p>
+
+            <h3>Show (enhanced) property type</h3>
+
+            <p>Displays the enhanced property type for a property value.</p>
+
+            <h3>Show meta data for leaves</h3>
+
+            <p>
+                Displays extra information that has been assembled for a specific property. For
+                example, number of characters for a string, days ago for a timestamp, name
+                corresponding to a country code.
+            </p>
+
+            <h3>Show meta data for nodes</h3>
+
+            <p>
+                Displays extra information that has been assembled for a node. Level/depth for
+                current node, depth below current node and number of descendants.
+            </p>
+
+            <h3>Show identifying values</h3>
+
+            <p>
+                Makes it easier to distinguish different objects/arrays and give you valuable
+                summary information about contained properties. For example, names, idenfiers.
+            </p>
+
+            <h3>Show 'nada' (falsy) values</h3>
+
+            <p>Displays values like zero, false, null, undefined, empty string.</p>
+
+            <h3>Show leaves (i.e. primitive values)</h3>
+
+            <p>
+                Displays the primitive properties. Otherwise only the wrapping nodes (objects and
+                arrays) are displayed.
+            </p>
+
+            <h3>Expand all</h3>
+
+            <p>Expand all rows in the object tree.</p>
+
+            <h3>Collapse (almost) all</h3>
+
+            <p>
+                Collapse rows in the object tree. The immediate sub-objects to the root will be
+                visible also.
+            </p>
+
             <h2>History of objects</h2>
 
             <p>

@@ -599,7 +599,7 @@ export const exampleObject: {} = {
             theUser: {
                 username: "angus",
             },
-            currencies: ["SEK", "USD", "DKK", "JPY"],
+            currencies: ["SEK", "USD", "DKK", "JPY", "GBP", "AUD", "CHF"],
             phoneNumbers: ["+46701112223", "+460709876543"],
             numbers: [0, 0, 0, 0],
             booleans: [false, false, true],

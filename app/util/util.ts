@@ -337,6 +337,12 @@ function translateCurrencyCodeToEnglishName(currencyCode: string) {
     return currencyDisplay.of(currencyCode);
 }
 
+function currencyExample(currencyCode: string) {
+    return new Intl.NumberFormat("en-GB", { style: "currency", currency: currencyCode }).format(
+        100
+    );
+}
+
 export const buildMetaData = (
     propertyTypeEnhanced: PropertyTypeEnhanced,
     propertyValue: PropertyValue
@@ -361,7 +367,7 @@ export const buildMetaData = (
         const countryCode: string = propertyValue as string;
         return `${getFlagEmoji(countryCode)} ${getRegionName(countryCode)}`;
     } else if (propertyTypeEnhanced === "Currency") {
-        return `${translateCurrencyCodeToEnglishName(propertyValue as string)}`;
+        return `${translateCurrencyCodeToEnglishName(propertyValue as string)} - ${currencyExample(propertyValue as string)}`;
     } else if (propertyTypeEnhanced === "Locale") {
         const locale: string = propertyValue as string;
         const languageCode: string = locale.slice(0, 2);
