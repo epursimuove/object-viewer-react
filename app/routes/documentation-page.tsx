@@ -213,7 +213,8 @@ export default function DocumentationPage() {
             <p>
                 Support for arrays of type <code>string[]</code> (except when{" "}
                 <code>HTTPMethod[]</code>, <code>LocalDate[]</code>, <code>LocalTime[]</code>,{" "}
-                <code>Timestamp[]</code>, <code>CountryCode[]</code> or <code>Locale[]</code>).
+                <code>Timestamp[]</code>, <code>CountryCode[]</code>, <code>Currency[]</code> or{" "}
+                <code>Locale[]</code>).
             </p>
 
             <p>Support for those same types (and exceptions) for objects.</p>

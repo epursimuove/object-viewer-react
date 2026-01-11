@@ -45,6 +45,8 @@ export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
 
 export const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
 
+export const regExpCurrency: RegExp = /^[A-Z]{3}$/;
+
 export const regExpLocale: RegExp = /^[a-z]{2}[_-][A-Z]{2}$/;
 
 export const regExpEmailAddress: RegExp =
@@ -84,6 +86,13 @@ const isPhoneNumber = (s: string): boolean => regExpPhoneNumber.test(s);
 const potentialCountryCode = (s: string): boolean => {
     const isPotentialCountryCode: boolean = regExpCountryCode.test(s);
     return isPotentialCountryCode;
+};
+
+const currencies = Intl.supportedValuesOf("currency");
+
+const isCurrency = (s: string): boolean => {
+    const isCurrency: boolean = regExpCurrency.test(s) && currencies.includes(s);
+    return isCurrency;
 };
 
 const potentialLocale = (s: string): boolean => {
@@ -264,29 +273,31 @@ export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyT
                               ? "CountryCode"
                               : potentialLocale(propertyValueAsString)
                                 ? "Locale"
-                                : potentialEmailAddress(propertyValueAsString)
-                                  ? "EmailAddress"
-                                  : isURL(propertyValueAsString)
-                                    ? "URL"
-                                    : isColorRGB(propertyValueAsString)
-                                      ? "ColorRGB"
-                                      : isSemanticVersioning(propertyValueAsString)
-                                        ? "SemVer"
-                                        : isIPv4Address(propertyValueAsString)
-                                          ? "IPv4"
-                                          : isIPv6Address(propertyValueAsString)
-                                            ? "IPv6"
-                                            : isPhoneNumber(propertyValueAsString)
-                                              ? "PhoneNumber"
-                                              : isHTTPMethod(propertyValueAsString)
-                                                ? "HTTPMethod"
-                                                : isAbsolutePath(propertyValueAsString)
-                                                  ? "AbsolutePath"
-                                                  : isRelativePath(propertyValueAsString)
-                                                    ? "RelativePath"
-                                                    : isRegularExpression(propertyValueAsString)
-                                                      ? "RegExp"
-                                                      : propertyTypeOriginal;
+                                : isCurrency(propertyValueAsString)
+                                  ? "Currency"
+                                  : potentialEmailAddress(propertyValueAsString)
+                                    ? "EmailAddress"
+                                    : isURL(propertyValueAsString)
+                                      ? "URL"
+                                      : isColorRGB(propertyValueAsString)
+                                        ? "ColorRGB"
+                                        : isSemanticVersioning(propertyValueAsString)
+                                          ? "SemVer"
+                                          : isIPv4Address(propertyValueAsString)
+                                            ? "IPv4"
+                                            : isIPv6Address(propertyValueAsString)
+                                              ? "IPv6"
+                                              : isPhoneNumber(propertyValueAsString)
+                                                ? "PhoneNumber"
+                                                : isHTTPMethod(propertyValueAsString)
+                                                  ? "HTTPMethod"
+                                                  : isAbsolutePath(propertyValueAsString)
+                                                    ? "AbsolutePath"
+                                                    : isRelativePath(propertyValueAsString)
+                                                      ? "RelativePath"
+                                                      : isRegularExpression(propertyValueAsString)
+                                                        ? "RegExp"
+                                                        : propertyTypeOriginal;
             break;
 
         default:
@@ -318,6 +329,14 @@ function getLanguageName(languageCode: string): string {
     return languageNames.of(languageCode) || "?";
 }
 
+const currencyDisplay = new Intl.DisplayNames(["en"], {
+    type: "currency",
+});
+
+function translateCurrencyCodeToEnglishName(currencyCode: string) {
+    return currencyDisplay.of(currencyCode);
+}
+
 export const buildMetaData = (
     propertyTypeEnhanced: PropertyTypeEnhanced,
     propertyValue: PropertyValue
@@ -338,23 +357,19 @@ export const buildMetaData = (
         ].includes(propertyTypeEnhanced)
     ) {
         return `${(propertyValue as string).length} characters`;
-    }
-
-    if (propertyTypeEnhanced === "CountryCode") {
+    } else if (propertyTypeEnhanced === "CountryCode") {
         const countryCode: string = propertyValue as string;
         return `${getFlagEmoji(countryCode)} ${getRegionName(countryCode)}`;
-    }
-
-    if (propertyTypeEnhanced === "Locale") {
+    } else if (propertyTypeEnhanced === "Currency") {
+        return `${translateCurrencyCodeToEnglishName(propertyValue as string)}`;
+    } else if (propertyTypeEnhanced === "Locale") {
         const locale: string = propertyValue as string;
         const languageCode: string = locale.slice(0, 2);
         const countryCode: string = locale.slice(-2);
         return `${getLanguageName(languageCode)} (in ${getFlagEmoji(countryCode)} ${getRegionName(
             countryCode
         )})`;
-    }
-
-    if (
+    } else if (
         propertyTypeEnhanced === "Timestamp" ||
         propertyTypeEnhanced === "LocalDate" ||
         propertyTypeEnhanced === "LocalTime" ||
@@ -372,9 +387,7 @@ export const buildMetaData = (
         } else if (propertyTypeEnhanced === "Epoch") {
             return durationRelativeToNowForEpoch(propertyValue as number);
         }
-    }
-
-    if (propertyTypeEnhanced === "ColorRGB") {
+    } else if (propertyTypeEnhanced === "ColorRGB") {
         const colorCode: string = propertyValue as string;
         if (colorCode.startsWith("#")) {
             const { red, green, blue } = splitIntoColorParts(colorCode);
@@ -385,9 +398,7 @@ export const buildMetaData = (
 
             return `#${hexRGB}`;
         }
-    }
-
-    if (propertyTypeEnhanced === "HTTPStatus") {
+    } else if (propertyTypeEnhanced === "HTTPStatus") {
         return httpStatusCodes.get(propertyValue as number);
     }
 };

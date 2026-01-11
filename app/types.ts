@@ -21,6 +21,7 @@ export const enhancedPropertyTypes = [
     "BooleanTrue",
     "ColorRGB",
     "CountryCode",
+    "Currency",
     "EmailAddress",
     "EmptyString",
     "Epoch",

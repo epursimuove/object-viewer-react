@@ -21,6 +21,7 @@ import {
     regExpAbsolutePath,
     regExpArrayIndexString,
     regExpCountryCode,
+    regExpCurrency,
     regExpEmailAddress,
     regExpHexColorRGB,
     regExpLocale,
@@ -52,6 +53,7 @@ export const exampleObject: {} = {
                     timeZone: "America/New_York",
                     countryCode: "SE",
                     locale: "en_GB",
+                    currency: "EUR",
                     email: "john@doe.com",
                     url: "https://foo.com",
                     color: "#ff00ff",
@@ -597,6 +599,7 @@ export const exampleObject: {} = {
             theUser: {
                 username: "angus",
             },
+            currencies: ["SEK", "USD", "DKK", "JPY"],
             phoneNumbers: ["+46701112223", "+460709876543"],
             numbers: [0, 0, 0, 0],
             booleans: [false, false, true],
@@ -656,6 +659,7 @@ export const exampleObject: {} = {
                     },
                     misc: {
                         countryCode: regExpCountryCode.toString(),
+                        currency: regExpCurrency.toString(),
                         locale: regExpLocale.toString(),
                         emailAddress: regExpEmailAddress.toString(),
                         arrayIndex: regExpArrayIndexString.toString(),
