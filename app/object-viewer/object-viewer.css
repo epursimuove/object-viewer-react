@@ -463,3 +463,16 @@ form {
         gap: 1rem;
     }
 }
+
+.prettified-object-identifier {
+    font-family: Menlo, "Courier New", monospace;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 1rem;
+
+    .id {
+        font-weight: bold;
+    }
+}

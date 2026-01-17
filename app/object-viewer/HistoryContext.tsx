@@ -131,7 +131,7 @@ const clearHistoryInStorage = (): void => {
     localStorage.removeItem(storageKeyForHistory);
 };
 
-async function sha256(message: string) {
+export async function sha256(message: string) {
     // Encode the message as a Uint8Array.
     const messageBuffer = new TextEncoder().encode(message);
 
@@ -147,3 +147,12 @@ async function sha256(message: string) {
 
 // console.log("HEKKI", sha256("HEJ"));
 // sha256("HELLEL").then((value) => console.log("HRHEJR", value));
+
+// function foo(message: string) {
+//     sha256(message).then((sha256Code: string) => {
+//         console.log(`Found "${message}" →`, sha256Code);
+//     });
+//     console.log("Called");
+// }
+
+// foo("testing");

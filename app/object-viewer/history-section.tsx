@@ -1,8 +1,7 @@
 import type { HistoryItem } from "~/types";
-import { prettifySha256, saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
+import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { useLog } from "~/log-manager/LogManager";
-import { ColorIndicator } from "~/components/color-indicator";
-import { improveColor } from "~/util/util";
+import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
 
 const { debug } = useLog("history-section.tsx");
 
@@ -52,14 +51,7 @@ export function HistorySection({
                     >
                         <span className="index">{index + 1}</span>
 
-                        <span className="id">{prettifySha256(historyItem.id).toUpperCase()}</span>
-
-                        <ColorIndicator
-                            primaryColor={`#${improveColor(prettifySha256(historyItem.id, 6))}`}
-                            secondaryColor={`#${improveColor(
-                                prettifySha256(historyItem.id, 12).slice(0, 6)
-                            )}`}
-                        />
+                        <PrettifiedObjectIdentifier sha256Code={historyItem.id} />
                     </div>
                 ))}
 

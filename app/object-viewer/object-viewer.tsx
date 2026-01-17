@@ -12,7 +12,7 @@ import type {
     PropertyTypeEnhanced,
     PropertyValue,
 } from "~/types";
-import { prettifyJSON, versions } from "~/util/util";
+import { isEmpty, prettifyJSON, versions } from "~/util/util";
 import "../variables.css";
 import "./object-viewer.css";
 import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -39,6 +39,8 @@ import { JsonObjectSection } from "./json-object-section";
 import { TimeSection } from "./time-section";
 import { DisplayArrayAsTable } from "./display-array-as-table";
 import { CopableContent } from "~/components/CopableContent";
+import { sha256 } from "./HistoryContext";
+import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -78,14 +80,26 @@ export function ObjectViewer() {
 
     const [displayRows, setDisplayRows] = useState<DisplayRow[]>([]);
 
+    const [objectId, setObjectId] = useState<string | null>(null);
+
+    async function computeHash() {
+        const hash = await sha256(JSON.stringify(originalObject));
+        setObjectId(hash);
+    }
+
     useEffect(() => {
         info(`originalObject changed`, originalObject);
+        if (isEmpty(originalObject)) {
+            return;
+        }
 
         const objectTreeXXX: ObjectNode = convertObjectToTree(originalObject);
 
         const displayRowsXXX: DisplayRow[] = convertTreeToDisplayRows(objectTreeXXX);
 
         setDisplayRows(displayRowsXXX);
+
+        computeHash();
     }, [originalObject]); // Runs whenever `originalObject` changes
 
     useEffect(() => {
@@ -316,6 +330,16 @@ export function ObjectViewer() {
                     </form>
                 </details>
             </aside>
+
+            {objectId && (
+                <>
+                    <AnchoredInfoBox
+                        labelAnchor={<PrettifiedObjectIdentifier sha256Code={objectId} />}
+                        textContent="Convenient object identifier (used in History section)"
+                        type="info"
+                    />
+                </>
+            )}
 
             <details open={!displayTableAsDefault}>
                 <summary>

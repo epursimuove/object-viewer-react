@@ -648,3 +648,6 @@ export const excludedAggregationStringPropertyTypes: CommonPropertyTypeAncestor[
 ];
 
 export const unknownCommonPropertyTypeAncestor = "???";
+
+export const isEmpty = (object: Record<string, any>): boolean =>
+    Object.entries(object).length === 0;
