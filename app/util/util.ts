@@ -1,5 +1,6 @@
 import type {
     ArithmeticAggregation,
+    ArithmeticAggregationType,
     CommonPropertyTypeAncestor,
     ExtraSpaces,
     PropertyTypeEnhanced,
@@ -595,7 +596,11 @@ export const prettifyArithmeticAggregation = (
     arithmeticAggregation: ArithmeticAggregation
 ): string => {
     const largestNumber: number = Object.entries(arithmeticAggregation)
-        .map((item) => Math.abs(item[1]))
+        .filter(
+            ([_key, value]: [string, number | ArithmeticAggregationType]) =>
+                typeof value === "number"
+        )
+        .map(([_key, value]: [string, number]) => Math.abs(value))
         .reduce((previousNumber, currentNumber) => Math.max(previousNumber, currentNumber));
 
     const maxNumberOfIntegerDigits: number = getNumberOfIntegerDigits(largestNumber);
