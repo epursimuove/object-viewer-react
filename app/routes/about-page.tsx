@@ -29,7 +29,8 @@ export default function AboutPage() {
                 You automatically get helpful information about the actual data, which will help you
                 analyse, examine and understand the content and compare it to other objects. The{" "}
                 <em>NNM Object Viewer</em> can be of great help when fixing errors. You will most
-                certainly save a lot of time, when having to work with JSON data.
+                certainly save a lot of time, when having to work with JSON data, and also learn a
+                lot on the way.
             </p>
 
             <h2>Disclaimer</h2>
@@ -39,7 +40,7 @@ export default function AboutPage() {
                 liabilities for errors.
             </p>
 
-            <p>Best experience for me in November 2025 has been in the following browsers:</p>
+            <p>Best experience for me in January 2026 has been in the following browsers:</p>
 
             <ul>
                 <li>
@@ -48,10 +49,10 @@ export default function AboutPage() {
 
                 <ul>
                     <li>
-                        <em>Google Chrome</em> <var>142.0</var>
+                        <em>Google Chrome</em> <var>144.0</var>
                     </li>
                     <li>
-                        (<em>Firefox</em> <var>144.0</var>)
+                        (<em>Firefox</em> <var>147.0</var>)
                     </li>
                     <li>
                         (<em>Safari</em> <var>26.1</var>)
@@ -64,10 +65,10 @@ export default function AboutPage() {
 
                 <ul>
                     <li>
-                        <em>Firefox</em> <var>144.0</var>
+                        <em>Firefox</em> <var>147.0</var>
                     </li>
                     <li>
-                        <em>Google Chrome</em> <var>142.0</var>
+                        <em>Google Chrome</em> <var>143.0</var>
                     </li>
                 </ul>
             </ul>

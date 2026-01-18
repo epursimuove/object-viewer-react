@@ -4,6 +4,7 @@ import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 import { prettifyJSON, unknownCommonPropertyTypeAncestor } from "~/util/util";
 import { CopableContent } from "~/components/CopableContent";
 import { ColorIndicator } from "~/components/color-indicator";
+import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -294,10 +295,33 @@ export default function DocumentationPage() {
             </p>
 
             <ul>
-                <li>{<ColorIndicator primaryColor="red" secondaryColor="green" />}</li>
+                {/* <li>{<ColorIndicator primaryColor="red" secondaryColor="green" />}</li>
                 <li>{<ColorIndicator primaryColor="blue" secondaryColor="yellow" />}</li>
-                <li>{<ColorIndicator primaryColor="white" secondaryColor="black" />}</li>
+                <li>{<ColorIndicator primaryColor="white" secondaryColor="black" />}</li> */}
+                <li>{<PrettifiedObjectIdentifier sha256Code="1234567890ab" />}</li>
+                <li>{<PrettifiedObjectIdentifier sha256Code="abcdef123456" />}</li>
+                <li>{<PrettifiedObjectIdentifier sha256Code="9876543210ab" />}</li>
+                <li>{<PrettifiedObjectIdentifier sha256Code="123456123456" />}</li>
+                <li>{<PrettifiedObjectIdentifier sha256Code="654321654321" />}</li>
+                <li>{<PrettifiedObjectIdentifier sha256Code="883737263999" />}</li>
             </ul>
+
+            <p>
+                The characters in front are the last three hexadecimal characters from the hashes of
+                the objects. (The last 12 hexadecimal characters of a hash are used in the
+                calculation of the two colors.)
+            </p>
+
+            <p>
+                NB! As you can see from the examples, there may be duplicates, both for the color
+                markers and for the hexadecimal numbers. <em>This is intentional</em>, to avoid
+                having too many colors and characters, and in practice it will not cause a problem.
+            </p>
+
+            <p>
+                These convenient color markers are also used in the top of the page, to easily
+                identify the currently displayed JSON object.
+            </p>
 
             <h2>Filtering</h2>
 

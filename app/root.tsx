@@ -15,6 +15,7 @@ import { UserConfigurationProvider } from "~/object-viewer/UserConfigurationCont
 import { versions, BASE_NAME_URL_PREFIX } from "~/util/util";
 import { HistoryContextProvider } from "./object-viewer/HistoryContext";
 import { currentYear, prettifiedBuildTime } from "./util/dateAndTime";
+import { Timestamp } from "./components/timestamp";
 
 // export const links: Route.LinksFunction = () => [
 //   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -79,7 +80,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <div>
                         <em>NNM Object Viewer</em> <var>{versions.appVersion}</var>
                     </div>
-                    <div>Built: {prettifiedBuildTime}</div>
+                    <div>
+                        Built: <Timestamp timestamp={prettifiedBuildTime} />
+                    </div>
                     <div>
                         Copyright &copy; 2025-{currentYear}{" "}
                         <a href="https://anders.nemonisimors.com">Anders Gustafson</a> (
