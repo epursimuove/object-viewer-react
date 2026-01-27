@@ -1,10 +1,20 @@
-import { exampleArray, exampleArray2, exampleArray3 } from "~/object-viewer/example-data";
+import {
+    arithmeticAggregationNumberExamples,
+    arithmeticAggregationStringExamples,
+    exampleArray,
+    exampleArray2,
+    exampleArray3,
+} from "~/object-viewer/example-data";
 import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
 import { prettifyJSON, unknownCommonPropertyTypeAncestor } from "~/util/util";
 import { CopableContent } from "~/components/CopableContent";
 import { ColorIndicator } from "~/components/color-indicator";
 import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
+import { ArithmeticAggregation } from "~/components/arithmetic-aggregation";
+import { calculateAggregations } from "~/util/math";
+import { DisplayArrayAsTable } from "~/object-viewer/display-array-as-table";
+import { convertObjectToTree } from "~/util/tree";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -205,6 +215,21 @@ export default function DocumentationPage() {
 
             <p>Support for those same types (and exceptions) for objects.</p>
 
+            <h4>Examples</h4>
+
+            <p>Hover over the arrays of numbers below.</p>
+
+            <ul>
+                {arithmeticAggregationNumberExamples.map((numberArray: number[], index: number) => (
+                    <li key={index}>
+                        <ArithmeticAggregation
+                            labelAnchor={`[${numberArray.join(", ")}]`}
+                            arithmeticAggregation={calculateAggregations(numberArray, "numbers")}
+                        />
+                    </li>
+                ))}
+            </ul>
+
             <h3>Strings</h3>
 
             <p>
@@ -219,6 +244,24 @@ export default function DocumentationPage() {
             </p>
 
             <p>Support for those same types (and exceptions) for objects.</p>
+
+            <h4>Examples</h4>
+
+            <p>Hover over the arrays of strings below.</p>
+
+            <ul>
+                {arithmeticAggregationStringExamples.map((stringArray: string[], index: number) => (
+                    <li key={index}>
+                        <ArithmeticAggregation
+                            labelAnchor={`["${stringArray.join(`", "`)}"]`}
+                            arithmeticAggregation={calculateAggregations(
+                                stringArray.map((s: string) => s.length),
+                                "string lengths",
+                            )}
+                        />
+                    </li>
+                ))}
+            </ul>
 
             <h2>Settings</h2>
 
@@ -385,7 +428,7 @@ export default function DocumentationPage() {
                         key={originalPropertyType}
                         className={
                             ["bigint", "function", "symbol", "undefined"].includes(
-                                originalPropertyType
+                                originalPropertyType,
                             )
                                 ? "not-in-use"
                                 : ""
@@ -575,29 +618,62 @@ export default function DocumentationPage() {
 
             <p>
                 Here are some trivial examples of JSON data that will be displayed as a table. Copy
-                and paste into the <em>JSON object/array</em> textarea.
+                and paste into the <em>JSON object/array</em> textarea, if you want to try them
+                yourself.
             </p>
 
+            <p>
+                The example tables below are fully working with sortable columns and many hoverable
+                cells.
+            </p>
+
+            <h4>An array containing similar objects with depth 1</h4>
+
             <details>
-                <summary>An array containing similar objects with depth 1</summary>
+                <summary>The JSON data</summary>
 
                 <CopableContent label="JSON">{prettifyJSON(exampleArray)}</CopableContent>
             </details>
 
+            <p>The resulting table:</p>
+
+            <DisplayArrayAsTable
+                originalObject={exampleArray}
+                objectTree={convertObjectToTree(exampleArray)}
+            />
+
+            <h4>
+                An array containing objects (some similar, some different) that are deeper (and
+                therefore flattened before display)
+            </h4>
+
             <details>
-                <summary>
-                    An array containing objects (some similar, some different) that are deeper (and
-                    therefore flattened before display)
-                </summary>
+                <summary>The JSON data</summary>
 
                 <CopableContent label="JSON">{prettifyJSON(exampleArray2)}</CopableContent>
             </details>
 
+            <p>The resulting table:</p>
+
+            <DisplayArrayAsTable
+                originalObject={exampleArray2}
+                objectTree={convertObjectToTree(exampleArray2)}
+            />
+
+            <h4>A sparse array containing objects with different properties</h4>
+
             <details>
-                <summary>A sparse array containing objects with different properties</summary>
+                <summary>The JSON data</summary>
 
                 <CopableContent label="JSON">{prettifyJSON(exampleArray3)}</CopableContent>
             </details>
+
+            <p>The resulting table:</p>
+
+            <DisplayArrayAsTable
+                originalObject={exampleArray3}
+                objectTree={convertObjectToTree(exampleArray3)}
+            />
 
             <h2>Tips</h2>
 

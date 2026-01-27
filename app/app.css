@@ -531,3 +531,7 @@ select {
         font-weight: bold;
     }
 }
+
+.arithmetic-aggregation-block {
+    font-family: Menlo, "Courier New", monospace;
+}

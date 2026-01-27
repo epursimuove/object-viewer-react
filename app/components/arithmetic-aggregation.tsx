@@ -15,7 +15,10 @@ export function ArithmeticAggregation({
             labelAnchor={labelAnchor}
             tag="Aggregation"
             subTag={arithmeticAggregation.type}
-            textContent={prettifyArithmeticAggregation(arithmeticAggregation)}
-        />
+        >
+            <div className="arithmetic-aggregation-block">
+                {prettifyArithmeticAggregation(arithmeticAggregation)}
+            </div>
+        </AnchoredInfoBox>
     );
 }

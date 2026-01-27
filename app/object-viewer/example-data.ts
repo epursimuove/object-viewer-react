@@ -998,7 +998,7 @@ export const exampleArray3: Record<string, PropertyValue>[] = [
 ];
 
 function enhanceArrayExample(
-    array: Record<string, PropertyValue>[]
+    array: Record<string, PropertyValue>[],
 ): Record<string, PropertyValue>[] {
     return array.map((element: Record<string, PropertyValue>) => {
         const age: number = currentAge(element.dateOfBirth as string) || 42;
@@ -1008,3 +1008,15 @@ function enhanceArrayExample(
         };
     });
 }
+
+export const arithmeticAggregationNumberExamples: number[][] = [
+    [1, 2, 3, 4, 5],
+    [-100, 100, 200],
+    [1, 1, 2, 3, 5, 8, 13, 21, 34, 55],
+];
+
+export const arithmeticAggregationStringExamples: string[][] = [
+    ["apple", "pear", "orange", "banana"],
+    ["John", "Caroline", "Josephine", "Eric", "Åsa"],
+    ["Sweden", "Norway", "Denmark", "Finland", "Iceland"],
+];
