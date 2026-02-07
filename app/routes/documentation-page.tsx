@@ -7,7 +7,12 @@ import {
 } from "~/object-viewer/example-data";
 import type { Route } from "./+types/documentation-page";
 import { enhancedPropertyTypes, originalPropertyTypes } from "~/types";
-import { prettifyJSON, unknownCommonPropertyTypeAncestor } from "~/util/util";
+import {
+    currentLocale,
+    displayNameLocale,
+    prettifyJSON,
+    unknownCommonPropertyTypeAncestor,
+} from "~/util/util";
 import { CopableContent } from "~/components/CopableContent";
 import { ColorIndicator } from "~/components/color-indicator";
 import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
@@ -587,9 +592,9 @@ export default function DocumentationPage() {
             </p>
 
             <p>
-                Strings are compared with the Swedish locale (<code>sv-SE</code>). Note that{" "}
-                <code>SemVer</code> values are correctly compared using integer comparison and not
-                by string comparison, so{" "}
+                Strings are compared using your browser's locale, <em>{displayNameLocale}</em> (
+                <code>{currentLocale}</code>). Note that <code>SemVer</code> values are correctly
+                compared using integer comparison and not by string comparison, so{" "}
                 <code>1.2.3 &lt; 1.11.0 &lt; 9.8.7 &lt; 10.9.99 &lt; 10.11.12</code>.
             </p>
 

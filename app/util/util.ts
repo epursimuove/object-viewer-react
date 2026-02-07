@@ -42,6 +42,12 @@ export const versions = {
     typescriptVersion: __TYPESCRIPT_VERSION__,
 };
 
+export const currentLocale: string = navigator.language || "sv-SE";
+
+export const displayNameLocale: string | undefined = new Intl.DisplayNames(["en"], {
+    type: "language",
+}).of(currentLocale);
+
 export const BASE_NAME_URL_PREFIX: string = "/projects/objectViewer";
 
 export const regExpCountryCode: RegExp = /^[A-Z]{2}$/;
@@ -174,7 +180,7 @@ const createTableRowSorter = ({
     commonPropertyTypeAncestorForColumn,
 }: TableRowSorterConfiguration): TableRowComparator => {
     debug(
-        `Sorting "${columnName}" which is handled as a ${commonPropertyTypeAncestorForColumn} column`
+        `Sorting "${columnName}" which is handled as a ${commonPropertyTypeAncestorForColumn} column`,
     );
 
     const sortTableRowsByColumn = (tableRowA: TableRow, tableRowB: TableRow): number => {
@@ -193,7 +199,7 @@ const createTableRowSorter = ({
             if (commonPropertyTypeAncestorForColumn === "SemVer") {
                 return semanticVersioningCompare(a, b) * sortOrder;
             }
-            return a.localeCompare(b, "sv-SE") * sortOrder;
+            return a.localeCompare(b, currentLocale) * sortOrder;
         }
 
         if (typeof a === "number" && typeof b === "number") {
@@ -212,7 +218,7 @@ const createTableRowSorter = ({
 
 export const sortTableBy = (
     tableRows: TableRow[],
-    sorting: TableRowSorterConfiguration | null
+    sorting: TableRowSorterConfiguration | null,
 ): TableRow[] => {
     if (sorting) {
         return tableRows.toSorted(createTableRowSorter(sorting));
@@ -344,7 +350,7 @@ function currencyExample(currencyCode: string) {
 
 export const buildMetaData = (
     propertyTypeEnhanced: PropertyTypeEnhanced,
-    propertyValue: PropertyValue
+    propertyValue: PropertyValue,
 ): string | undefined => {
     if (
         [
@@ -372,7 +378,7 @@ export const buildMetaData = (
         const languageCode: string = locale.slice(0, 2);
         const countryCode: string = locale.slice(-2);
         return `${getLanguageName(languageCode)} (in ${getFlagEmoji(countryCode)} ${getRegionName(
-            countryCode
+            countryCode,
         )})`;
     } else if (
         propertyTypeEnhanced === "Timestamp" ||
@@ -409,7 +415,7 @@ export const buildMetaData = (
 };
 
 const splitIntoColorParts = (
-    colorCodeHexRGB: string
+    colorCodeHexRGB: string,
 ): { red: number; green: number; blue: number } => {
     const redHex: string = colorCodeHexRGB.slice(1, 3);
     const greenHex: string = colorCodeHexRGB.slice(3, 5);
@@ -469,7 +475,7 @@ const getImprovedColorPart = (hex: string): string => {
 export const buildPath = (
     currentPath: string,
     propertyName: string,
-    isArrayIndex: boolean
+    isArrayIndex: boolean,
 ): string => {
     if (isArrayIndex) {
         return `${currentPath}[${propertyName}]`;
@@ -564,7 +570,7 @@ export const prettifyPropertyName = (propertyName: string): string => {
 export const flattenObjectIfNeeded = (
     object: Record<string, PropertyValue>,
     parentKey: string = "",
-    accumulatedFlattenedObject: Record<string, PropertyValue> = {}
+    accumulatedFlattenedObject: Record<string, PropertyValue> = {},
 ): Record<string, PropertyValue> => {
     trace(`Flatten object if needed`, parentKey, object, accumulatedFlattenedObject);
 
@@ -579,7 +585,7 @@ export const flattenObjectIfNeeded = (
             flattenObjectIfNeeded(
                 propertyValue as Record<string, PropertyValue>,
                 fullKey,
-                accumulatedFlattenedObject
+                accumulatedFlattenedObject,
             );
         } else {
             // Assign primitive value.
@@ -593,12 +599,12 @@ export const flattenObjectIfNeeded = (
 };
 
 export const prettifyArithmeticAggregation = (
-    arithmeticAggregation: ArithmeticAggregation
+    arithmeticAggregation: ArithmeticAggregation,
 ): string => {
     const largestNumber: number = Object.entries(arithmeticAggregation)
         .filter(
             ([_key, value]: [string, number | ArithmeticAggregationType]) =>
-                typeof value === "number"
+                typeof value === "number",
         )
         .map(([_key, value]: [string, number]) => Math.abs(value))
         .reduce((previousNumber, currentNumber) => Math.max(previousNumber, currentNumber));

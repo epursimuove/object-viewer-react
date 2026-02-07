@@ -162,7 +162,7 @@
 
                 & span:nth-child(2n) {
                     color: var(--color-divider);
-                    font-size: 0.75rem;
+                    font-size: 0.65rem;
                 }
             }
 
