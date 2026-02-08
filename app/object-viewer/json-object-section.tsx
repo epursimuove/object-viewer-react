@@ -3,6 +3,7 @@ import { useLog } from "~/log-manager/LogManager";
 import type { PropertyValue } from "~/types";
 import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { createFocusEnablerForSection } from "~/util/eventListeners";
+import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
 
 const { debug, error, info } = useLog("json-object-section.tsx");
 
@@ -17,6 +18,8 @@ export function JsonObjectSection({
     setOriginalObjectAsText: React.Dispatch<React.SetStateAction<string>>;
     resetFilters: () => void;
 }) {
+    const { menuState, setMenuState } = useMenuStateContext();
+
     const jsonObjectSectionRef = useRef<HTMLDetailsElement | null>(null);
     const jsonObjectTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -56,7 +59,13 @@ export function JsonObjectSection({
     }, []);
 
     return (
-        <details ref={jsonObjectSectionRef} open>
+        <details
+            ref={jsonObjectSectionRef}
+            open={menuState.sections.jsonObjectSectionExpanded}
+            onToggle={(event) =>
+                handleMenuStateToggled(event, menuState, setMenuState, "jsonObjectSectionExpanded")
+            }
+        >
             <summary accessKey="J">JSON object</summary>
 
             <div className={"json-object"}>

@@ -41,6 +41,7 @@ import { DisplayArrayAsTable } from "./display-array-as-table";
 import { CopableContent } from "~/components/CopableContent";
 import { sha256 } from "./HistoryContext";
 import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
+import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -57,8 +58,10 @@ const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getF
 export function ObjectViewer() {
     logInfoPretty("STARTING", true);
 
+    const { menuState, setMenuState } = useMenuStateContext();
+
     const [originalObjectAsText, setOriginalObjectAsText] = useState<string>(
-        prettifyJSON(exampleObject)
+        prettifyJSON(exampleObject),
         // prettifyJSON(exampleArray)
         // prettifyJSON(exampleArray2)
         // prettifyJSON(exampleArray3)
@@ -201,7 +204,7 @@ export function ObjectViewer() {
                 return {
                     ...displayRow,
                 };
-            }
+            },
         );
 
         setDisplayRows(nextDisplayRows);
@@ -281,7 +284,13 @@ export function ObjectViewer() {
             </h1>
 
             <aside id="toolbar">
-                <details className="menu-wrapper" open>
+                <details
+                    className="menu-wrapper"
+                    open={menuState.globalMenuExpanded}
+                    onToggle={(event) =>
+                        handleMenuStateToggled(event, menuState, setMenuState, "globalMenuExpanded")
+                    }
+                >
                     <summary accessKey="M">
                         <strong>MENU</strong>
                     </summary>

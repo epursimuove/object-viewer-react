@@ -1,6 +1,7 @@
 import type { SyntheticEvent } from "react";
 import { SettingsCheckbox } from "~/components/settings-checkbox";
 import { useUserConfigurationContext } from "~/object-viewer/UserConfigurationContext";
+import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
 
 export function SettingsSection({
     expandAll,
@@ -9,6 +10,8 @@ export function SettingsSection({
     expandAll: (event?: SyntheticEvent) => void;
     collapseAll: (event: SyntheticEvent) => void;
 }) {
+    const { menuState, setMenuState } = useMenuStateContext();
+
     const {
         indentObjectTree,
         showPropertyType,
@@ -32,7 +35,12 @@ export function SettingsSection({
     } = useUserConfigurationContext();
 
     return (
-        <details open>
+        <details
+            open={menuState.sections.settingsSectionExpanded}
+            onToggle={(event) =>
+                handleMenuStateToggled(event, menuState, setMenuState, "settingsSectionExpanded")
+            }
+        >
             <summary accessKey="X">Settings</summary>
 
             <SettingsCheckbox

@@ -164,6 +164,25 @@ export interface HistoryItem {
     timestampLastView: Temporal.Instant;
 }
 
+export interface MenuStateContextType {
+    menuState: MenuState;
+    setMenuState: (value: MenuState) => void;
+}
+
+export type MenuSection =
+    | "timeSectionExpanded"
+    | "jsonObjectSectionExpanded"
+    | "linesSectionExpanded"
+    | "historySectionExpanded"
+    | "settingsSectionExpanded"
+    | "filtersSectionExpanded"
+    | "statisticsSectionExpanded";
+
+export interface MenuState {
+    globalMenuExpanded: boolean;
+    sections: Record<MenuSection, boolean>;
+}
+
 export type ArithmeticAggregationType = "numbers" | "string lengths";
 
 export interface ArithmeticAggregation {

@@ -57,7 +57,7 @@ export function HistoryContextProvider({ children }: HistoryContextProps) {
     return <HistoryContext.Provider value={historyContext}>{children}</HistoryContext.Provider>;
 }
 
-const storageKeyForHistory = "__NNM_Object_Viewer_History__";
+export const storageKeyForHistory = "__NNM_Object_Viewer_History__";
 const maxNumberOfHistoryItems = 7;
 
 export const prettifySha256 = (sha256Code: string, numberOfCharacters = 3): string =>
@@ -66,18 +66,18 @@ export const prettifySha256 = (sha256Code: string, numberOfCharacters = 3): stri
 export const saveHistoryToStorage = (
     object: Record<string, PropertyValue>,
     savedHistory: HistoryItem[],
-    setSavedHistory: (value: HistoryItem[]) => void
+    setSavedHistory: (value: HistoryItem[]) => void,
 ): void => {
     debug(
         "Current history from local storage",
-        savedHistory.map((historyItem: HistoryItem) => prettifySha256(historyItem.id))
+        savedHistory.map((historyItem: HistoryItem) => prettifySha256(historyItem.id)),
     );
 
     sha256(JSON.stringify(object)).then((sha256Code: string) => {
         const now: Temporal.Instant = Temporal.Now.instant();
 
         const alreadyPresentIndex: number = savedHistory.findIndex(
-            (historyItem: HistoryItem) => historyItem.checksum === sha256Code
+            (historyItem: HistoryItem) => historyItem.checksum === sha256Code,
         );
 
         let newItem: HistoryItem;
@@ -108,7 +108,7 @@ export const saveHistoryToStorage = (
 
         debug(
             "Updated history to save to local storage",
-            updatedHistory.map((historyItem: HistoryItem) => prettifySha256(historyItem.id))
+            updatedHistory.map((historyItem: HistoryItem) => prettifySha256(historyItem.id)),
         );
 
         const slicedUpdatedHistory = updatedHistory.slice(0, maxNumberOfHistoryItems);

@@ -16,6 +16,7 @@ import { versions, BASE_NAME_URL_PREFIX } from "~/util/util";
 import { HistoryContextProvider } from "./object-viewer/HistoryContext";
 import { currentYear, prettifiedBuildTime } from "./util/dateAndTime";
 import { Timestamp } from "./components/timestamp";
+import { MenuStateProvider } from "./object-viewer/MenuStateContext";
 
 // export const links: Route.LinksFunction = () => [
 //   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -119,7 +120,9 @@ export default function App() {
     return (
         <UserConfigurationProvider>
             <HistoryContextProvider>
-                <Outlet />
+                <MenuStateProvider>
+                    <Outlet />
+                </MenuStateProvider>
             </HistoryContextProvider>
         </UserConfigurationProvider>
     );

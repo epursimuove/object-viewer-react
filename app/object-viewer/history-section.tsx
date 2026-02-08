@@ -2,6 +2,7 @@ import type { HistoryItem } from "~/types";
 import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { useLog } from "~/log-manager/LogManager";
 import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
+import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
 
 const { debug } = useLog("history-section.tsx");
 
@@ -10,6 +11,8 @@ export function HistorySection({
 }: {
     handleRetrievalFromHistory: (historyItem: HistoryItem) => void;
 }) {
+    const { menuState, setMenuState } = useMenuStateContext();
+
     const { savedHistory, setSavedHistory, clearSavedHistory } = useHistoryContext();
 
     function retrieveObjectFromHistory(historyItem: HistoryItem) {
@@ -20,7 +23,7 @@ export function HistorySection({
 
     function rearrangeHistory(historyItem: HistoryItem) {
         const index: number = savedHistory.findIndex(
-            (historyItem2: HistoryItem) => historyItem.id === historyItem2.id
+            (historyItem2: HistoryItem) => historyItem.id === historyItem2.id,
         );
 
         saveHistoryToStorage(historyItem.object, savedHistory, setSavedHistory);
@@ -33,7 +36,12 @@ export function HistorySection({
     }
 
     return (
-        <details open>
+        <details
+            open={menuState.sections.historySectionExpanded}
+            onToggle={(event) =>
+                handleMenuStateToggled(event, menuState, setMenuState, "historySectionExpanded")
+            }
+        >
             <summary accessKey="H">History</summary>
 
             <div>

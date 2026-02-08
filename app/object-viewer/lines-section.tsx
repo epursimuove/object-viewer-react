@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type SyntheticEvent } from "react";
 import { useLog } from "~/log-manager/LogManager";
 import { createFocusEnablerForSection } from "~/util/eventListeners";
+import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
 
 const { info, trace } = useLog("lines-section.tsx");
 
@@ -42,6 +43,8 @@ export function LinesSection({
     totalNumberOfRows: number;
     expandAll: (event?: SyntheticEvent) => void;
 }) {
+    const { menuState, setMenuState } = useMenuStateContext();
+
     const [gotoLine, setGotoLine] = useState<string>("");
     const [gotoLineModified, setGotoLineModified] = useState<boolean>(false);
     const gotoLineModifiedCallback = useRef<null | (() => void)>(null);
@@ -74,7 +77,7 @@ export function LinesSection({
                 lineNumber++
             ) {
                 const rowElement = document.getElementById(
-                    `row-number-${lineNumber}`
+                    `row-number-${lineNumber}`,
                 )?.parentElement;
 
                 if (
@@ -121,7 +124,13 @@ export function LinesSection({
     }
 
     return (
-        <details ref={linesSectionRef} open>
+        <details
+            ref={linesSectionRef}
+            open={menuState.sections.linesSectionExpanded}
+            onToggle={(event) =>
+                handleMenuStateToggled(event, menuState, setMenuState, "linesSectionExpanded")
+            }
+        >
             <summary accessKey="L">Lines</summary>
 
             <div>

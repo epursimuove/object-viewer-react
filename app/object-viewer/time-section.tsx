@@ -1,10 +1,18 @@
 import { Timestamp } from "~/components/timestamp";
 import { now } from "~/util/dateAndTime";
 import { currentLocale, displayNameLocale } from "~/util/util";
+import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
 
 export function TimeSection({}) {
+    const { menuState, setMenuState } = useMenuStateContext();
+
     return (
-        <details open>
+        <details
+            open={menuState.sections.timeSectionExpanded}
+            onToggle={(event) =>
+                handleMenuStateToggled(event, menuState, setMenuState, "timeSectionExpanded")
+            }
+        >
             <summary accessKey="T">Time</summary>
 
             <div>

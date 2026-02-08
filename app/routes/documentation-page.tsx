@@ -20,6 +20,8 @@ import { ArithmeticAggregation } from "~/components/arithmetic-aggregation";
 import { calculateAggregations } from "~/util/math";
 import { DisplayArrayAsTable } from "~/object-viewer/display-array-as-table";
 import { convertObjectToTree } from "~/util/tree";
+import { storageKeyForMenuState } from "~/object-viewer/MenuStateContext";
+import { storageKeyForHistory } from "~/object-viewer/HistoryContext";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -332,8 +334,8 @@ export default function DocumentationPage() {
             <h2>History of objects</h2>
 
             <p>
-                Your seven last viewed JSON objects are stored in your local storage, so you can
-                easily toggle between them.
+                Your seven last viewed JSON objects are stored in your local storage (using key{" "}
+                <code>{storageKeyForHistory}</code>), so you can easily toggle between them.
             </p>
 
             <p>
@@ -680,6 +682,18 @@ export default function DocumentationPage() {
                 objectTree={convertObjectToTree(exampleArray3)}
             />
 
+            <h2>Menu</h2>
+
+            <p>
+                The menu and the different sections in the menu can be expanded/collapsed
+                independently. You can also toggle them by using access keys.
+            </p>
+
+            <p>
+                The current state of the menu is stored in your local storage (using key{" "}
+                <code>{storageKeyForMenuState}</code>).
+            </p>
+
             <h2>Tips</h2>
 
             <p>
@@ -698,8 +712,6 @@ export default function DocumentationPage() {
                 array and you will be presented with a table where it will be really <em>easy</em>{" "}
                 to compare and examine the objects content.
             </p>
-
-            <p>The menu and its parts can be toggled by using access keys.</p>
         </main>
     );
 }

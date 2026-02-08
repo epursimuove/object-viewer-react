@@ -33,6 +33,7 @@ const loggerNames = [
     "LogManager",
     "HistoryContext.tsx",
     "history-section.tsx",
+    "MenuStateContext.tsx",
     "object-viewer.tsx",
     "tool-bar.tsx",
     "tree.ts",
@@ -49,6 +50,7 @@ class LogManager {
         LogManager: { level: LogLevel.INFO },
         "HistoryContext.tsx": { level: LogLevel.OFF },
         "history-section.tsx": { level: LogLevel.OFF },
+        "MenuStateContext.tsx": { level: LogLevel.OFF },
         "object-viewer.tsx": { level: LogLevel.OFF },
         "tool-bar.tsx": { level: LogLevel.OFF },
         "tree.ts": { level: LogLevel.OFF },
@@ -58,7 +60,7 @@ class LogManager {
     static numberOfActiveLoggers: number = loggerNames.filter(
         (loggerName: LoggerName) =>
             LogManager.configuration[loggerName].level !== LogLevel.OFF &&
-            loggerName !== "LogManager"
+            loggerName !== "LogManager",
     ).length;
 
     static someActive: boolean = this.numberOfActiveLoggers > 0;
@@ -103,13 +105,13 @@ export function useLog(logger: LoggerName, context?: string): Logger {
             const logPrefixLabel: string[] = buildLogPrefix(
                 backgroundColor,
                 loggerLabel,
-                contextLabel
+                contextLabel,
             );
 
             const log: LogSignature = console.info.bind(
                 // TODO Can also use console.???, but then you get another look in browser console.
                 console,
-                ...logPrefixLabel
+                ...logPrefixLabel,
             );
 
             return log;
@@ -141,7 +143,7 @@ export const logInfoPretty = (message: string, start?: boolean) => {
     }
     console.info(
         `%c===== ${message} ======`,
-        "background-color: black; color: white; padding: 2px; border-radius: 10%;"
+        "background-color: black; color: white; padding: 2px; border-radius: 10%;",
     );
     if (start !== undefined && !start) {
         console.info("");

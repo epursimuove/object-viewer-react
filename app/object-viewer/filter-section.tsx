@@ -4,8 +4,11 @@ import type { DisplayRow, PropertyTypeEnhanced } from "~/types";
 import { numberOfDigits } from "~/util/util";
 import { SettingsCheckbox } from "~/components/settings-checkbox";
 import { createFocusEnablerForSection } from "~/util/eventListeners";
+import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
 
 export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
+    const { menuState, setMenuState } = useMenuStateContext();
+
     const {
         filterOnProperty,
         filterOnPropertyTypeEnhanced,
@@ -26,7 +29,7 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
     const delta = (
         maxLength: number,
         enhancedPropertyType: PropertyTypeEnhanced,
-        n: number
+        n: number,
     ): number => {
         const digits = numberOfDigits(n);
         const length = enhancedPropertyType.length;
@@ -42,7 +45,7 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
         >();
 
         const allPropertyTypes: PropertyTypeEnhanced[] = displayRows.map(
-            (displayRow) => displayRow.propertyTypeEnhanced
+            (displayRow) => displayRow.propertyTypeEnhanced,
         );
 
         for (const enhancedPropertyType of allPropertyTypes) {
@@ -53,12 +56,12 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
 
         const maxLength = Array.from(frequencyMap.keys()).reduce(
             (max, enhancedTypeString) => Math.max(max, enhancedTypeString.length),
-            0
+            0,
         );
 
         frequencyMap.forEach(
             (frequency, enhancedPropertyType) =>
-                (frequency.delta = delta(maxLength, enhancedPropertyType, frequency.count))
+                (frequency.delta = delta(maxLength, enhancedPropertyType, frequency.count)),
         );
 
         return frequencyMap;
@@ -66,7 +69,7 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
 
     const sortAlphabeticallyAscending = (
         a: PropertyTypeEnhanced,
-        b: PropertyTypeEnhanced
+        b: PropertyTypeEnhanced,
     ): number => a.localeCompare(b);
 
     const sortOnFrequencyDescending = (a: PropertyTypeEnhanced, b: PropertyTypeEnhanced): number =>
@@ -76,15 +79,15 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
         () =>
             Array.from(
                 new Set(
-                    displayRows.map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced)
-                )
+                    displayRows.map((displayRow: DisplayRow) => displayRow.propertyTypeEnhanced),
+                ),
             ).toSorted(sortOnFrequency ? sortOnFrequencyDescending : sortAlphabeticallyAscending),
-        [displayRows, sortOnFrequency]
+        [displayRows, sortOnFrequency],
     );
 
     const filtersActivated = useMemo(
         () => filterOnProperty !== "" || filterOnPropertyTypeEnhanced.length > 0,
-        [filterOnProperty, filterOnPropertyTypeEnhanced]
+        [filterOnProperty, filterOnPropertyTypeEnhanced],
     );
 
     interface Frequency {
@@ -99,7 +102,14 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
     };
 
     return (
-        <details ref={filterSectionRef} open className={`${filtersActivated && "filters-active"}`}>
+        <details
+            ref={filterSectionRef}
+            open={menuState.sections.filtersSectionExpanded}
+            onToggle={(event) =>
+                handleMenuStateToggled(event, menuState, setMenuState, "filtersSectionExpanded")
+            }
+            className={`${filtersActivated && "filters-active"}`}
+        >
             <summary accessKey="F">Filters</summary>
 
             <div className="button-row">
@@ -136,10 +146,10 @@ export function FilterSection({ displayRows }: { displayRows: DisplayRow[] }) {
                     value={filterOnPropertyTypeEnhanced}
                     onChange={(event: ChangeEvent<HTMLSelectElement>) => {
                         const options: HTMLOptionElement[] = Array.from(
-                            event.target.selectedOptions
+                            event.target.selectedOptions,
                         );
                         const values: PropertyTypeEnhanced[] = options.map(
-                            (option) => option.value as PropertyTypeEnhanced
+                            (option) => option.value as PropertyTypeEnhanced,
                         );
 
                         setFilterOnPropertyTypeEnhanced(values);

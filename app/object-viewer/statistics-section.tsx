@@ -1,5 +1,6 @@
 import { StatisticsRow } from "~/components/statistics-row";
 import type { DisplayRow } from "~/types";
+import { useMenuStateContext, handleMenuStateToggled } from "./MenuStateContext";
 
 export function StatisticsSection({
     displayRows,
@@ -8,18 +9,20 @@ export function StatisticsSection({
     displayRows: DisplayRow[];
     numberOfVisibleRows: number;
 }) {
+    const { menuState, setMenuState } = useMenuStateContext();
+
     const totalNumberOfRows: number = displayRows.length;
 
     const totalNumberOfLeaves: number = displayRows.filter(
-        (displayRow: DisplayRow) => displayRow.rowType === "leaf"
+        (displayRow: DisplayRow) => displayRow.rowType === "leaf",
     ).length;
 
     const totalNumberOfObjects: number = displayRows.filter(
-        (displayRow: DisplayRow) => displayRow.rowType === "object"
+        (displayRow: DisplayRow) => displayRow.rowType === "object",
     ).length;
 
     const totalNumberOfArrays: number = displayRows.filter(
-        (displayRow: DisplayRow) => displayRow.rowType === "array"
+        (displayRow: DisplayRow) => displayRow.rowType === "array",
     ).length;
 
     const deepestLevel: number = displayRows
@@ -27,11 +30,16 @@ export function StatisticsSection({
         .reduce(
             (acc: number, currentIndentationLevel: number): number =>
                 Math.max(acc, currentIndentationLevel),
-            0
+            0,
         );
 
     return (
-        <details open>
+        <details
+            open={menuState.sections.statisticsSectionExpanded}
+            onToggle={(event) =>
+                handleMenuStateToggled(event, menuState, setMenuState, "statisticsSectionExpanded")
+            }
+        >
             <summary accessKey="S">Statistics</summary>
 
             <StatisticsRow label="Rows" value={totalNumberOfRows} emphasize />
