@@ -1,5 +1,7 @@
 import {
     arithmeticAggregationNumberExamples,
+    arithmeticAggregationObjectsWithNumbersExamples,
+    arithmeticAggregationObjectsWithStringsExamples,
     arithmeticAggregationStringExamples,
     exampleArray,
     exampleArray2,
@@ -237,6 +239,24 @@ export default function DocumentationPage() {
                 ))}
             </ul>
 
+            <p>Hover over the objects with number properties below.</p>
+
+            <ul>
+                {arithmeticAggregationObjectsWithNumbersExamples.map(
+                    (object: object, index: number) => (
+                        <li key={index}>
+                            <ArithmeticAggregation
+                                labelAnchor={`${JSON.stringify(object, null, 2)}`}
+                                arithmeticAggregation={calculateAggregations(
+                                    Object.values(object),
+                                    "numbers",
+                                )}
+                            />
+                        </li>
+                    ),
+                )}
+            </ul>
+
             <h3>Strings</h3>
 
             <p>
@@ -268,6 +288,24 @@ export default function DocumentationPage() {
                         />
                     </li>
                 ))}
+            </ul>
+
+            <p>Hover over the objects with string properties below.</p>
+
+            <ul>
+                {arithmeticAggregationObjectsWithStringsExamples.map(
+                    (object: object, index: number) => (
+                        <li key={index}>
+                            <ArithmeticAggregation
+                                labelAnchor={`${JSON.stringify(object, null, 2)}`}
+                                arithmeticAggregation={calculateAggregations(
+                                    Object.values(object).map((s: string) => s.length),
+                                    "string lengths",
+                                )}
+                            />
+                        </li>
+                    ),
+                )}
             </ul>
 
             <h2>Settings</h2>

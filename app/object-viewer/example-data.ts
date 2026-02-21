@@ -721,6 +721,17 @@ export const exampleObject: {} = {
                 9: "The number 9",
                 g: "The letter g",
             },
+            evilPropertiesObject6: {
+                a: "A",
+                o: "O",
+                n: "N",
+                z: "Z",
+                å: "Å",
+                ä: "Ä",
+                ö: "Ö",
+                æ: "Æ",
+                ø: "Ø",
+            },
         },
     },
     // largeNumbers: [ // BigInt not supported out-of-the-box by JSON.
@@ -1019,4 +1030,14 @@ export const arithmeticAggregationStringExamples: string[][] = [
     ["apple", "pear", "orange", "banana"],
     ["John", "Caroline", "Josephine", "Eric", "Åsa"],
     ["Sweden", "Norway", "Denmark", "Finland", "Iceland"],
+];
+
+export const arithmeticAggregationObjectsWithNumbersExamples: object[] = [
+    { width: 250, height: 80, depth: 310 },
+    { min: -17, max: 98 },
+];
+
+export const arithmeticAggregationObjectsWithStringsExamples: object[] = [
+    { firstName: "Jennie", lastName: "Höglund" },
+    { city1: "Paris", city2: "London", city3: "Tokyo", city4: "Los Angeles" },
 ];
