@@ -65,7 +65,11 @@ export const regExpHexColorRGB: RegExp = /^#[0-9a-fA-F]{6}$/;
 
 export const regExpRGBColorRGB: RegExp = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/;
 
-const regExpSemanticVersioning: RegExp = /^\d+\.\d+\.\d+$/;
+export const regExpSemanticVersioning: RegExp = /^\d+\.\d+\.\d+$/;
+
+export const regExpAllowsMinor: RegExp = /^\^\d+\.\d+\.\d+$/;
+
+export const regExpAllowsPatch: RegExp = /^~\d+\.\d+\.\d+$/;
 
 const regExpPhoneNumber: RegExp = /^\+\d{2}\d{2,3}\d{7}$/; // Swedish mobile number.
 
@@ -87,6 +91,10 @@ const isColorRGB = (s: string): boolean => {
 };
 
 const isSemanticVersioning = (s: string): boolean => regExpSemanticVersioning.test(s);
+
+const isAllowsMinor = (s: string): boolean => regExpAllowsMinor.test(s);
+
+const isAllowsPatch = (s: string): boolean => regExpAllowsPatch.test(s);
 
 const isPhoneNumber = (s: string): boolean => regExpPhoneNumber.test(s);
 
@@ -288,23 +296,29 @@ export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyT
                                       ? "URL"
                                       : isColorRGB(propertyValueAsString)
                                         ? "ColorRGB"
-                                        : isSemanticVersioning(propertyValueAsString)
-                                          ? "SemVer"
-                                          : isIPv4Address(propertyValueAsString)
-                                            ? "IPv4"
-                                            : isIPv6Address(propertyValueAsString)
-                                              ? "IPv6"
-                                              : isPhoneNumber(propertyValueAsString)
-                                                ? "PhoneNumber"
-                                                : isHTTPMethod(propertyValueAsString)
-                                                  ? "HTTPMethod"
-                                                  : isAbsolutePath(propertyValueAsString)
-                                                    ? "AbsolutePath"
-                                                    : isRelativePath(propertyValueAsString)
-                                                      ? "RelativePath"
-                                                      : isRegularExpression(propertyValueAsString)
-                                                        ? "RegExp"
-                                                        : propertyTypeOriginal;
+                                        : isAllowsMinor(propertyValueAsString)
+                                          ? "AllowsMinor"
+                                          : isAllowsPatch(propertyValueAsString)
+                                            ? "AllowsPatch"
+                                            : isSemanticVersioning(propertyValueAsString)
+                                              ? "SemVer"
+                                              : isIPv4Address(propertyValueAsString)
+                                                ? "IPv4"
+                                                : isIPv6Address(propertyValueAsString)
+                                                  ? "IPv6"
+                                                  : isPhoneNumber(propertyValueAsString)
+                                                    ? "PhoneNumber"
+                                                    : isHTTPMethod(propertyValueAsString)
+                                                      ? "HTTPMethod"
+                                                      : isAbsolutePath(propertyValueAsString)
+                                                        ? "AbsolutePath"
+                                                        : isRelativePath(propertyValueAsString)
+                                                          ? "RelativePath"
+                                                          : isRegularExpression(
+                                                                  propertyValueAsString,
+                                                              )
+                                                            ? "RegExp"
+                                                            : propertyTypeOriginal;
             break;
 
         default:

@@ -19,6 +19,8 @@ import {
 } from "~/util/http";
 import {
     regExpAbsolutePath,
+    regExpAllowsMinor,
+    regExpAllowsPatch,
     regExpArrayIndexString,
     regExpCountryCode,
     regExpCurrency,
@@ -28,6 +30,7 @@ import {
     regExpRegularExpression,
     regExpRelativePath,
     regExpRGBColorRGB,
+    regExpSemanticVersioning,
     versions,
 } from "~/util/util";
 
@@ -60,6 +63,8 @@ export const exampleObject: {} = {
                     color2: "rgb(0, 255, 255)",
                     color3: "white",
                     semanticVersioning: "1.2.3",
+                    allowsPatch: "~19.20.21",
+                    allowsMinor: "^100.99.98",
                     phone: "+460701234567",
                     ipv4: "127.0.0.1",
                     ipv6: "1234::1",
@@ -668,6 +673,9 @@ export const exampleObject: {} = {
                         absolutePath: regExpAbsolutePath.toString(),
                         relativePath: regExpRelativePath.toString(),
                         regularExpression: regExpRegularExpression.toString(),
+                        semanticVersioning: regExpSemanticVersioning.toString(),
+                        allowMinor: regExpAllowsMinor.toString(),
+                        allowsPatch: regExpAllowsPatch.toString(),
                     },
                 },
             ],

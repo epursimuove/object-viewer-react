@@ -17,6 +17,8 @@ export const originalPropertyTypes = [
 
 export const enhancedPropertyTypes = [
     "AbsolutePath",
+    "AllowsMinor",
+    "AllowsPatch",
     "BooleanFalse",
     "BooleanTrue",
     "ColorRGB",
