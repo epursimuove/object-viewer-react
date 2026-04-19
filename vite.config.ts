@@ -13,7 +13,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 const buildTime = Temporal.Now.instant();
 
 const version = JSON.parse(
-    readFileSync(new URL("./package.json", import.meta.url), "utf-8")
+    readFileSync(new URL("./package.json", import.meta.url), "utf-8"),
 ).version;
 
 const lockFilePath = path.resolve(__dirname, "package-lock.json");
@@ -25,7 +25,9 @@ function getDependencyVersion(dependencyName: string): string {
 }
 
 export default defineConfig({
-    base: "/projects/objectViewer/",
+    // base: "/projects/objectViewer/",
+    base: process.env.NODE_ENV === "production" ? "/projects/objectViewer/" : "/",
+    // base: "/",
     plugins: [reactRouter(), tsconfigPaths()],
 
     define: {

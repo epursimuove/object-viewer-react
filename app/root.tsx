@@ -17,6 +17,8 @@ import { HistoryContextProvider } from "./object-viewer/HistoryContext";
 import { currentYear, prettifiedBuildTime } from "./util/dateAndTime";
 import { Timestamp } from "./components/timestamp";
 import { MenuStateProvider } from "./object-viewer/MenuStateContext";
+import favicon from "/favicon-nnm-alternative-2.svg";
+import logo from "/LogoNNM_blue_transparent_background.svg";
 
 // export const links: Route.LinksFunction = () => [
 //   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -37,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon-nnm-alternative-2.svg" />
+                <link rel="icon" href={favicon} />
                 <Meta />
                 <Links />
             </head>
@@ -45,7 +47,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <header>
                     <nav>
                         <NavLink
-                            to={`${BASE_NAME_URL_PREFIX}/`}
+                            to={`/`}
+                            // to={`${BASE_NAME_URL_PREFIX}/`}
                             className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "active" : ""
                             }
@@ -54,7 +57,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         </NavLink>
 
                         <NavLink
-                            to={`${BASE_NAME_URL_PREFIX}/docs`}
+                            to={`/docs`}
+                            // to={`${BASE_NAME_URL_PREFIX}/docs`}
                             className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "active" : ""
                             }
@@ -63,7 +67,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         </NavLink>
 
                         <NavLink
-                            to={`${BASE_NAME_URL_PREFIX}/about`}
+                            to={`/about`}
+                            // to={`${BASE_NAME_URL_PREFIX}/about`}
                             className={({ isActive, isPending }) =>
                                 isPending ? "pending" : isActive ? "active" : ""
                             }
@@ -94,20 +99,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         <em>Nemo nisi mors</em>
                     </div>
                     <div>
-                        <img
-                            src="./favicon-nnm-alternative-2.svg"
-                            width={32}
-                            height={32}
-                            alt="Logo for NNM"
-                        />
+                        <img src={favicon} width={32} height={32} alt="Logo for NNM" />
                     </div>
 
                     <div id="floating-logo">
-                        <img
-                            src="./LogoNNM_blue_transparent_background.svg"
-                            width={80}
-                            alt="Logo for NNM"
-                        />
+                        <img src={logo} width={80} alt="Logo for NNM" />
                         <div>Object Viewer</div>
                     </div>
                 </footer>
