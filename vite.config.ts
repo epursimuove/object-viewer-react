@@ -3,7 +3,6 @@ import { reactRouter } from "@react-router/dev/vite";
 import { readFileSync } from "fs";
 import path from "path";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 // export default defineConfig(({mode}) => ({
 //   base: mode === "production" ? '/projects/objectViewer/' : '/',
@@ -28,7 +27,10 @@ export default defineConfig({
     // base: "/projects/objectViewer/",
     base: process.env.NODE_ENV === "production" ? "/projects/objectViewer/" : "/",
     // base: "/",
-    plugins: [reactRouter(), tsconfigPaths()],
+    plugins: [reactRouter()],
+    resolve: {
+        tsconfigPaths: true,
+    },
 
     define: {
         __BUILD_TIME__: JSON.stringify(buildTime),

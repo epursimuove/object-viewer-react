@@ -40,7 +40,7 @@ export default function AboutPage() {
                 liabilities for errors.
             </p>
 
-            <p>Best experience for me in January 2026 has been in the following browsers:</p>
+            <p>Best experience for me in June 2026 has been in the following browsers:</p>
 
             <ul>
                 <li>
@@ -49,13 +49,13 @@ export default function AboutPage() {
 
                 <ul>
                     <li>
-                        <em>Google Chrome</em> <var>144.0</var>
+                        <em>Google Chrome</em> <var>149.0</var>
                     </li>
                     <li>
-                        (<em>Firefox</em> <var>147.0</var>)
+                        (<em>Firefox</em> <var>151.0</var>)
                     </li>
                     <li>
-                        (<em>Safari</em> <var>26.1</var>)
+                        (<em>Safari</em> <var>26.4</var>)
                     </li>
                 </ul>
 
@@ -65,10 +65,10 @@ export default function AboutPage() {
 
                 <ul>
                     <li>
-                        <em>Firefox</em> <var>147.0</var>
+                        <em>Firefox</em> <var>151.0</var>
                     </li>
                     <li>
-                        <em>Google Chrome</em> <var>143.0</var>
+                        <em>Google Chrome</em> <var>149.0</var>
                     </li>
                 </ul>
             </ul>
