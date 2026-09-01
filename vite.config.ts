@@ -15,7 +15,7 @@ const version = JSON.parse(
     readFileSync(new URL("./package.json", import.meta.url), "utf-8"),
 ).version;
 
-const lockFilePath = path.resolve(__dirname, "package-lock.json");
+const lockFilePath = path.resolve(import.meta.dirname, "package-lock.json");
 const lockFileContent = JSON.parse(readFileSync(lockFilePath, "utf-8"));
 
 function getDependencyVersion(dependencyName: string): string {
