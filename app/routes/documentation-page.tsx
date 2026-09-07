@@ -24,6 +24,7 @@ import { DisplayArrayAsTable } from "~/object-viewer/display-array-as-table";
 import { convertObjectToTree } from "~/util/tree";
 import { storageKeyForMenuState } from "~/object-viewer/MenuStateContext";
 import { storageKeyForHistory } from "~/object-viewer/HistoryContext";
+import { storageKeyForUserDefinedPropertyTypes } from "~/object-viewer/UserDefinedPropertyTypesContext";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -102,6 +103,13 @@ export default function DocumentationPage() {
                             strings.
                         </li>
                     </ul>
+                </li>
+
+                <li>
+                    Possible to define user-defined property types, so you decide which properties
+                    are most important to analyze. For example, if you have property values matching
+                    the regular expression <code>{`/^Category-\\d{4}$/`}</code> you can display{" "}
+                    <code>Category</code> as property types for those.
                 </li>
 
                 <li>
@@ -558,6 +566,180 @@ export default function DocumentationPage() {
                 content is invalid.
             </p>
 
+            <h3>User-defined property types</h3>
+
+            <p>
+                You can also define your own property types. This can be really handy if you easily
+                want to group properties (that share a common pattern) together.
+            </p>
+
+            <p>
+                You define a{" "}
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions">
+                    regular expressions
+                </a>{" "}
+                which is used to find matches among the properties. You can match against either the{" "}
+                <em>property name</em> or the <em>property value</em>. If matching, the property
+                type is susbstituted to a <em>Resulting property type</em>.
+            </p>
+
+            <p>
+                <strong>Note:</strong> User-defined property types are enabled for string properties
+                at the moment. So objects, numbers and boolean properties are currently not
+                supported.
+            </p>
+
+            <p>
+                You may have property values like <code>ABC-12345</code>, <code>ABC-98765</code>,{" "}
+                <code>ABC-00101</code>, ... that represent articles in your domain. If you add a
+                user-defined property type and define the <em>RegExp</em> as{" "}
+                <code>{`/^ABC-\\d{5}$/`}</code>, and the <em>Resulting property type</em> as{" "}
+                <code>ArticleId</code>, it will be a lot easier to overview.
+            </p>
+
+            <p>
+                You may have property names like <code>uuid</code> and <code>userId</code> that
+                represent users in your domain. You can add a user-defined property type and define
+                the <em>RegExp</em> as <code>/^(uuid|userId)$/</code>, and the{" "}
+                <em>Resulting property type</em> as <code>User</code>.
+            </p>
+
+            <p>
+                You may have property values like <code>To do</code>, <code>In progress</code> and{" "}
+                <code>Done</code> that represent states for your todo-list. You can add a
+                user-defined property type and define the <em>RegExp</em> as{" "}
+                <code>/^(To do|In progress|Done)$/</code>, and the <em>Resulting property type</em>{" "}
+                as <code>State</code>.
+            </p>
+
+            <p>
+                You may have property values like <code>Success</code>, <code>Failure</code> and{" "}
+                <code>Unknown</code> that represent test runs. You can add a user-defined property
+                type and define the <em>RegExp</em> as <code>/^(Success|Failure|Unknown)$/</code>,
+                and the <em>Resulting property type</em> as <code>$1</code>, to get three extra
+                property types.
+            </p>
+
+            <p>
+                The user-defined property types are placed at the top in the{" "}
+                <em>Enhanced property type</em> list in the <em>Filters</em> section. They are
+                prefixed with <code>{"\u00B9"}</code> (default) and <code>{"\u00B2"}</code> (dynamic
+                types).
+            </p>
+
+            <p>
+                The user-defined property types are matched <em>before</em> the built-in enhanced
+                property types.
+            </p>
+
+            <p>
+                The first <em>enabled</em> used-defined property type that matches wins, so the
+                order of the defined rules matter.
+            </p>
+
+            <p>
+                <strong>Note:</strong> There may be possible to reorder these rules in a future
+                version.
+            </p>
+
+            <p>
+                You need to <em>Apply changes</em> and that will save the current rules to Local
+                Storage and refresh the matches.
+            </p>
+
+            <h4>Dynamic types</h4>
+
+            <p>
+                If you are using groups in your regular expressions, you can define dynamic property
+                types, by using <code>$0</code>, <code>$1</code>, etc. This can be really helpful.
+            </p>
+
+            <p>
+                For example, if you easily want to distinguish different years in timestamps and
+                dates, you can define the <em>RegExp</em> as <code>{`/^(\\d{4})-\\d{2}-.*$/`}</code>
+                , and the <em>Resulting property type</em> as <code>Year $1</code>.
+            </p>
+
+            <h4>Stored in Local Storage</h4>
+
+            <p>
+                Your user-defined property types are stored in your local storage (using key
+                <code>{storageKeyForUserDefinedPropertyTypes}</code>).
+            </p>
+
+            <p>
+                You can disable a user-defined property type, instead of deleting it completely.
+                This way you can keep your regular expressions and only have some of them enabled.
+            </p>
+
+            <p>A maximum of 7 user-defined property types can be defined.</p>
+
+            <h4>Examples</h4>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>RegExp pattern</th>
+                        <th>Substitution</th>
+                        <th>Result examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Property value</td>
+                        <td>{"/^ABC-\\d{5}$/"}</td>
+                        <td>ArticleId</td>
+                    </tr>
+                    <tr>
+                        <td>Property name</td>
+                        <td>/^(uuid|userId)$/</td>
+                        <td>User</td>
+                    </tr>
+                    <tr>
+                        <td>Property name</td>
+                        <td>/^(full|first|last)?name$/i</td>
+                        <td>Name</td>
+                    </tr>
+                    <tr>
+                        <td>Property value</td>
+                        <td>/^(To do|In progress|Done)$/</td>
+                        <td>Task $1</td>
+                        <td>Task To do, Task In progress, Task Done</td>
+                    </tr>
+                    <tr>
+                        <td>Property value</td>
+                        <td>{"/^(\\d{4})-\\d{2}-.*$/"}</td>
+                        <td>Year $1</td>
+                        <td>Year 1912, Year 2026</td>
+                    </tr>
+                    <tr>
+                        <td>Property value</td>
+                        <td>{"/^(\\d{4}-\\d{2})-.*$/"}</td>
+                        <td>YM $1</td>
+                        <td>YM 2025-12, YM 2026-01</td>
+                    </tr>
+                    <tr>
+                        <td>Property value</td>
+                        <td>{"/^(success|failure|unknown)$/i"}</td>
+                        <td>$1</td>
+                        <td>Success, Failure, Unknown</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {/* <h5>Property names</h5>
+
+            <h5>Property values</h5>
+
+            <h5>Using groups</h5>
+
+            <h5>Regular expressions</h5>
+
+            <p>The regular expressions can define flags.</p>
+
+            <h6>Case-insensitive and other flags</h6> */}
+
             <h2>Array as table</h2>
 
             <p>
@@ -684,7 +866,8 @@ export default function DocumentationPage() {
 
             <DisplayArrayAsTable
                 originalObject={exampleArray}
-                objectTree={convertObjectToTree(exampleArray)}
+                objectTree={convertObjectToTree(exampleArray, [])}
+                rules={[]}
             />
 
             <h4>
@@ -702,7 +885,8 @@ export default function DocumentationPage() {
 
             <DisplayArrayAsTable
                 originalObject={exampleArray2}
-                objectTree={convertObjectToTree(exampleArray2)}
+                objectTree={convertObjectToTree(exampleArray2, [])}
+                rules={[]}
             />
 
             <h4>A sparse array containing objects with different properties</h4>
@@ -717,7 +901,8 @@ export default function DocumentationPage() {
 
             <DisplayArrayAsTable
                 originalObject={exampleArray3}
-                objectTree={convertObjectToTree(exampleArray3)}
+                objectTree={convertObjectToTree(exampleArray3, [])}
+                rules={[]}
             />
 
             <h2>Menu</h2>

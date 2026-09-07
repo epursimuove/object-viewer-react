@@ -9,6 +9,7 @@ import type {
     TableCell,
     TableRow,
     TableRowSorterConfiguration,
+    ActiveUserDefinedPropertyType,
 } from "~/types";
 import { TableHeader } from "./table-header";
 import { TableBody } from "./table-body";
@@ -23,9 +24,11 @@ const { debug, info } = useLog("display-array-as-table.tsx");
 export function DisplayArrayAsTable({
     originalObject,
     objectTree,
+    rules,
 }: {
     originalObject: Record<string, PropertyValue> | Record<string, PropertyValue>[];
     objectTree: ObjectNode;
+    rules: readonly ActiveUserDefinedPropertyType[];
 }) {
     info("Setting up DisplayArrayAsTable");
 
@@ -42,11 +45,11 @@ export function DisplayArrayAsTable({
             originalObject as Record<string, PropertyValue>[]; // TODO How to fix TypeScript craziness?!?
 
         const flattenedObject: Record<string, PropertyValue>[] = originalObjectWithArrayAtRoot.map(
-            (subObject: Record<string, PropertyValue>) => flattenObjectIfNeeded(subObject)
+            (subObject: Record<string, PropertyValue>) => flattenObjectIfNeeded(subObject),
             //   ) as unknown as Record<string, PropertyValue> // TODO How to fix TypeScript craziness?!?
         );
 
-        const flattenedObjectTree: ObjectNode | null = convertObjectToTree(flattenedObject);
+        const flattenedObjectTree: ObjectNode | null = convertObjectToTree(flattenedObject, rules);
 
         if (flattenedObjectTree) {
             objectTreeForArrayAsTable = flattenedObjectTree;
@@ -59,7 +62,7 @@ export function DisplayArrayAsTable({
     ) {
         console.error(
             `Invalid depth: ${objectTreeForArrayAsTable.depthBelow}`,
-            objectTreeForArrayAsTable
+            objectTreeForArrayAsTable,
         );
     }
 
@@ -88,7 +91,7 @@ export function DisplayArrayAsTable({
                                       isNada: isNadaPropertyValue(property),
                                   },
                               };
-                          }
+                          },
                       )
                     : [];
 
@@ -100,7 +103,7 @@ export function DisplayArrayAsTable({
             return {
                 cellMap,
             };
-        }
+        },
     );
 
     const columnHeaders: Set<string> = createColumnHeaders(tableRows);
@@ -109,7 +112,7 @@ export function DisplayArrayAsTable({
 
     const handleSortOrderChange = (
         columnName: string,
-        commonPropertyTypeAncestorForColumn: CommonPropertyTypeAncestor
+        commonPropertyTypeAncestorForColumn: CommonPropertyTypeAncestor,
     ) => {
         debug(`Sort on ${columnName}`);
 
@@ -193,7 +196,7 @@ function createColumnHeaders(tableRows: TableRow[]): Set<string> {
     });
 
     const columnHeadersSorted: Set<string> = new Set(
-        [...columnHeaders].toSorted((a, b) => a.localeCompare(b))
+        [...columnHeaders].toSorted((a, b) => a.localeCompare(b)),
     );
 
     debug(`Created ${columnHeadersSorted.size} columns`, columnHeadersSorted);
@@ -214,13 +217,13 @@ function allObjectsContainSameProperties(tableRows: TableRow[]): boolean {
                 [...tableRow.cellMap.values()].every((tableCell: TableCell) => {
                     const matchingCell: TableCell | undefined = cellsInFirstRow.find(
                         (tableCellFirstRow: TableCell) =>
-                            tableCell.columnName === tableCellFirstRow.columnName
+                            tableCell.columnName === tableCellFirstRow.columnName,
                     );
 
                     if (matchingCell) {
                         return true;
                     }
-                })
+                }),
         );
     }
 
@@ -229,7 +232,7 @@ function allObjectsContainSameProperties(tableRows: TableRow[]): boolean {
 
 function getCommonPropertyTypeAncestorForColumns(
     tableRows: TableRow[],
-    columnHeaders: Set<string>
+    columnHeaders: Set<string>,
 ): CommonPropertyTypeAncestor[] {
     // Get all cells for first row.
     // If enhanced property type for each row's cell equals corresponding cell in first row,
@@ -287,7 +290,7 @@ function getCommonPropertyTypeAncestorForColumns(
                 }
 
                 return unknownCommonPropertyTypeAncestor;
-            }
+            },
         );
 
         return result;

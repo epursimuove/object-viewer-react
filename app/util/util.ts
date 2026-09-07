@@ -9,6 +9,7 @@ import type {
     TableRow,
     TableRowComparator,
     TableRowSorterConfiguration,
+    ActiveUserDefinedPropertyType,
 } from "~/types";
 import { useLog } from "~/log-manager/LogManager";
 import {
@@ -32,6 +33,7 @@ import {
     durationRelativeToNowForLocalTime,
 } from "./dateAndTime";
 import { convertDecimalToHex, getNumberOfIntegerDigits } from "./math";
+import { userDefinedPropertyType } from "./userDefinedPropertyType";
 
 const { debug, error, info, trace, warning } = useLog("util.ts");
 
@@ -234,7 +236,11 @@ export const sortTableBy = (
     return tableRows;
 };
 
-export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyTypeEnhanced => {
+export const getPropertyTypeEnhanced = (
+    propertyName: string,
+    propertyValue: PropertyValue,
+    rules: readonly ActiveUserDefinedPropertyType[],
+): PropertyTypeEnhanced => {
     const propertyTypeOriginal: PropertyTypeOriginal = typeof propertyValue;
 
     let propertyTypEnhanced: PropertyTypeEnhanced;
@@ -273,52 +279,61 @@ export const getPropertyTypeEnhanced = (propertyValue: PropertyValue): PropertyT
         case "string":
             const propertyValueAsString: string = propertyValue as string;
 
+            // User-defined property types implemented ONLY for string properties at the moment.
+            const optionalUserDefinedPropertyType = userDefinedPropertyType(
+                propertyName,
+                propertyValueAsString,
+                rules,
+            );
+
             propertyTypEnhanced =
-                propertyValue === ""
-                    ? "EmptyString"
-                    : isTimestamp(propertyValueAsString)
-                      ? "Timestamp"
-                      : isLocalDate(propertyValueAsString)
-                        ? "LocalDate"
-                        : isLocalTime(propertyValueAsString)
-                          ? "LocalTime"
-                          : isTimeZone(propertyValueAsString)
-                            ? "TimeZone"
-                            : potentialCountryCode(propertyValueAsString)
-                              ? "CountryCode"
-                              : potentialLocale(propertyValueAsString)
-                                ? "Locale"
-                                : isCurrency(propertyValueAsString)
-                                  ? "Currency"
-                                  : potentialEmailAddress(propertyValueAsString)
-                                    ? "EmailAddress"
-                                    : isURL(propertyValueAsString)
-                                      ? "URL"
-                                      : isColorRGB(propertyValueAsString)
-                                        ? "ColorRGB"
-                                        : isAllowsMinor(propertyValueAsString)
-                                          ? "AllowsMinor"
-                                          : isAllowsPatch(propertyValueAsString)
-                                            ? "AllowsPatch"
-                                            : isSemanticVersioning(propertyValueAsString)
-                                              ? "SemVer"
-                                              : isIPv4Address(propertyValueAsString)
-                                                ? "IPv4"
-                                                : isIPv6Address(propertyValueAsString)
-                                                  ? "IPv6"
-                                                  : isPhoneNumber(propertyValueAsString)
-                                                    ? "PhoneNumber"
-                                                    : isHTTPMethod(propertyValueAsString)
-                                                      ? "HTTPMethod"
-                                                      : isAbsolutePath(propertyValueAsString)
-                                                        ? "AbsolutePath"
-                                                        : isRelativePath(propertyValueAsString)
-                                                          ? "RelativePath"
-                                                          : isRegularExpression(
-                                                                  propertyValueAsString,
-                                                              )
-                                                            ? "RegExp"
-                                                            : propertyTypeOriginal;
+                optionalUserDefinedPropertyType !== undefined
+                    ? optionalUserDefinedPropertyType
+                    : propertyValue === ""
+                      ? "EmptyString"
+                      : isTimestamp(propertyValueAsString)
+                        ? "Timestamp"
+                        : isLocalDate(propertyValueAsString)
+                          ? "LocalDate"
+                          : isLocalTime(propertyValueAsString)
+                            ? "LocalTime"
+                            : isTimeZone(propertyValueAsString)
+                              ? "TimeZone"
+                              : potentialCountryCode(propertyValueAsString)
+                                ? "CountryCode"
+                                : potentialLocale(propertyValueAsString)
+                                  ? "Locale"
+                                  : isCurrency(propertyValueAsString)
+                                    ? "Currency"
+                                    : potentialEmailAddress(propertyValueAsString)
+                                      ? "EmailAddress"
+                                      : isURL(propertyValueAsString)
+                                        ? "URL"
+                                        : isColorRGB(propertyValueAsString)
+                                          ? "ColorRGB"
+                                          : isAllowsMinor(propertyValueAsString)
+                                            ? "AllowsMinor"
+                                            : isAllowsPatch(propertyValueAsString)
+                                              ? "AllowsPatch"
+                                              : isSemanticVersioning(propertyValueAsString)
+                                                ? "SemVer"
+                                                : isIPv4Address(propertyValueAsString)
+                                                  ? "IPv4"
+                                                  : isIPv6Address(propertyValueAsString)
+                                                    ? "IPv6"
+                                                    : isPhoneNumber(propertyValueAsString)
+                                                      ? "PhoneNumber"
+                                                      : isHTTPMethod(propertyValueAsString)
+                                                        ? "HTTPMethod"
+                                                        : isAbsolutePath(propertyValueAsString)
+                                                          ? "AbsolutePath"
+                                                          : isRelativePath(propertyValueAsString)
+                                                            ? "RelativePath"
+                                                            : isRegularExpression(
+                                                                    propertyValueAsString,
+                                                                )
+                                                              ? "RegExp"
+                                                              : propertyTypeOriginal;
             break;
 
         default:

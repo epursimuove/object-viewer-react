@@ -42,6 +42,8 @@ import { CopableContent } from "~/components/CopableContent";
 import { sha256 } from "./HistoryContext";
 import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
 import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
+import { UserDefinedPropertyTypesSection } from "./user-defined-property-types-section";
+import { useUserDefinedPropertyTypesContext } from "./UserDefinedPropertyTypesContext";
 
 const { debug, error, info, trace, warning } = useLog("object-viewer.tsx", "getFoo()");
 
@@ -70,6 +72,13 @@ export function ObjectViewer() {
     const [originalObject, setOriginalObject] = useState<Record<string, PropertyValue>>({});
 
     const {
+        savedUserDefinedPropertyTypes,
+        // setSavedUserDefinedPropertyTypes,
+        // clearSavedUserDefinedPropertyTypes,
+        activeUserDefinedPropertyTypes,
+    } = useUserDefinedPropertyTypesContext();
+
+    const {
         showNadaValues,
         showLeaves,
         filterOnProperty,
@@ -77,7 +86,10 @@ export function ObjectViewer() {
         resetFilters,
     } = useUserConfigurationContext();
 
-    const objectTree: ObjectNode = convertObjectToTree(originalObject);
+    const objectTree: ObjectNode = convertObjectToTree(
+        originalObject,
+        activeUserDefinedPropertyTypes,
+    );
 
     info("originalObject", originalObject);
 
@@ -91,26 +103,36 @@ export function ObjectViewer() {
     }
 
     useEffect(() => {
-        info(`originalObject changed`, originalObject);
+        info(
+            `originalObject or activeUserDefinedPropertyTypes changed`,
+            originalObject,
+            activeUserDefinedPropertyTypes,
+        );
         if (isEmpty(originalObject)) {
             return;
         }
 
-        const objectTreeXXX: ObjectNode = convertObjectToTree(originalObject);
+        const objectTreeXXX: ObjectNode = convertObjectToTree(
+            originalObject,
+            activeUserDefinedPropertyTypes,
+        );
 
         const displayRowsXXX: DisplayRow[] = convertTreeToDisplayRows(objectTreeXXX);
 
         setDisplayRows(displayRowsXXX);
 
         computeHash();
-    }, [originalObject]); // Runs whenever `originalObject` changes
+    }, [originalObject, activeUserDefinedPropertyTypes]); // Runs whenever `originalObject` changes
 
     useEffect(() => {
         info(`[MOUNTED] originalObject changed`, originalObject);
 
         setOriginalObject(JSON.parse(originalObjectAsText));
 
-        const objectTreeXXX: ObjectNode = convertObjectToTree(originalObject);
+        const objectTreeXXX: ObjectNode = convertObjectToTree(
+            originalObject,
+            activeUserDefinedPropertyTypes,
+        );
 
         const displayRowsXXX: DisplayRow[] = convertTreeToDisplayRows(objectTreeXXX);
 
@@ -326,6 +348,10 @@ export function ObjectViewer() {
                             <SettingsSection expandAll={expandAll} collapseAll={collapseAll} />
                         </section>
 
+                        <section id="user-defined-property-types">
+                            <UserDefinedPropertyTypesSection displayRows={displayRows} />
+                        </section>
+
                         <section id="filters">
                             <FilterSection displayRows={displayRows} />
                         </section>
@@ -369,7 +395,11 @@ export function ObjectViewer() {
                         <h2>Array as table</h2>
                     </summary>
 
-                    <DisplayArrayAsTable originalObject={originalObject} objectTree={objectTree} />
+                    <DisplayArrayAsTable
+                        originalObject={originalObject}
+                        objectTree={objectTree}
+                        rules={activeUserDefinedPropertyTypes}
+                    />
                 </details>
             )}
 

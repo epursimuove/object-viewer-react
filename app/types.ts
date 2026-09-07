@@ -51,7 +51,23 @@ const allPropertyTypes = [...originalPropertyTypes, ...enhancedPropertyTypes] as
 
 export type PropertyTypeOriginal = (typeof originalPropertyTypes)[number];
 
-export type PropertyTypeEnhanced = (typeof allPropertyTypes)[number];
+export interface UserDefinedPropertyTypeDefinition {
+    id: string; // Use crypto.randomUUID().
+    enabled: boolean;
+    whatToCheck: "propertyName" | "propertyValue";
+    userDefinedRegExp: string;
+    resultingPropertyType: string;
+}
+
+export type ActiveUserDefinedPropertyType = UserDefinedPropertyTypeDefinition & {
+    regExp: RegExp;
+};
+
+export type ValidTextFieldsForUserDefinedPropertyType =
+    | "userDefinedRegExp"
+    | "resultingPropertyType";
+
+export type PropertyTypeEnhanced = (typeof allPropertyTypes)[number] | string;
 
 export type CommonPropertyTypeAncestor =
     | PropertyTypeEnhanced
@@ -158,6 +174,14 @@ export interface HistoryContextType {
     clearSavedHistory: () => void;
 }
 
+export interface UserDefinedPropertyTypesContextType {
+    savedUserDefinedPropertyTypes: UserDefinedPropertyTypeDefinition[];
+    activeUserDefinedPropertyTypes: ActiveUserDefinedPropertyType[];
+    ruleErrorsById: Map<string, string>;
+    saveUserDefinedPropertyTypes: (value: UserDefinedPropertyTypeDefinition[]) => void;
+    clearSavedUserDefinedPropertyTypes: () => void;
+}
+
 export interface HistoryItem {
     id: string;
     checksum: string;
@@ -178,6 +202,7 @@ export type MenuSection =
     | "historySectionExpanded"
     | "settingsSectionExpanded"
     | "filtersSectionExpanded"
+    | "userDefinedPropertyTypesSectionExpanded"
     | "statisticsSectionExpanded";
 
 export interface MenuState {

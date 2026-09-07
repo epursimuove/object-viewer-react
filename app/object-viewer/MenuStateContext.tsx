@@ -21,6 +21,7 @@ const defaultMenuState: MenuState = {
         historySectionExpanded: true,
         settingsSectionExpanded: true,
         filtersSectionExpanded: true,
+        userDefinedPropertyTypesSectionExpanded: true,
         statisticsSectionExpanded: true,
     },
 };

@@ -8,6 +8,7 @@ import type {
     PropertyTypeEnhanced,
     PropertyTypeOriginal,
     PropertyValue,
+    ActiveUserDefinedPropertyType,
 } from "~/types";
 import {
     convertArrayToObject,
@@ -75,7 +76,8 @@ function createEmptyArrayNode(): ObjectNode {
 }
 
 export function convertObjectToTree(
-    originalObject: Record<string, PropertyValue> | Record<string, PropertyValue>[]
+    originalObject: Record<string, PropertyValue> | Record<string, PropertyValue>[],
+    rules: readonly ActiveUserDefinedPropertyType[],
 ): ObjectNode {
     info("Converting JSON object to object tree");
 
@@ -89,12 +91,12 @@ export function convertObjectToTree(
         root.propertyTypeEnhanced = "array";
 
         const arrayAsObject: Record<string, PropertyValue> = convertArrayToObject<PropertyValue>(
-            originalObject as PropertyValue[]
+            originalObject as PropertyValue[],
         );
 
-        const foo: ObjectNode = convertObjectToTreeHelper(arrayAsObject, root, true);
+        const foo: ObjectNode = convertObjectToTreeHelper(arrayAsObject, rules, root, true);
     } else {
-        const foo: ObjectNode = convertObjectToTreeHelper(originalObject, root);
+        const foo: ObjectNode = convertObjectToTreeHelper(originalObject, rules, root);
     }
 
     info(`Created ${id} object tree nodes`);
@@ -104,8 +106,9 @@ export function convertObjectToTree(
 
 export function convertObjectToTreeHelper(
     originalObject: Record<string, PropertyValue>,
+    rules: readonly ActiveUserDefinedPropertyType[],
     currentObjectNode: ObjectNode,
-    isArrayIndex: boolean = false
+    isArrayIndex: boolean = false,
 ): ObjectNode {
     info(`Converting property "${currentObjectNode.propertyName}" to object tree`);
     const currentId = id;
@@ -121,7 +124,11 @@ export function convertObjectToTreeHelper(
         const propertyValue: PropertyValue = structuredClone(originalObject[propertyName]);
 
         const propertyTypeOriginal: PropertyTypeOriginal = typeof propertyValue;
-        const propertyTypeEnhanced: PropertyTypeEnhanced = getPropertyTypeEnhanced(propertyValue);
+        const propertyTypeEnhanced: PropertyTypeEnhanced = getPropertyTypeEnhanced(
+            propertyName,
+            propertyValue,
+            rules,
+        );
 
         const isObject: boolean = propertyTypeOriginal === "object";
         const isArray: boolean = isObject && Array.isArray(propertyValue);
@@ -163,7 +170,8 @@ export function convertObjectToTreeHelper(
 
                     const subObject: ObjectNode = convertObjectToTreeHelper(
                         propertyValue as Record<string, PropertyValue>,
-                        objectNode
+                        rules,
+                        objectNode,
                     );
 
                     debug(`subObject for "${propertyName}"`, subObject);
@@ -186,8 +194,9 @@ export function convertObjectToTreeHelper(
 
                 const subItems: ObjectNode = convertObjectToTreeHelper(
                     propertyValueAsObject,
+                    rules,
                     arrayNode,
-                    true
+                    true,
                 );
 
                 currentObjectNode.containedProperties[propertyName] = subItems;
@@ -196,7 +205,7 @@ export function convertObjectToTreeHelper(
     }
 
     currentObjectNode.length = Object.getOwnPropertyNames(
-        currentObjectNode.containedProperties
+        currentObjectNode.containedProperties,
     ).length;
 
     decideDescendantsAndDepthBelow(currentObjectNode);
@@ -249,7 +258,7 @@ function getPossibleIdentifyingProperties(objectNode: ObjectNode): Record<string
 
 function decideDescendantsAndDepthBelow(currentObjectNode: ObjectNode) {
     const containedPropertyNames: string[] = Object.getOwnPropertyNames(
-        currentObjectNode.containedProperties
+        currentObjectNode.containedProperties,
     );
 
     let depthBelow = 0;
@@ -283,7 +292,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
             "currentObjectNode.propertyName",
             currentObjectNode.propertyName,
             Object.getOwnPropertyNames(currentObjectNode.containedProperties).length,
-            currentObjectNode.containedProperties
+            currentObjectNode.containedProperties,
         );
 
         const {
@@ -376,8 +385,8 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
         if (isArray || isObject) {
             const typeOriginalOfItems: Set<PropertyTypeOriginal> = new Set(
                 Object.values(currentObjectNode.containedProperties).map(
-                    (objectTree: ObjectTree) => objectTree.propertyTypeOriginal
-                )
+                    (objectTree: ObjectTree) => objectTree.propertyTypeOriginal,
+                ),
             );
 
             if (typeOriginalOfItems.size === 1) {
@@ -393,8 +402,8 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                 if (containsStrings || containsNumbers) {
                     const typeEnhancedOfItems: Set<PropertyTypeEnhanced> = new Set(
                         Object.values(currentObjectNode.containedProperties).map(
-                            (objectTree: ObjectTree) => objectTree.propertyTypeEnhanced
-                        )
+                            (objectTree: ObjectTree) => objectTree.propertyTypeEnhanced,
+                        ),
                     );
 
                     if (containsStrings) {
@@ -417,7 +426,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
 
                 trace(
                     `currentObjectNode.convenientIdentifierWhenCollapsed BEFORE`,
-                    currentObjectNode.convenientIdentifierWhenCollapsed
+                    currentObjectNode.convenientIdentifierWhenCollapsed,
                 );
 
                 const atLeastTwoItems =
@@ -439,7 +448,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
 
                 trace(
                     `currentObjectNode.convenientIdentifierWhenCollapsed AFTER`,
-                    currentObjectNode.convenientIdentifierWhenCollapsed
+                    currentObjectNode.convenientIdentifierWhenCollapsed,
                 );
 
                 trace(`atLeastTwoItems`, atLeastTwoItems);
@@ -450,14 +459,14 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                         !excludedAggregationNumberPropertyTypes.includes(arrayTypeToDisplay)
                     ) {
                         const values: number[] = Object.values(
-                            currentObjectNode.containedProperties
+                            currentObjectNode.containedProperties,
                         ).map(
-                            (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
+                            (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue,
                         ) as number[];
 
                         const aggregation: ArithmeticAggregation = calculateAggregations(
                             values,
-                            "numbers"
+                            "numbers",
                         );
                         currentObjectNode.arithmeticAggregation = aggregation;
                     } else if (
@@ -465,14 +474,14 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                         !excludedAggregationStringPropertyTypes.includes(arrayTypeToDisplay)
                     ) {
                         const values: string[] = Object.values(
-                            currentObjectNode.containedProperties
+                            currentObjectNode.containedProperties,
                         ).map(
-                            (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue
+                            (objectTree: ObjectTree) => (objectTree as PrimitiveLeaf).propertyValue,
                         ) as string[];
 
                         const aggregation: ArithmeticAggregation = calculateAggregations(
                             values.map((s: string) => s.length),
-                            "string lengths"
+                            "string lengths",
                         );
 
                         currentObjectNode.arithmeticAggregation = aggregation;
@@ -483,7 +492,7 @@ function decideOptionalConvenientIdentifier(currentObjectNode: ObjectNode) {
                     `currentObjectNode.arithmeticAggregation`,
                     Object.keys(currentObjectNode.containedProperties).length,
                     arrayTypeOriginal,
-                    currentObjectNode.arithmeticAggregation
+                    currentObjectNode.arithmeticAggregation,
                 );
             }
         }
@@ -549,7 +558,7 @@ export function convertTreeToDisplayRows(objectRoot: ObjectNode): DisplayRow[] {
 
 export function convertTreeToDisplayRowsHelper(
     currentObjectNode: ObjectTree,
-    displayRows: DisplayRow[]
+    displayRows: DisplayRow[],
 ): DisplayRow[] {
     info(`Converting object tree "${currentObjectNode.propertyName}" to display row`);
 
@@ -614,7 +623,7 @@ export function convertTreeToDisplayRowsHelper(
     }
 
     info(
-        `Created ${rowNumber - currentRowNumber} display rows under "${currentObjectNode.propertyName}"`
+        `Created ${rowNumber - currentRowNumber} display rows under "${currentObjectNode.propertyName}"`,
     );
 
     return []; // TODO ÄR DETTA RÄTT?!?!?
@@ -638,13 +647,13 @@ const resetRowNumberCounter = (): void => {
 
 const getPossiblePrimitiveValue = (
     objectNode: ObjectNode,
-    requestedPropertyName: string
+    requestedPropertyName: string,
 ): PropertyValue => {
     // Search for matching property is case-insensitive.
     const propertyNames: string[] = Object.getOwnPropertyNames(objectNode.containedProperties);
 
     const matchingPropertyName: string | undefined = propertyNames.find(
-        (propertyName) => requestedPropertyName.toLowerCase() === propertyName.toLowerCase()
+        (propertyName) => requestedPropertyName.toLowerCase() === propertyName.toLowerCase(),
     );
 
     if (matchingPropertyName) {

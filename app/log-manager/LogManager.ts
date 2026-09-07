@@ -37,6 +37,8 @@ const loggerNames = [
     "object-viewer.tsx",
     "tool-bar.tsx",
     "tree.ts",
+    "UserDefinedPropertyTypesContext.tsx",
+    "UserDefinedPropertyTypesSection.tsx",
     "util.ts",
 ] as const;
 type LoggerName = (typeof loggerNames)[number];
@@ -54,6 +56,8 @@ class LogManager {
         "object-viewer.tsx": { level: LogLevel.OFF },
         "tool-bar.tsx": { level: LogLevel.OFF },
         "tree.ts": { level: LogLevel.OFF },
+        "UserDefinedPropertyTypesContext.tsx": { level: LogLevel.OFF },
+        "UserDefinedPropertyTypesSection.tsx": { level: LogLevel.OFF },
         "util.ts": { level: LogLevel.OFF },
     };
 

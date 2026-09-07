@@ -19,6 +19,7 @@ import { Timestamp } from "./components/timestamp";
 import { MenuStateProvider } from "./object-viewer/MenuStateContext";
 import favicon from "/favicon-nnm-alternative-2.svg";
 import logo from "/LogoNNM_blue_transparent_background.svg";
+import { UserDefinedPropertyTypesContextProvider } from "./object-viewer/UserDefinedPropertyTypesContext";
 
 // export const links: Route.LinksFunction = () => [
 //   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -117,7 +118,9 @@ export default function App() {
         <UserConfigurationProvider>
             <HistoryContextProvider>
                 <MenuStateProvider>
-                    <Outlet />
+                    <UserDefinedPropertyTypesContextProvider>
+                        <Outlet />
+                    </UserDefinedPropertyTypesContextProvider>
                 </MenuStateProvider>
             </HistoryContextProvider>
         </UserConfigurationProvider>
