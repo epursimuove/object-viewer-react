@@ -78,6 +78,7 @@ function createEmptyArrayNode(): ObjectNode {
 export function convertObjectToTree(
     originalObject: Record<string, PropertyValue> | Record<string, PropertyValue>[],
     rules: readonly ActiveUserDefinedPropertyType[],
+    shouldSortPropertyNames: boolean = true,
 ): ObjectNode {
     info("Converting JSON object to object tree");
 
@@ -94,9 +95,21 @@ export function convertObjectToTree(
             originalObject as PropertyValue[],
         );
 
-        const foo: ObjectNode = convertObjectToTreeHelper(arrayAsObject, rules, root, true);
+        const foo: ObjectNode = convertObjectToTreeHelper(
+            arrayAsObject,
+            rules,
+            root,
+            true,
+            shouldSortPropertyNames,
+        );
     } else {
-        const foo: ObjectNode = convertObjectToTreeHelper(originalObject, rules, root);
+        const foo: ObjectNode = convertObjectToTreeHelper(
+            originalObject,
+            rules,
+            root,
+            false,
+            shouldSortPropertyNames,
+        );
     }
 
     info(`Created ${id} object tree nodes`);
@@ -109,6 +122,7 @@ export function convertObjectToTreeHelper(
     rules: readonly ActiveUserDefinedPropertyType[],
     currentObjectNode: ObjectNode,
     isArrayIndex: boolean = false,
+    shouldSortPropertyNames: boolean = true,
 ): ObjectNode {
     info(`Converting property "${currentObjectNode.propertyName}" to object tree`);
     const currentId = id;
@@ -116,7 +130,9 @@ export function convertObjectToTreeHelper(
     // - Sort properties alphabetically in the original object.
     // - For each property, traverse depth-first and create a sub object tree.
     const propertyNames: string[] = Object.getOwnPropertyNames(originalObject);
-    const sortedPropertyNames: string[] = propertyNames.toSorted(sortPropertyNames);
+    const sortedPropertyNames: string[] = shouldSortPropertyNames
+        ? propertyNames.toSorted(sortPropertyNames)
+        : propertyNames;
 
     for (let i = 0; i < sortedPropertyNames.length; i++) {
         const propertyName: string = sortedPropertyNames[i];
@@ -172,6 +188,8 @@ export function convertObjectToTreeHelper(
                         propertyValue as Record<string, PropertyValue>,
                         rules,
                         objectNode,
+                        false,
+                        shouldSortPropertyNames,
                     );
 
                     debug(`subObject for "${propertyName}"`, subObject);
@@ -197,6 +215,7 @@ export function convertObjectToTreeHelper(
                     rules,
                     arrayNode,
                     true,
+                    shouldSortPropertyNames,
                 );
 
                 currentObjectNode.containedProperties[propertyName] = subItems;

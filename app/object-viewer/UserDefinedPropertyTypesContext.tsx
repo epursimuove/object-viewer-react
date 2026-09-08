@@ -101,8 +101,7 @@ export function UserDefinedPropertyTypesContextProvider({
     );
 }
 
-export const storageKeyForUserDefinedPropertyTypes =
-    "__NNM_Object_Viewer_User_Defined_Property_Types__";
+export const storageKeyForUserDefinedPropertyTypes = "__NNM_Object_Viewer_User_Defined__";
 
 export const loadUserDefinedPropertyTypesFromStorage = (): UserDefinedPropertyTypeDefinition[] => {
     const storedValue = localStorage.getItem(storageKeyForUserDefinedPropertyTypes);

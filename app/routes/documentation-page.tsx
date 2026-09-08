@@ -3,6 +3,7 @@ import {
     arithmeticAggregationObjectsWithNumbersExamples,
     arithmeticAggregationObjectsWithStringsExamples,
     arithmeticAggregationStringExamples,
+    documentationExampleUserDefinedPropertyTypes,
     exampleArray,
     exampleArray2,
     exampleArray3,
@@ -663,7 +664,7 @@ export default function DocumentationPage() {
             <h4>Stored in Local Storage</h4>
 
             <p>
-                Your user-defined property types are stored in your local storage (using key
+                Your user-defined property types are stored in your local storage (using key{" "}
                 <code>{storageKeyForUserDefinedPropertyTypes}</code>).
             </p>
 
@@ -676,57 +677,16 @@ export default function DocumentationPage() {
 
             <h4>Examples</h4>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>RegExp pattern</th>
-                        <th>Substitution</th>
-                        <th>Result examples</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Property value</td>
-                        <td>{"/^ABC-\\d{5}$/"}</td>
-                        <td>ArticleId</td>
-                    </tr>
-                    <tr>
-                        <td>Property name</td>
-                        <td>/^(uuid|userId)$/</td>
-                        <td>User</td>
-                    </tr>
-                    <tr>
-                        <td>Property name</td>
-                        <td>/^(full|first|last)?name$/i</td>
-                        <td>Name</td>
-                    </tr>
-                    <tr>
-                        <td>Property value</td>
-                        <td>/^(To do|In progress|Done)$/</td>
-                        <td>Task $1</td>
-                        <td>Task To do, Task In progress, Task Done</td>
-                    </tr>
-                    <tr>
-                        <td>Property value</td>
-                        <td>{"/^(\\d{4})-\\d{2}-.*$/"}</td>
-                        <td>Year $1</td>
-                        <td>Year 1912, Year 2026</td>
-                    </tr>
-                    <tr>
-                        <td>Property value</td>
-                        <td>{"/^(\\d{4}-\\d{2})-.*$/"}</td>
-                        <td>YM $1</td>
-                        <td>YM 2025-12, YM 2026-01</td>
-                    </tr>
-                    <tr>
-                        <td>Property value</td>
-                        <td>{"/^(success|failure|unknown)$/i"}</td>
-                        <td>$1</td>
-                        <td>Success, Failure, Unknown</td>
-                    </tr>
-                </tbody>
-            </table>
+            <DisplayArrayAsTable
+                originalObject={documentationExampleUserDefinedPropertyTypes}
+                objectTree={convertObjectToTree(
+                    documentationExampleUserDefinedPropertyTypes,
+                    [],
+                    false,
+                )}
+                rules={[]}
+                useSimpleTable={true}
+            />
 
             {/* <h5>Property names</h5>
 

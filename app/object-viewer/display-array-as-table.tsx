@@ -25,10 +25,12 @@ export function DisplayArrayAsTable({
     originalObject,
     objectTree,
     rules,
+    useSimpleTable = false,
 }: {
     originalObject: Record<string, PropertyValue> | Record<string, PropertyValue>[];
     objectTree: ObjectNode;
     rules: readonly ActiveUserDefinedPropertyType[];
+    useSimpleTable?: boolean;
 }) {
     info("Setting up DisplayArrayAsTable");
 
@@ -106,7 +108,7 @@ export function DisplayArrayAsTable({
         },
     );
 
-    const columnHeaders: Set<string> = createColumnHeaders(tableRows);
+    const columnHeaders: Set<string> = createColumnHeaders(tableRows, useSimpleTable);
 
     const [sortingOn, setSortingOn] = useState<TableRowSorterConfiguration | null>(null);
 
@@ -146,13 +148,15 @@ export function DisplayArrayAsTable({
             {showTable ? (
                 <div className="table-wrapper">
                     <table className="json-as-table">
-                        <caption>
-                            Root array as table, containing{" "}
-                            <strong>{columnHeaders.size} columns</strong> and{" "}
-                            <strong>{tableRows.length} rows</strong>.
-                            {shouldBeFlattenedBeforeDisplayedAsTable &&
-                                " Note that original JSON array was flattened before display."}
-                        </caption>
+                        {!useSimpleTable && (
+                            <caption>
+                                Root array as table, containing{" "}
+                                <strong>{columnHeaders.size} columns</strong> and{" "}
+                                <strong>{tableRows.length} rows</strong>.
+                                {shouldBeFlattenedBeforeDisplayedAsTable &&
+                                    " Note that original JSON array was flattened before display."}
+                            </caption>
+                        )}
 
                         <TableHeader
                             tableRows={tableRows}
@@ -162,6 +166,7 @@ export function DisplayArrayAsTable({
                             commonPropertyTypeAncestorForColumns={
                                 commonPropertyTypeAncestorForColumns
                             }
+                            useSimpleTable={useSimpleTable}
                         />
 
                         <TableBody
@@ -170,13 +175,15 @@ export function DisplayArrayAsTable({
                             sortingOn={sortingOn}
                         />
 
-                        <TableFooter
-                            tableRows={tableRows}
-                            columnHeaders={columnHeaders}
-                            commonPropertyTypeAncestorForColumns={
-                                commonPropertyTypeAncestorForColumns
-                            }
-                        />
+                        {!useSimpleTable && (
+                            <TableFooter
+                                tableRows={tableRows}
+                                columnHeaders={columnHeaders}
+                                commonPropertyTypeAncestorForColumns={
+                                    commonPropertyTypeAncestorForColumns
+                                }
+                            />
+                        )}
                     </table>
                 </div>
             ) : (
@@ -186,7 +193,10 @@ export function DisplayArrayAsTable({
     );
 }
 
-function createColumnHeaders(tableRows: TableRow[]): Set<string> {
+function createColumnHeaders(
+    tableRows: TableRow[],
+    keepColumnsOriginalOrder: boolean,
+): Set<string> {
     const columnHeaders: Set<string> = new Set<string>();
 
     tableRows.forEach((tableRow: TableRow) => {
@@ -195,9 +205,9 @@ function createColumnHeaders(tableRows: TableRow[]): Set<string> {
         });
     });
 
-    const columnHeadersSorted: Set<string> = new Set(
-        [...columnHeaders].toSorted((a, b) => a.localeCompare(b)),
-    );
+    const columnHeadersSorted: Set<string> = keepColumnsOriginalOrder
+        ? new Set([...columnHeaders])
+        : new Set([...columnHeaders].toSorted((a, b) => a.localeCompare(b)));
 
     debug(`Created ${columnHeadersSorted.size} columns`, columnHeadersSorted);
 

@@ -1049,3 +1049,48 @@ export const arithmeticAggregationObjectsWithStringsExamples: object[] = [
     { firstName: "Jennie", lastName: "Höglund" },
     { city1: "Paris", city2: "London", city3: "Tokyo", city4: "Los Angeles" },
 ];
+
+export const documentationExampleUserDefinedPropertyTypes: Record<string, PropertyValue>[] = [
+    {
+        type: "Property value",
+        regExpPattern: "/^ABC-\\d{5}$/",
+        substitution: "ArticleId",
+        resultExamples: "",
+    },
+    {
+        type: "Property name",
+        regExpPattern: "/^(uuid|userId)$/",
+        substitution: "User",
+        resultExamples: "",
+    },
+    {
+        type: "Property name",
+        regExpPattern: "/^(full|first|last)?name$/i",
+        substitution: "Name",
+        resultExamples: "",
+    },
+    {
+        type: "Property value",
+        regExpPattern: "/^(To do|In progress|Done)$/",
+        substitution: "Task $1",
+        resultExamples: "Task To do, Task In progress, Task Done",
+    },
+    {
+        type: "Property value",
+        regExpPattern: "/^(\\d{4})-\\d{2}-.*$/",
+        substitution: "Year $1",
+        resultExamples: "Year 1912, Year 2026",
+    },
+    {
+        type: "Property value",
+        regExpPattern: "/^(\\d{4}-\\d{2})-.*$/",
+        substitution: "YM $1",
+        resultExamples: "YM 2025-12, YM 2026-01",
+    },
+    {
+        type: "Property value",
+        regExpPattern: "/^(success|failure|unknown)$/i",
+        substitution: "$1",
+        resultExamples: "Success, Failure, Unknown",
+    },
+];

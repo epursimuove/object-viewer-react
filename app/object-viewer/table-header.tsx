@@ -8,15 +8,17 @@ export function TableHeader({
     sortingOn,
     handleSortOrderChange,
     commonPropertyTypeAncestorForColumns,
+    useSimpleTable,
 }: {
     tableRows: TableRow[];
     columnHeaders: Set<string>;
     sortingOn: TableRowSorterConfiguration | null;
     handleSortOrderChange: (
         columnName: string,
-        commonPropertyTypeAncestorForColumn: CommonPropertyTypeAncestor
+        commonPropertyTypeAncestorForColumn: CommonPropertyTypeAncestor,
     ) => void;
     commonPropertyTypeAncestorForColumns: CommonPropertyTypeAncestor[];
+    useSimpleTable: boolean;
 }): JSX.Element {
     const tableHeadHtml = (
         <thead>
@@ -44,7 +46,7 @@ export function TableHeader({
                                               onClick: () =>
                                                   handleSortOrderChange(
                                                       columnName,
-                                                      commonPropertyTypeAncestorForColumn
+                                                      commonPropertyTypeAncestorForColumn,
                                                   ),
                                           }
                                         : {})}
@@ -55,23 +57,27 @@ export function TableHeader({
                         })}
                     </tr>
 
-                    <tr className="original-property-name">
-                        <th className="row-number"></th>
+                    {!useSimpleTable && (
+                        <tr className="original-property-name">
+                            <th className="row-number"></th>
 
-                        {[...columnHeaders].map((columnName: string) => {
-                            return <th key={columnName}>{"" + columnName}</th>;
-                        })}
-                    </tr>
+                            {[...columnHeaders].map((columnName: string) => {
+                                return <th key={columnName}>{"" + columnName}</th>;
+                            })}
+                        </tr>
+                    )}
 
-                    <tr className="property-type-enhanced">
-                        <th className="row-number"></th>
+                    {!useSimpleTable && (
+                        <tr className="property-type-enhanced">
+                            <th className="row-number"></th>
 
-                        {commonPropertyTypeAncestorForColumns.map(
-                            (propertyType: string, index: number) => {
-                                return <th key={index}>{propertyType}</th>;
-                            }
-                        )}
-                    </tr>
+                            {commonPropertyTypeAncestorForColumns.map(
+                                (propertyType: string, index: number) => {
+                                    return <th key={index}>{propertyType}</th>;
+                                },
+                            )}
+                        </tr>
+                    )}
                 </>
             )}
         </thead>
