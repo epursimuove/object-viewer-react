@@ -435,7 +435,7 @@ aside#toolbar {
                 cursor: pointer;
                 display: flex;
                 flex-direction: row;
-                justify-content: flex-end;
+                justify-content: flex-start;
                 align-items: baseline;
                 gap: 1rem;
 
@@ -453,6 +453,11 @@ aside#toolbar {
                 }
             }
         }
+    }
+
+    .text-input {
+        display: flex;
+        gap: 1rem;
     }
 
     #user-defined-property-types {

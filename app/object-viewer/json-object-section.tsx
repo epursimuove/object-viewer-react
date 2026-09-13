@@ -4,6 +4,8 @@ import type { PropertyValue } from "~/types";
 import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { createFocusEnablerForSection } from "~/util/eventListeners";
 import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
+import { TextInput } from "~/components/text-input";
+import { prettifyInteger } from "~/util/util";
 
 const { debug, error, info } = useLog("json-object-section.tsx");
 
@@ -29,6 +31,8 @@ export function JsonObjectSection({
 
     const [jsonObjectModified, setJsonObjectModified] = useState<boolean>(false);
 
+    const [descriptiveName, setDescriptiveName] = useState<string>("");
+
     function updateOriginalObject(saveHistory = true) {
         info("Updating original object");
 
@@ -43,8 +47,15 @@ export function JsonObjectSection({
             resetFilters();
 
             if (saveHistory) {
-                saveHistoryToStorage(nextOriginalObject, savedHistory, setSavedHistory);
+                saveHistoryToStorage(
+                    nextOriginalObject,
+                    savedHistory,
+                    setSavedHistory,
+                    descriptiveName,
+                );
             }
+
+            setDescriptiveName("");
 
             setJsonObjectModified(false);
         } catch (err) {
@@ -82,7 +93,14 @@ export function JsonObjectSection({
                         setJsonObjectModified(true);
                     }}
                 />
-                {originalObjectAsText.length} characters
+                {prettifyInteger(originalObjectAsText.length)} characters
+                <TextInput
+                    label="Optional descriptive name"
+                    disabled={!jsonObjectModified}
+                    size={15}
+                    currentValue={descriptiveName}
+                    onChange={(newValue) => setDescriptiveName(newValue)}
+                />
                 <button
                     type="button"
                     onClick={() => updateOriginalObject()}

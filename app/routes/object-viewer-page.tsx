@@ -1,10 +1,14 @@
-import {ObjectViewer} from "~/object-viewer/object-viewer";
-import type {Route} from "../../.react-router/types/app/routes/+types/object-viewer-page";
+import { ObjectViewer } from "~/object-viewer/object-viewer";
+import type { Route } from "../../.react-router/types/app/routes/+types/object-viewer-page";
+import { versions } from "~/util/util";
 
 export function meta({}: Route.MetaArgs) {
     return [
-        { title: "NNM Object Viewer" },
-        { name: "description", content: "Convenient visualisation of JSON objects as an object tree" },
+        { title: `NNM Object Viewer ${versions.appVersion}` },
+        {
+            name: "description",
+            content: "Convenient visualisation of JSON objects as an object tree",
+        },
     ];
 }
 

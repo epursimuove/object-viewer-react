@@ -686,3 +686,6 @@ export const unknownCommonPropertyTypeAncestor = "???";
 
 export const isEmpty = (object: Record<string, any>): boolean =>
     Object.entries(object).length === 0;
+
+export const prettifyInteger = (n: number): string =>
+    Number.isInteger(n) ? new Intl.NumberFormat("sv-SE").format(n) : String(n);

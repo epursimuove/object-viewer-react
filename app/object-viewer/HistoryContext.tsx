@@ -58,7 +58,7 @@ export function HistoryContextProvider({ children }: HistoryContextProps) {
 }
 
 export const storageKeyForHistory = "__NNM_Object_Viewer_History__";
-const maxNumberOfHistoryItems = 7;
+const maxNumberOfHistoryItems = 10;
 
 export const prettifySha256 = (sha256Code: string, numberOfCharacters = 3): string =>
     sha256Code.slice(-numberOfCharacters);
@@ -67,6 +67,7 @@ export const saveHistoryToStorage = (
     object: Record<string, PropertyValue>,
     savedHistory: HistoryItem[],
     setSavedHistory: (value: HistoryItem[]) => void,
+    descriptiveName?: string,
 ): void => {
     debug(
         "Current history from local storage",
@@ -101,6 +102,7 @@ export const saveHistoryToStorage = (
                 object,
                 timestampFirstView: now,
                 timestampLastView: now,
+                ...(descriptiveName?.trim() !== "" && { descriptiveName }),
             };
 
             updatedHistory = [newItem, ...savedHistory];

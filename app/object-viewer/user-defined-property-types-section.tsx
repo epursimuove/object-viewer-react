@@ -119,6 +119,8 @@ export function UserDefinedPropertyTypesSection({ displayRows }: { displayRows: 
         setDirty(false);
     }
 
+    const maxNumberOfUserDefinedPropertyTypes = 10;
+
     return (
         <details
             // ref={linesSectionRef}
@@ -163,7 +165,9 @@ export function UserDefinedPropertyTypesSection({ displayRows }: { displayRows: 
 
                 <div className="button-row">
                     <button
-                        disabled={userDefinedPropertyTypes.length >= 7}
+                        disabled={
+                            userDefinedPropertyTypes.length >= maxNumberOfUserDefinedPropertyTypes
+                        }
                         type="button"
                         onClick={addRow}
                     >

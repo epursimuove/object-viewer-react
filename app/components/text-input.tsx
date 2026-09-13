@@ -1,9 +1,11 @@
 export function TextInput({
+    label,
     currentValue = "",
     size = 15,
     onChange,
     disabled = false,
 }: {
+    label?: string;
     currentValue?: string;
     size?: number;
     // onChange: (id: string, field: string, value: string) => void;
@@ -12,6 +14,8 @@ export function TextInput({
 }) {
     return (
         <section className="text-input">
+            {label && <label htmlFor={label}>{label}</label>}
+
             <input
                 disabled={disabled}
                 // className="text-input"
@@ -19,7 +23,7 @@ export function TextInput({
                 // ref={inputElementRef}
                 type="text"
                 // name={htmlIdentifier}
-                // id={htmlIdentifier}
+                id={label}
                 size={size}
                 value={currentValue}
                 onChange={(event) => {

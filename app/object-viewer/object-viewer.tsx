@@ -12,7 +12,7 @@ import type {
     PropertyTypeEnhanced,
     PropertyValue,
 } from "~/types";
-import { isEmpty, prettifyJSON, versions } from "~/util/util";
+import { isEmpty, prettifyJSON, prettifyInteger, versions } from "~/util/util";
 import "../variables.css";
 import "./object-viewer.css";
 import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -381,7 +381,8 @@ export function ObjectViewer() {
                     <h2>
                         Object tree{" "}
                         <small>
-                            {numberOfVisibleRows} of {totalNumberOfRows} ({rowsPercentage}%)
+                            {prettifyInteger(numberOfVisibleRows)} of{" "}
+                            {prettifyInteger(totalNumberOfRows)} ({rowsPercentage}%)
                         </small>
                     </h2>
                 </summary>

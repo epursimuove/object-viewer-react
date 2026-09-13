@@ -184,6 +184,7 @@ export interface UserDefinedPropertyTypesContextType {
 
 export interface HistoryItem {
     id: string;
+    descriptiveName?: string;
     checksum: string;
     object: Record<string, PropertyValue>;
     timestampFirstView: Temporal.Instant;

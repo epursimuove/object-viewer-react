@@ -84,6 +84,14 @@ export const exampleObject: {} = {
                         timeZones: ["UTC", systemTimeZone],
                     },
                 },
+                "1.1.1.2 - User-defined property types from strings": {
+                    _README:
+                        "If you define\n- Name as property type\n- /^([_$@].+)$/ as the RegExp\n- $1 as the Substitution\nyou will get nice used-defined property types for the following properties",
+                    $ref: "A reference",
+                    $schema: "A schema",
+                    _xyz: "A special value",
+                    "@abc": "Could this be useful?",
+                },
             },
             "1.1.2 - Booleans": {
                 true: true,
@@ -1092,5 +1100,11 @@ export const documentationExampleUserDefinedPropertyTypes: Record<string, Proper
         regExpPattern: "/^(success|failure|unknown)$/i",
         substitution: "$1",
         resultExamples: "Success, Failure, Unknown",
+    },
+    {
+        type: "Property Name",
+        regExpPattern: "/^([_$@].+)$/",
+        substitution: "$1",
+        resultExamples: "$foo, $bar, _abc, @xyz",
     },
 ];

@@ -60,6 +60,8 @@ export function HistorySection({
                         <span className="index">{index + 1}</span>
 
                         <PrettifiedObjectIdentifier sha256Code={historyItem.id} />
+
+                        <span>{historyItem.descriptiveName}</span>
                     </div>
                 ))}
 

@@ -381,7 +381,7 @@ export default function DocumentationPage() {
             <h2>History of objects</h2>
 
             <p>
-                Your seven last viewed JSON objects are stored in your local storage (using key{" "}
+                Your ten last viewed JSON objects are stored in your local storage (using key{" "}
                 <code>{storageKeyForHistory}</code>), so you can easily toggle between them.
             </p>
 
@@ -673,7 +673,7 @@ export default function DocumentationPage() {
                 This way you can keep your regular expressions and only have some of them enabled.
             </p>
 
-            <p>A maximum of 7 user-defined property types can be defined.</p>
+            <p>A maximum of ten user-defined property types can be defined.</p>
 
             <h4>Examples</h4>
 
