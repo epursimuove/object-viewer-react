@@ -443,7 +443,8 @@ aside#toolbar {
                     background-color: aquamarine;
                 }
 
-                .index {
+                .index,
+                .utc-date {
                     font-size: 0.85rem;
                     color: var(--color-lighter);
                 }
@@ -520,6 +521,12 @@ aside#toolbar {
                     }
                 }
             }
+        }
+    }
+
+    .json-object {
+        input {
+            font-family: Menlo, "Courier New", monospace;
         }
     }
 }

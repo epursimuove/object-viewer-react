@@ -3,6 +3,7 @@ import { saveHistoryToStorage, useHistoryContext } from "./HistoryContext";
 import { useLog } from "~/log-manager/LogManager";
 import { PrettifiedObjectIdentifier } from "~/components/prettified-object-identifier";
 import { handleMenuStateToggled, useMenuStateContext } from "./MenuStateContext";
+import { Temporal } from "@js-temporal/polyfill";
 
 const { debug } = useLog("history-section.tsx");
 
@@ -60,6 +61,17 @@ export function HistorySection({
                         <span className="index">{index + 1}</span>
 
                         <PrettifiedObjectIdentifier sha256Code={historyItem.id} />
+
+                        <span className="utc-date">
+                            {Temporal.Instant.from(historyItem.timestampFirstView).toLocaleString(
+                                "en-US",
+                                {
+                                    month: "short",
+                                    day: "2-digit",
+                                    timeZone: "UTC",
+                                },
+                            )}
+                        </span>
 
                         <span>{historyItem.descriptiveName}</span>
                     </div>

@@ -97,7 +97,7 @@ export function JsonObjectSection({
                 <TextInput
                     label="Optional descriptive name"
                     disabled={!jsonObjectModified}
-                    size={15}
+                    size={30}
                     currentValue={descriptiveName}
                     onChange={(newValue) => setDescriptiveName(newValue)}
                 />
