@@ -387,6 +387,12 @@ export function ObjectViewer() {
                     </h2>
                 </summary>
 
+                <div>
+                    Colors for property type names: <span className="object-property">Object</span>,{" "}
+                    <span className="array-property">Array</span>,{" "}
+                    <span className="leaf-property">Leaf</span>
+                </div>
+
                 <div className="object-viewer">{objectViewerRows}</div>
             </details>
 

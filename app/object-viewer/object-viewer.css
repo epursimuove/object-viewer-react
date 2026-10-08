@@ -34,11 +34,11 @@
             cursor: pointer;
 
             &.object-header .object-property-name {
-                color: blue;
+                color: var(--color-object-property);
             }
 
             &.array-header .object-property-name {
-                color: mediumseagreen;
+                color: var(--color-array-property);
             }
 
             &.empty {
@@ -87,7 +87,7 @@
 
         .object-property-name {
             min-width: 12rem;
-            color: purple;
+            color: var(--color-leaf-property);
 
             & .array-index {
                 /* font-size: 0.85rem; */

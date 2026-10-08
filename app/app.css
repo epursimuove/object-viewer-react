@@ -535,3 +535,21 @@ select {
 .arithmetic-aggregation-block {
     font-family: Menlo, "Courier New", monospace;
 }
+
+.object-property,
+.array-property,
+.leaf-property {
+    font-weight: bold;
+}
+
+.object-property {
+    color: var(--color-object-property);
+}
+
+.array-property {
+    color: var(--color-array-property);
+}
+
+.leaf-property {
+    color: var(--color-leaf-property);
+}

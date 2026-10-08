@@ -11,6 +11,10 @@ html {
     --color-boolean-border: rgb(230, 230, 230);
 
     --color-disabled: rgb(200, 200, 200);
+
+    --color-object-property: blue;
+    --color-array-property: mediumseagreen;
+    --color-leaf-property: purple;
 }
 
 @media screen and (max-width: 600px) {
