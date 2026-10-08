@@ -755,7 +755,41 @@ export const exampleObject: {} = {
     //     -1n,
     //     12345678901234567890n,
     // ],
-    "3 - Copyright": {
+    "3 - User defined properties": {
+        _README:
+            "If you define two rules\n- Value as property type\n- /^(success|failure|unknown)$/i as the RegExp\n- $1 as the Substitution\nand\n- Value as property type\n- ^(\d{4}-\d{2}).*$ as the RegExp\n- YM $1 as the Substitution\nyou will get nice used-defined property types for the following properties",
+        data: [
+            {
+                yearMonth: "2025-10",
+                status: "Success",
+            },
+            {
+                yearMonth: "2025-11",
+                status: "Success",
+            },
+            {
+                yearMonth: "2025-12",
+                status: "Failure",
+            },
+            {
+                yearMonth: "2026-01",
+                status: "Success",
+            },
+            {
+                yearMonth: "2026-02",
+                status: "Unknown",
+            },
+            {
+                yearMonth: "2026-03",
+                status: "Failure",
+            },
+            {
+                yearMonth: "2026-04",
+                status: "Success",
+            },
+        ],
+    },
+    "4 - Copyright": {
         firstName: "Anders",
         lastName: "Gustafson",
         url: "https://anders.nemonisimors.com",
