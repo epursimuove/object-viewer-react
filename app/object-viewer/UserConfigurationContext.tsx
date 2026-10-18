@@ -1,6 +1,34 @@
-import type {PropertyTypeEnhanced, UserConfigurationContextType} from "~/types";
-import {type Context, createContext, type ReactNode, useContext, useState} from "react";
+import type { PropertyTypeEnhanced, UserConfigurationContextType } from "~/types";
+import {
+    type Context,
+    createContext,
+    type ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 
+type DisplaySettings = {
+    indentObjectTree: boolean;
+    showPropertyType: boolean;
+    showMetaDataForLeaves: boolean;
+    showMetaDataForNodes: boolean;
+    showNadaValues: boolean;
+    showLeaves: boolean;
+    showIdentifyingValues: boolean;
+};
+
+export const settingsStorageKey = "__NNM_Object_Viewer_Settings__";
+
+const defaultDisplaySettings: DisplaySettings = {
+    indentObjectTree: true,
+    showPropertyType: true,
+    showMetaDataForLeaves: true,
+    showMetaDataForNodes: false,
+    showNadaValues: true,
+    showLeaves: true,
+    showIdentifyingValues: true,
+};
 
 const defaultUserConfigurationContext: UserConfigurationContextType = {
     indentObjectTree: true,
@@ -29,46 +57,50 @@ const defaultUserConfigurationContext: UserConfigurationContextType = {
 const UserConfigurationContext: Context<UserConfigurationContextType> =
     createContext<UserConfigurationContextType>(defaultUserConfigurationContext);
 
-export const useUserConfigurationContext =
-    (): UserConfigurationContextType => useContext(UserConfigurationContext);
+export const useUserConfigurationContext = (): UserConfigurationContextType =>
+    useContext(UserConfigurationContext);
 
 type UserConfigurationContextProps = {
     children: ReactNode;
 };
 
-export function UserConfigurationProvider({children}: UserConfigurationContextProps) {
-
-    const [indentObjectTree, setIndentObjectTree] = useState<boolean>(true);
-    const [showPropertyType, setShowPropertyType] = useState<boolean>(true);
-    const [showMetaDataForLeaves, setShowMetaDataForLeaves] = useState<boolean>(true);
-    const [showMetaDataForNodes, setShowMetaDataForNodes] = useState<boolean>(false);
-    const [showNadaValues, setShowNadaValues] = useState<boolean>(true);
-    const [showLeaves, setShowLeaves] = useState<boolean>(true);
-    const [showIdentifyingValues, setShowIdentifyingValues] = useState<boolean>(true);
+export function UserConfigurationProvider({ children }: UserConfigurationContextProps) {
+    const [settings, setSettings] = useState<DisplaySettings>(loadDisplaySettings);
 
     const [filterOnProperty, setFilterOnProperty] = useState<string>("");
-    const [filterOnPropertyTypeEnhanced, setFilterOnEnhancedPropertyType] = useState<PropertyTypeEnhanced[]>([]);
+    const [filterOnPropertyTypeEnhanced, setFilterOnEnhancedPropertyType] = useState<
+        PropertyTypeEnhanced[]
+    >([]);
 
     const userConfigurationContext: UserConfigurationContextType = {
-        indentObjectTree,
-        showPropertyType,
-        showMetaDataForLeaves,
-        showMetaDataForNodes,
-        showNadaValues,
-        showLeaves,
-        showIdentifyingValues,
+        ...settings,
         filterOnProperty,
         filterOnPropertyTypeEnhanced,
 
-        setIndentObjectTree: (value: boolean) => setIndentObjectTree(value),
-        setShowPropertyType: (value: boolean) => setShowPropertyType(value),
-        setShowMetaDataForLeaves: (value: boolean) => setShowMetaDataForLeaves(value),
-        setShowMetaDataForNodes: (value: boolean) => setShowMetaDataForNodes(value),
-        setShowNadaValues: (value: boolean) => setShowNadaValues(value),
-        setShowLeaves: (value: boolean) => setShowLeaves(value),
-        setShowIdentifyingValues: (value: boolean) => setShowIdentifyingValues(value),
+        setIndentObjectTree: (value) =>
+            setSettings((previous) => ({ ...previous, indentObjectTree: value })),
+
+        setShowPropertyType: (value) =>
+            setSettings((previous) => ({ ...previous, showPropertyType: value })),
+
+        setShowMetaDataForLeaves: (value) =>
+            setSettings((previous) => ({ ...previous, showMetaDataForLeaves: value })),
+
+        setShowMetaDataForNodes: (value) =>
+            setSettings((previous) => ({ ...previous, showMetaDataForNodes: value })),
+
+        setShowNadaValues: (value) =>
+            setSettings((previous) => ({ ...previous, showNadaValues: value })),
+
+        setShowLeaves: (value) => setSettings((previous) => ({ ...previous, showLeaves: value })),
+
+        setShowIdentifyingValues: (value) =>
+            setSettings((previous) => ({ ...previous, showIdentifyingValues: value })),
+
         setFilterOnProperty: (value: string) => setFilterOnProperty(value),
-        setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) => setFilterOnEnhancedPropertyType(value),
+
+        setFilterOnPropertyTypeEnhanced: (value: PropertyTypeEnhanced[]) =>
+            setFilterOnEnhancedPropertyType(value),
 
         resetFilters: () => {
             setFilterOnProperty("");
@@ -76,9 +108,65 @@ export function UserConfigurationProvider({children}: UserConfigurationContextPr
         },
     };
 
+    useEffect(() => {
+        try {
+            localStorage.setItem(settingsStorageKey, JSON.stringify(settings));
+        } catch (error) {
+            console.warn("Could not save display settings to local storage.", error);
+        }
+    }, [settings]);
+
     return (
         <UserConfigurationContext.Provider value={userConfigurationContext}>
             {children}
         </UserConfigurationContext.Provider>
     );
+}
+
+function loadDisplaySettings(): DisplaySettings {
+    try {
+        const stored = localStorage.getItem(settingsStorageKey);
+        if (stored === null) return defaultDisplaySettings;
+
+        const parsed: unknown = JSON.parse(stored);
+        if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+            return defaultDisplaySettings;
+        }
+
+        const saved = parsed as Record<string, unknown>;
+
+        return {
+            indentObjectTree:
+                typeof saved.indentObjectTree === "boolean"
+                    ? saved.indentObjectTree
+                    : defaultDisplaySettings.indentObjectTree,
+            showPropertyType:
+                typeof saved.showPropertyType === "boolean"
+                    ? saved.showPropertyType
+                    : defaultDisplaySettings.showPropertyType,
+            showMetaDataForLeaves:
+                typeof saved.showMetaDataForLeaves === "boolean"
+                    ? saved.showMetaDataForLeaves
+                    : defaultDisplaySettings.showMetaDataForLeaves,
+            showMetaDataForNodes:
+                typeof saved.showMetaDataForNodes === "boolean"
+                    ? saved.showMetaDataForNodes
+                    : defaultDisplaySettings.showMetaDataForNodes,
+            showNadaValues:
+                typeof saved.showNadaValues === "boolean"
+                    ? saved.showNadaValues
+                    : defaultDisplaySettings.showNadaValues,
+            showLeaves:
+                typeof saved.showLeaves === "boolean"
+                    ? saved.showLeaves
+                    : defaultDisplaySettings.showLeaves,
+            showIdentifyingValues:
+                typeof saved.showIdentifyingValues === "boolean"
+                    ? saved.showIdentifyingValues
+                    : defaultDisplaySettings.showIdentifyingValues,
+        };
+    } catch (error) {
+        console.warn("Could not load display settings from local storage.", error);
+        return defaultDisplaySettings;
+    }
 }

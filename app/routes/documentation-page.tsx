@@ -26,6 +26,7 @@ import { convertObjectToTree } from "~/util/tree";
 import { storageKeyForMenuState } from "~/object-viewer/MenuStateContext";
 import { storageKeyForHistory } from "~/object-viewer/HistoryContext";
 import { storageKeyForUserDefinedPropertyTypes } from "~/object-viewer/UserDefinedPropertyTypesContext";
+import { settingsStorageKey } from "~/object-viewer/UserConfigurationContext";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -320,7 +321,9 @@ export default function DocumentationPage() {
             <h2>Settings</h2>
 
             <p>
-                The <em>Settings</em> section handles the following.
+                The <em>Settings</em> are stored in your local storage (using key{" "}
+                <code>{settingsStorageKey}</code>). The <em>Expand all / Collapse (almost) all</em>{" "}
+                are not stored, since they are actions.
             </p>
 
             <h3>Indent object tree</h3>
