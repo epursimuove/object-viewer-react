@@ -69,7 +69,9 @@ export function ObjectViewer() {
         // prettifyJSON(exampleArray3)
     );
 
-    const [originalObject, setOriginalObject] = useState<Record<string, PropertyValue>>({});
+    const [originalObject, setOriginalObject] = useState<Record<string, PropertyValue>>(() =>
+        JSON.parse(prettifyJSON(exampleObject)),
+    );
 
     const {
         savedUserDefinedPropertyTypes,
@@ -86,9 +88,9 @@ export function ObjectViewer() {
         resetFilters,
     } = useUserConfigurationContext();
 
-    const objectTree: ObjectNode = convertObjectToTree(
-        originalObject,
-        activeUserDefinedPropertyTypes,
+    const objectTree: ObjectNode = useMemo(
+        () => convertObjectToTree(originalObject, activeUserDefinedPropertyTypes),
+        [originalObject, activeUserDefinedPropertyTypes],
     );
 
     info("originalObject", originalObject);
@@ -103,41 +105,14 @@ export function ObjectViewer() {
     }
 
     useEffect(() => {
-        info(
-            `originalObject or activeUserDefinedPropertyTypes changed`,
-            originalObject,
-            activeUserDefinedPropertyTypes,
-        );
-        if (isEmpty(originalObject)) {
-            return;
-        }
+        info(`objectTree changed`, objectTree);
 
-        const objectTreeXXX: ObjectNode = convertObjectToTree(
-            originalObject,
-            activeUserDefinedPropertyTypes,
-        );
+        const displayRows: DisplayRow[] = convertTreeToDisplayRows(objectTree);
 
-        const displayRowsXXX: DisplayRow[] = convertTreeToDisplayRows(objectTreeXXX);
-
-        setDisplayRows(displayRowsXXX);
+        setDisplayRows(displayRows);
 
         computeHash();
-    }, [originalObject, activeUserDefinedPropertyTypes]); // Runs whenever `originalObject` changes
-
-    useEffect(() => {
-        info(`[MOUNTED] originalObject changed`, originalObject);
-
-        setOriginalObject(JSON.parse(originalObjectAsText));
-
-        const objectTreeXXX: ObjectNode = convertObjectToTree(
-            originalObject,
-            activeUserDefinedPropertyTypes,
-        );
-
-        const displayRowsXXX: DisplayRow[] = convertTreeToDisplayRows(objectTreeXXX);
-
-        setDisplayRows(displayRowsXXX);
-    }, []); // Runs once on mounted.
+    }, [objectTree]);
 
     const totalNumberOfRows: number = displayRows.length;
 
